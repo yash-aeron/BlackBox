@@ -1,0 +1,3848 @@
+{
+  "website": {
+    "target_id": "api_probe",
+    "base_url": "http://127.0.0.1:3001",
+    "allowed_origins": [
+      "http://127.0.0.1:3001"
+    ],
+    "root_title": "Northwind CRM",
+    "observed_version_hints": [],
+    "identity_hash": "a06bb71eef02f044"
+  },
+  "model_version": {
+    "version": 1,
+    "schema_version": 1,
+    "created_at": "2026-10-08T18:54:03.163905+00:00",
+    "session_id": null,
+    "browser_version": "",
+    "prompt_version": "v1",
+    "parent_version": null,
+    "notes": []
+  },
+  "states": [
+    {
+      "state_id": "s_db233137f595",
+      "fingerprint": {
+        "url": "http://127.0.0.1:3001/#/dashboard",
+        "url_key": "127.0.0.1:3001/#/dashboard",
+        "title": "northwind crm",
+        "text_signature": "7ce779d801409d61",
+        "text_shingles": [
+          "041ebb530798",
+          "0f6a35000110",
+          "125591ed27f5",
+          "138535937c99",
+          "1470a3e17d10",
+          "14a1db29354c",
+          "18d5b63c83bb",
+          "1e864620d046",
+          "1f045937c895",
+          "1f2f6e23e4bd",
+          "27dcbb301ce3",
+          "2bfc65ff4a82",
+          "2f58f878bf8e",
+          "30fa66ec56c4",
+          "31656131ce00",
+          "3304ea127ed8",
+          "3d1004dcd228",
+          "40faa9a723d5",
+          "43a6cc699494",
+          "43c8e407d611",
+          "4927422a9a3b",
+          "4d4f286486ca",
+          "4df6221fabec",
+          "50ccabfd6e0f",
+          "50cd1c8d66c8",
+          "5748af9a11c5",
+          "5ab262e7f4cb",
+          "719362b9ed20",
+          "75116456723e",
+          "766bb7e1830f",
+          "76981da2e77c",
+          "7b0f56a717da",
+          "7ce514545ca6",
+          "843025dec478",
+          "85d7f32048d8",
+          "87120def58a5",
+          "9550ee30f5b4",
+          "99cb99797a00",
+          "9a7e7233a73c",
+          "9fece2f03c2c",
+          "a2527cdb9f7c",
+          "a60071dfd3bb",
+          "b1af1418e852",
+          "b3977c92dd84",
+          "b4db59110a94",
+          "b5f1be07dcdc",
+          "bd72a5979e82",
+          "bec3e2ca3d96",
+          "c3437b9a419c",
+          "c4ac6c3853cc",
+          "c7a6b6866586",
+          "c97d8ea7c441",
+          "cd5a5adef0cd",
+          "d1fcc70ffe99",
+          "d6b2603f07f4",
+          "e253aa2b94a6",
+          "ee4a8287ce7f",
+          "fb5c25a639e6",
+          "fe94c90878db"
+        ],
+        "element_signature": [
+          "BUTTON:add customer",
+          "BUTTON:customers",
+          "LINK:customers",
+          "LINK:dashboard",
+          "LINK:reports",
+          "LINK:settings",
+          "LINK:skip to main content"
+        ],
+        "accessibility_signature": [
+          "link:skip to main content",
+          "link:dashboard",
+          "link:customers",
+          "link:reports",
+          "link:settings",
+          "button:customers",
+          "button:add customer"
+        ],
+        "form_signature": [
+          "company:empty",
+          "email *:empty",
+          "name *:empty",
+          "revenue:filled",
+          "status:filled"
+        ],
+        "selected_controls": {
+          "SELECT:status": "Active"
+        },
+        "dialog_signature": [],
+        "pagination_signature": "|False|False",
+        "screenshot_hash": "0000020c03c3c403",
+        "semantic_summary": "Northwind CRM | 1 form(s) | controls: CANCEL, CREATE, DELETE, FILTER, UPDATE | 16 interactive elements"
+      },
+      "page_identity": "127.0.0.1:3001",
+      "page_id": "p_f1dfa6dad588",
+      "url": "http://127.0.0.1:3001/#/dashboard",
+      "title": "Northwind CRM",
+      "visible_text": "Skip to main content NW Northwind CRM Customer records for the sales team SECTIONS Dashboard Customers Reports Settings Signed in as Morgan Hale Account manager Dashboard A snapshot of the customer book. Figures update as records change. TOTAL CUSTOMERS15 ACTIVE CUSTOMERS8 OPEN LEADS4 TOTAL REVENUE$565,650 Quick actions Jump to the full customer list or create a new record. Customers Add customer",
+      "visible_elements": [
+        {
+          "element_id": "e_8a240efdc617",
+          "semantic_role": "BUTTON",
+          "visible_text": "Add customer",
+          "accessible_name": "Add customer",
+          "tag": "button",
+          "attributes": {
+            "id": "dashboard-add",
+            "type": "button",
+            "__css_path": "#dashboard-add",
+            "__ax_role": "button"
+          },
+          "bounding_box": {
+            "x": 399.2,
+            "y": 326.3,
+            "width": 126.9,
+            "height": 38.0
+          },
+          "parent_id": null,
+          "children_ids": [],
+          "enabled": true,
+          "visible": true,
+          "focused": false,
+          "editable": false,
+          "value_state": {
+            "value": "",
+            "checked": null,
+            "selected": null,
+            "disabled_reason": null
+          },
+          "locator_candidates": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=button[name=Add customer]",
+              "confidence": 0.95,
+              "evidence": "accessible name derived from label/aria/text",
+              "params": {
+                "role": "button",
+                "name": "Add customer"
+              }
+            },
+            {
+              "strategy": "ELEMENT_ID",
+              "selector": "#dashboard-add",
+              "confidence": 0.88,
+              "evidence": "element id (re-checked for stability across states)",
+              "params": {
+                "css": "#dashboard-add"
+              }
+            },
+            {
+              "strategy": "TEXT",
+              "selector": "text=Add customer",
+              "confidence": 0.7,
+              "evidence": "visible text content",
+              "params": {
+                "text": "Add customer"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "#dashboard-add",
+              "confidence": 0.55,
+              "evidence": "structural path (survives text changes, breaks on re-layout)",
+              "params": {
+                "css": "#dashboard-add"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(463,345)",
+              "confidence": 0.25,
+              "evidence": "last resort: geometry only, invalidated by any layout change",
+              "params": {
+                "x": 462.65,
+                "y": 345.3
+              }
+            }
+          ],
+          "confidence": 0.95,
+          "source": "dom+ax",
+          "snapshot_ref": "r6",
+          "in_dialog": false,
+          "in_form": null,
+          "section": "SECTIONS"
+        },
+        {
+          "element_id": "e_631ff242cd7b",
+          "semantic_role": "BUTTON",
+          "visible_text": "Customers",
+          "accessible_name": "Customers",
+          "tag": "button",
+          "attributes": {
+            "id": "dashboard-customers",
+            "type": "button",
+            "__css_path": "#dashboard-customers",
+            "__ax_role": "button"
+          },
+          "bounding_box": {
+            "x": 288.6,
+            "y": 326.3,
+            "width": 102.6,
+            "height": 38.0
+          },
+          "parent_id": null,
+          "children_ids": [],
+          "enabled": true,
+          "visible": true,
+          "focused": false,
+          "editable": false,
+          "value_state": {
+            "value": "",
+            "checked": null,
+            "selected": null,
+            "disabled_reason": null
+          },
+          "locator_candidates": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=button[name=Customers]",
+              "confidence": 0.95,
+              "evidence": "accessible name derived from label/aria/text",
+              "params": {
+                "role": "button",
+                "name": "Customers"
+              }
+            },
+            {
+              "strategy": "ELEMENT_ID",
+              "selector": "#dashboard-customers",
+              "confidence": 0.88,
+              "evidence": "element id (re-checked for stability across states)",
+              "params": {
+                "css": "#dashboard-customers"
+              }
+            },
+            {
+              "strategy": "TEXT",
+              "selector": "text=Customers",
+              "confidence": 0.7,
+              "evidence": "visible text content",
+              "params": {
+                "text": "Customers"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "#dashboard-customers",
+              "confidence": 0.55,
+              "evidence": "structural path (survives text changes, breaks on re-layout)",
+              "params": {
+                "css": "#dashboard-customers"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(340,345)",
+              "confidence": 0.25,
+              "evidence": "last resort: geometry only, invalidated by any layout change",
+              "params": {
+                "x": 339.90000000000003,
+                "y": 345.3
+              }
+            }
+          ],
+          "confidence": 0.95,
+          "source": "dom+ax",
+          "snapshot_ref": "r5",
+          "in_dialog": false,
+          "in_form": null,
+          "section": "SECTIONS"
+        },
+        {
+          "element_id": "e_7443a57ce664",
+          "semantic_role": "LINK",
+          "visible_text": "Customers",
+          "accessible_name": "Customers",
+          "tag": "a",
+          "attributes": {
+            "href": "#/customers",
+            "__css_path": "body > div > nav > ul > li:nth-of-type(2) > a",
+            "__ax_role": "link"
+          },
+          "bounding_box": {
+            "x": 35.4,
+            "y": 174.2,
+            "width": 199.2,
+            "height": 37.6
+          },
+          "parent_id": null,
+          "children_ids": [],
+          "enabled": true,
+          "visible": true,
+          "focused": false,
+          "editable": false,
+          "value_state": {
+            "value": null,
+            "checked": null,
+            "selected": null,
+            "disabled_reason": null
+          },
+          "locator_candidates": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=a[name=Customers]",
+              "confidence": 0.95,
+              "evidence": "accessible name derived from label/aria/text",
+              "params": {
+                "role": "a",
+                "name": "Customers"
+              }
+            },
+            {
+              "strategy": "SEMANTIC_ATTR",
+              "selector": "a[href=\"#/customers\"]",
+              "confidence": 0.78,
+              "evidence": "link destination",
+              "params": {
+                "css": "a[href=\"#/customers\"]"
+              }
+            },
+            {
+              "strategy": "TEXT",
+              "selector": "text=Customers",
+              "confidence": 0.7,
+              "evidence": "visible text content",
+              "params": {
+                "text": "Customers"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "body > div > nav > ul > li:nth-of-type(2) > a",
+              "confidence": 0.55,
+              "evidence": "structural path (survives text changes, breaks on re-layout)",
+              "params": {
+                "css": "body > div > nav > ul > li:nth-of-type(2) > a"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(135,193)",
+              "confidence": 0.25,
+              "evidence": "last resort: geometry only, invalidated by any layout change",
+              "params": {
+                "x": 135.0,
+                "y": 193.0
+              }
+            }
+          ],
+          "confidence": 0.95,
+          "source": "dom+ax",
+          "snapshot_ref": "r2",
+          "in_dialog": false,
+          "in_form": null,
+          "section": "Northwind CRM"
+        },
+        {
+          "element_id": "e_276ea5bc9968",
+          "semantic_role": "LINK",
+          "visible_text": "Dashboard",
+          "accessible_name": "Dashboard",
+          "tag": "a",
+          "attributes": {
+            "href": "#/dashboard",
+            "__css_path": "body > div > nav > ul > li:nth-of-type(1) > a",
+            "__ax_role": "link"
+          },
+          "bounding_box": {
+            "x": 35.4,
+            "y": 133.5,
+            "width": 199.2,
+            "height": 37.6
+          },
+          "parent_id": null,
+          "children_ids": [],
+          "enabled": true,
+          "visible": true,
+          "focused": false,
+          "editable": false,
+          "value_state": {
+            "value": null,
+            "checked": null,
+            "selected": null,
+            "disabled_reason": null
+          },
+          "locator_candidates": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=a[name=Dashboard]",
+              "confidence": 0.95,
+              "evidence": "accessible name derived from label/aria/text",
+              "params": {
+                "role": "a",
+                "name": "Dashboard"
+              }
+            },
+            {
+              "strategy": "SEMANTIC_ATTR",
+              "selector": "a[href=\"#/dashboard\"]",
+              "confidence": 0.78,
+              "evidence": "link destination",
+              "params": {
+                "css": "a[href=\"#/dashboard\"]"
+              }
+            },
+            {
+              "strategy": "TEXT",
+              "selector": "text=Dashboard",
+              "confidence": 0.7,
+              "evidence": "visible text content",
+              "params": {
+                "text": "Dashboard"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "body > div > nav > ul > li:nth-of-type(1) > a",
+              "confidence": 0.55,
+              "evidence": "structural path (survives text changes, breaks on re-layout)",
+              "params": {
+                "css": "body > div > nav > ul > li:nth-of-type(1) > a"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(135,152)",
+              "confidence": 0.25,
+              "evidence": "last resort: geometry only, invalidated by any layout change",
+              "params": {
+                "x": 135.0,
+                "y": 152.3
+              }
+            }
+          ],
+          "confidence": 0.95,
+          "source": "dom+ax",
+          "snapshot_ref": "r1",
+          "in_dialog": false,
+          "in_form": null,
+          "section": "Northwind CRM"
+        },
+        {
+          "element_id": "e_c63f3244a713",
+          "semantic_role": "LINK",
+          "visible_text": "Reports",
+          "accessible_name": "Reports",
+          "tag": "a",
+          "attributes": {
+            "href": "#/reports",
+            "__css_path": "body > div > nav > ul > li:nth-of-type(3) > a",
+            "__ax_role": "link"
+          },
+          "bounding_box": {
+            "x": 35.4,
+            "y": 215.0,
+            "width": 199.2,
+            "height": 37.6
+          },
+          "parent_id": null,
+          "children_ids": [],
+          "enabled": true,
+          "visible": true,
+          "focused": false,
+          "editable": false,
+          "value_state": {
+            "value": null,
+            "checked": null,
+            "selected": null,
+            "disabled_reason": null
+          },
+          "locator_candidates": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=a[name=Reports]",
+              "confidence": 0.95,
+              "evidence": "accessible name derived from label/aria/text",
+              "params": {
+                "role": "a",
+                "name": "Reports"
+              }
+            },
+            {
+              "strategy": "SEMANTIC_ATTR",
+              "selector": "a[href=\"#/reports\"]",
+              "confidence": 0.78,
+              "evidence": "link destination",
+              "params": {
+                "css": "a[href=\"#/reports\"]"
+              }
+            },
+            {
+              "strategy": "TEXT",
+              "selector": "text=Reports",
+              "confidence": 0.7,
+              "evidence": "visible text content",
+              "params": {
+                "text": "Reports"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "body > div > nav > ul > li:nth-of-type(3) > a",
+              "confidence": 0.55,
+              "evidence": "structural path (survives text changes, breaks on re-layout)",
+              "params": {
+                "css": "body > div > nav > ul > li:nth-of-type(3) > a"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(135,234)",
+              "confidence": 0.25,
+              "evidence": "last resort: geometry only, invalidated by any layout change",
+              "params": {
+                "x": 135.0,
+                "y": 233.8
+              }
+            }
+          ],
+          "confidence": 0.95,
+          "source": "dom+ax",
+          "snapshot_ref": "r3",
+          "in_dialog": false,
+          "in_form": null,
+          "section": "Northwind CRM"
+        },
+        {
+          "element_id": "e_c6b957cea1ac",
+          "semantic_role": "LINK",
+          "visible_text": "Settings",
+          "accessible_name": "Settings",
+          "tag": "a",
+          "attributes": {
+            "href": "#/settings",
+            "__css_path": "body > div > nav > ul > li:nth-of-type(4) > a",
+            "__ax_role": "link"
+          },
+          "bounding_box": {
+            "x": 35.4,
+            "y": 255.7,
+            "width": 199.2,
+            "height": 37.6
+          },
+          "parent_id": null,
+          "children_ids": [],
+          "enabled": true,
+          "visible": true,
+          "focused": false,
+          "editable": false,
+          "value_state": {
+            "value": null,
+            "checked": null,
+            "selected": null,
+            "disabled_reason": null
+          },
+          "locator_candidates": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=a[name=Settings]",
+              "confidence": 0.95,
+              "evidence": "accessible name derived from label/aria/text",
+              "params": {
+                "role": "a",
+                "name": "Settings"
+              }
+            },
+            {
+              "strategy": "SEMANTIC_ATTR",
+              "selector": "a[href=\"#/settings\"]",
+              "confidence": 0.78,
+              "evidence": "link destination",
+              "params": {
+                "css": "a[href=\"#/settings\"]"
+              }
+            },
+            {
+              "strategy": "TEXT",
+              "selector": "text=Settings",
+              "confidence": 0.7,
+              "evidence": "visible text content",
+              "params": {
+                "text": "Settings"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "body > div > nav > ul > li:nth-of-type(4) > a",
+              "confidence": 0.55,
+              "evidence": "structural path (survives text changes, breaks on re-layout)",
+              "params": {
+                "css": "body > div > nav > ul > li:nth-of-type(4) > a"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(135,274)",
+              "confidence": 0.25,
+              "evidence": "last resort: geometry only, invalidated by any layout change",
+              "params": {
+                "x": 135.0,
+                "y": 274.5
+              }
+            }
+          ],
+          "confidence": 0.95,
+          "source": "dom+ax",
+          "snapshot_ref": "r4",
+          "in_dialog": false,
+          "in_form": null,
+          "section": "Northwind CRM"
+        },
+        {
+          "element_id": "e_1408cd2dc54b",
+          "semantic_role": "LINK",
+          "visible_text": "Skip to main content",
+          "accessible_name": "Skip to main content",
+          "tag": "a",
+          "attributes": {
+            "href": "#main",
+            "__offscreen": "true",
+            "__css_path": "html > body > a",
+            "__ax_role": "link"
+          },
+          "bounding_box": {
+            "x": -9999.0,
+            "y": 0.0,
+            "width": 175.4,
+            "height": 39.2
+          },
+          "parent_id": null,
+          "children_ids": [],
+          "enabled": true,
+          "visible": true,
+          "focused": false,
+          "editable": false,
+          "value_state": {
+            "value": null,
+            "checked": null,
+            "selected": null,
+            "disabled_reason": null
+          },
+          "locator_candidates": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=a[name=Skip to main content]",
+              "confidence": 0.95,
+              "evidence": "accessible name derived from label/aria/text",
+              "params": {
+                "role": "a",
+                "name": "Skip to main content"
+              }
+            },
+            {
+              "strategy": "SEMANTIC_ATTR",
+              "selector": "a[href=\"#main\"]",
+              "confidence": 0.78,
+              "evidence": "link destination",
+              "params": {
+                "css": "a[href=\"#main\"]"
+              }
+            },
+            {
+              "strategy": "TEXT",
+              "selector": "text=Skip to main content",
+              "confidence": 0.7,
+              "evidence": "visible text content",
+              "params": {
+                "text": "Skip to main content"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "html > body > a",
+              "confidence": 0.55,
+              "evidence": "structural path (survives text changes, breaks on re-layout)",
+              "params": {
+                "css": "html > body > a"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(-9911,20)",
+              "confidence": 0.25,
+              "evidence": "last resort: geometry only, invalidated by any layout change",
+              "params": {
+                "x": -9911.3,
+                "y": 19.6
+              }
+            }
+          ],
+          "confidence": 0.95,
+          "source": "dom+ax",
+          "snapshot_ref": "r0",
+          "in_dialog": false,
+          "in_form": null,
+          "section": ""
+        }
+      ],
+      "forms": [
+        {
+          "form_id": "customer-form",
+          "name": "",
+          "action_hint": "",
+          "fields": [
+            {
+              "element_id": "e_90003d394277",
+              "name": "name",
+              "label": "Name *",
+              "role": "TEXT_FIELD",
+              "required": true,
+              "value": "",
+              "checked": null,
+              "options": []
+            },
+            {
+              "element_id": "e_36476f418db3",
+              "name": "email",
+              "label": "Email *",
+              "role": "TEXT_FIELD",
+              "required": true,
+              "value": "",
+              "checked": null,
+              "options": []
+            },
+            {
+              "element_id": "e_0b163b25357c",
+              "name": "company",
+              "label": "Company",
+              "role": "TEXT_FIELD",
+              "required": false,
+              "value": "",
+              "checked": null,
+              "options": []
+            },
+            {
+              "element_id": "e_b12bb3d8685e",
+              "name": "status",
+              "label": "Status",
+              "role": "SELECT",
+              "required": false,
+              "value": "Active",
+              "checked": null,
+              "options": [
+                "Active",
+                "Inactive",
+                "Lead"
+              ]
+            },
+            {
+              "element_id": "e_881a76b9b84c",
+              "name": "revenue",
+              "label": "Revenue",
+              "role": "TEXT_FIELD",
+              "required": false,
+              "value": "0",
+              "checked": null,
+              "options": []
+            }
+          ],
+          "submit_element_ids": [
+            "e_97d0f9f589fb",
+            "e_652714c2c454"
+          ],
+          "in_dialog": true
+        }
+      ],
+      "dialogs": [],
+      "pagination": {
+        "page_label": "",
+        "page_index": null,
+        "page_count": null,
+        "has_next": false,
+        "has_previous": false
+      },
+      "session": {
+        "authenticated": false,
+        "user_hint": null,
+        "cookie_names": [],
+        "notes": []
+      },
+      "semantic_summary": "Northwind CRM | 1 form(s) | controls: CANCEL, CREATE, DELETE, FILTER, UPDATE | 16 interactive elements",
+      "confidence": 0.7,
+      "status": "CURRENT",
+      "observation_id": "o_a1c17b40aefe",
+      "screenshot_ref": "artifacts\\screenshots\\obs-8ec5ed6bebf106f4.png",
+      "first_seen": "2026-10-08T18:53:03.384507+00:00",
+      "last_seen": "2026-10-08T18:53:42.011589+00:00",
+      "visit_count": 3
+    },
+    {
+      "state_id": "s_c90cfdf139fd",
+      "fingerprint": {
+        "url": "http://127.0.0.1:3001/#/customers",
+        "url_key": "127.0.0.1:3001/#/customers",
+        "title": "northwind crm",
+        "text_signature": "78fb8202bbb01ed6",
+        "text_shingles": [
+          "035ea9d278ed",
+          "041ebb530798",
+          "04b70f416c4f",
+          "04c5b2227d6f",
+          "07d0becf09f2",
+          "0b26eb1321b5",
+          "0f255f1f855f",
+          "101780d0c164",
+          "113590055eaf",
+          "123c9c0d8246",
+          "14a861ff9e8e",
+          "180adaa0cab9",
+          "1897ac671eaa",
+          "18d5b63c83bb",
+          "196059e3778e",
+          "19a8350f9631",
+          "1bd07008c2ca",
+          "1f2f6e23e4bd",
+          "20058a5aa0a6",
+          "211fd99c90f0",
+          "27dcbb301ce3",
+          "2a1a76cd10b8",
+          "2bfc65ff4a82",
+          "2c2780e44870",
+          "2f58f878bf8e",
+          "306d33cbf46a",
+          "31656131ce00",
+          "3d1004dcd228",
+          "40a0eb86195e",
+          "433ca89e268a",
+          "50ccabfd6e0f",
+          "56fe58a74032",
+          "5a89d4d5ffdf",
+          "5e75a448b9ef",
+          "60a339d2e004",
+          "620cf6008a1e",
+          "64bd3010c79f",
+          "657ecf0770b1",
+          "6644eda602e0",
+          "673d3b7b69aa",
+          "727263b21ae4",
+          "793f15307c05",
+          "79d83138976d",
+          "7b0f56a717da",
+          "7ce514545ca6",
+          "7edf60eaf149",
+          "82312926aaf0",
+          "82e6d32cbaa5",
+          "84142cc81683",
+          "843025dec478",
+          "85239e7d59a1",
+          "85d7f32048d8",
+          "8c95b72b63c9",
+          "8e90aedf8a56",
+          "933d085c428a",
+          "9408e84b5f8a",
+          "9604210ea87e",
+          "9a7e7233a73c",
+          "9cfb33d5921d",
+          "9defd8f0ef31",
+          "9f387ac62956",
+          "9fbdc4b51224",
+          "a202748cb430",
+          "a2527cdb9f7c",
+          "a4aa834423dc",
+          "a97df308dcfe",
+          "ab3ca8d4d371",
+          "b4db59110a94",
+          "b57f71cb9e36",
+          "b5f1be07dcdc",
+          "b66793f48c2b",
+          "ba66450e9eab",
+          "bafe61e1ce6f",
+          "bbe62fb91e0f",
+          "bd72a5979e82",
+          "bebc76e8f3ef",
+          "bf16b34b36df",
+          "c1bd24f64cef",
+          "c42f340345f9",
+          "c4c236efd640",
+          "c6517c556ab8",
+          "c6d7bc785cc6",
+          "c7a6b6866586",
+          "caaac126d8c1",
+          "cd5a5adef0cd",
+          "cd87987b195f",
+          "ce0a6a2296a9",
+          "d1fcc70ffe99",
+          "d3025b54551d",
+          "d634455d05f0",
+          "d67401c04028",
+          "d77a54487a66",
+          "d88e493c6a23",
+          "da66d4a1d35f",
+          "e05819b7e8a7",
+          "e2c75e9bffd2",
+          "e4ee402d1d53",
+          "e6aad45333ce",
+          "e8a350804f86",
+          "eb74f7423a12",
+          "ee4a8287ce7f",
+          "f1f5feecfb56",
+          "f3093a3ef5a4",
+          "f4a348b9bbbb",
+          "f941d31b1e97",
+          "fd0aa05fac81",
+          "fe94c90878db"
+        ],
+        "element_signature": [
+          "BUTTON:add customer",
+          "BUTTON:delete amara okafor",
+          "BUTTON:delete clara bennett",
+          "BUTTON:delete daniel whitfield",
+          "BUTTON:delete elena marchetti",
+          "BUTTON:delete grace lindqvist",
+          "BUTTON:edit amara okafor",
+          "BUTTON:edit clara bennett",
+          "BUTTON:edit daniel whitfield",
+          "BUTTON:edit elena marchetti",
+          "BUTTON:edit grace lindqvist",
+          "BUTTON:name",
+          "BUTTON:next",
+          "BUTTON:previous",
+          "BUTTON:revenue",
+          "LINK:customers",
+          "LINK:dashboard",
+          "LINK:reports",
+          "LINK:settings",
+          "LINK:skip to main content",
+          "SEARCH:search customers",
+          "SELECT:rows per page",
+          "SELECT:status"
+        ],
+        "accessibility_signature": [
+          "link:skip to main content",
+          "link:dashboard",
+          "link:customers",
+          "link:reports",
+          "link:settings",
+          "button:add customer",
+          "searchbox:search customers",
+          "combobox:status",
+          "combobox:rows per page",
+          "button:name",
+          "button:revenue",
+          "button:edit amara okafor",
+          "button:delete amara okafor",
+          "button:edit clara bennett",
+          "button:delete clara bennett",
+          "button:edit daniel whitfield",
+          "button:delete daniel whitfield",
+          "button:edit elena marchetti",
+          "button:delete elena marchetti",
+          "button:edit grace lindqvist",
+          "button:delete grace lindqvist",
+          "button:previous",
+          "button:next"
+        ],
+        "form_signature": [
+          "company:empty",
+          "email *:empty",
+          "name *:empty",
+          "revenue:filled",
+          "status:filled"
+        ],
+        "selected_controls": {
+          "SELECT:rows per page": "5",
+          "SELECT:status": "Active"
+        },
+        "dialog_signature": [],
+        "pagination_signature": "Page 1 of 3|True|False",
+        "screenshot_hash": "0000c0d45640c0cb",
+        "semantic_summary": "Northwind CRM | table: 5 rows, columns NAME, EMAIL, COMPANY, STATUS, REVENUE, ACTIONS | 1 form(s) | Page 1 of 3 | controls: CANCEL, CREATE, DELETE, FILTER, PAGINATE, SEARCH, UPDATE | 32 interactive elements"
+      },
+      "page_identity": "127.0.0.1:3001",
+      "page_id": "p_e4e991b90a45",
+      "url": "http://127.0.0.1:3001/#/customers",
+      "title": "Northwind CRM",
+      "visible_text": "Skip to main content NW Northwind CRM Customer records for the sales team SECTIONS Dashboard Customers Reports Settings Signed in as Morgan Hale Account manager Customers Customer list Add customer Search customers Status All Active Inactive Lead Rows per page 5 10 25 Customer records NAME EMAIL COMPANY STATUS REVENUE ACTIONS Amara Okafor amara.okafor@brightlaneco.com Bright Lane Co Active $48,250 Edit Delete Clara Bennett clara.bennett@oakridgedesign.com Oak Ridge Design Active $31,200 Edit Delete Daniel Whitfield d.whitfield@harborline.io Harborline Logistics Inactive $12,400 Edit Delete Elena Marchetti elena@vinetoworks.it Vineto Works Active $64,800 Edit Delete Grace Lindqvist grace@fernwoodstudio.com Fernwood Studio Active $22,750 Edit Delete Page 1 of 3 Showing 1–5 of 15 customers Previous Next",
+      "visible_elements": [
+        {
+          "element_id": "e_8a240efdc617",
+          "semantic_role": "BUTTON",
+          "visible_text": "Add customer",
+          "accessible_name": "Add customer",
+          "tag": "button",
+          "attributes": {
+            "id": "add-customer",
+            "type": "button",
+            "__css_path": "#add-customer",
+            "__ax_role": "button"
+          },
+          "bounding_box": {
+            "x": 1274.5,
+            "y": 145.7,
+            "width": 126.9,
+            "height": 38.0
+          },
+          "parent_id": null,
+          "children_ids": [],
+          "enabled": true,
+          "visible": true,
+          "focused": false,
+          "editable": false,
+          "value_state": {
+            "value": "",
+            "checked": null,
+            "selected": null,
+            "disabled_reason": null
+          },
+          "locator_candidates": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=button[name=Add customer]",
+              "confidence": 0.95,
+              "evidence": "accessible name derived from label/aria/text",
+              "params": {
+                "role": "button",
+                "name": "Add customer"
+              }
+            },
+            {
+              "strategy": "ELEMENT_ID",
+              "selector": "#add-customer",
+              "confidence": 0.88,
+              "evidence": "element id (re-checked for stability across states)",
+              "params": {
+                "css": "#add-customer"
+              }
+            },
+            {
+              "strategy": "TEXT",
+              "selector": "text=Add customer",
+              "confidence": 0.7,
+              "evidence": "visible text content",
+              "params": {
+                "text": "Add customer"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "#add-customer",
+              "confidence": 0.55,
+              "evidence": "structural path (survives text changes, breaks on re-layout)",
+              "params": {
+                "css": "#add-customer"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(1338,165)",
+              "confidence": 0.25,
+              "evidence": "last resort: geometry only, invalidated by any layout change",
+              "params": {
+                "x": 1337.95,
+                "y": 164.7
+              }
+            }
+          ],
+          "confidence": 0.95,
+          "source": "dom+ax",
+          "snapshot_ref": "r5",
+          "in_dialog": false,
+          "in_form": null,
+          "section": "SECTIONS"
+        },
+        {
+          "element_id": "e_7949c3f628ae",
+          "semantic_role": "BUTTON",
+          "visible_text": "Delete",
+          "accessible_name": "Delete Amara Okafor",
+          "tag": "button",
+          "attributes": {
+            "type": "button",
+            "aria-label": "Delete Amara Okafor",
+            "__css_path": "div:nth-of-type(1) > table > tbody > tr:nth-of-type(1) > td:nth-of-type(6) > button:nth-of-type(2)",
+            "__ax_role": "button"
+          },
+          "bounding_box": {
+            "x": 1287.9,
+            "y": 341.3,
+            "width": 55.4,
+            "height": 28.1
+          },
+          "parent_id": null,
+          "children_ids": [],
+          "enabled": true,
+          "visible": true,
+          "focused": false,
+          "editable": false,
+          "value_state": {
+            "value": "",
+            "checked": null,
+            "selected": null,
+            "disabled_reason": null
+          },
+          "locator_candidates": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=button[name=Delete Amara Okafor]",
+              "confidence": 0.95,
+              "evidence": "accessible name derived from label/aria/text",
+              "params": {
+                "role": "button",
+                "name": "Delete Amara Okafor"
+              }
+            },
+            {
+              "strategy": "LABEL",
+              "selector": "aria-label=Delete Amara Okafor",
+              "confidence": 0.92,
+              "evidence": "explicit aria-label/title attribute",
+              "params": {
+                "aria_label": "Delete Amara Okafor"
+              }
+            },
+            {
+              "strategy": "TEXT",
+              "selector": "text=Delete",
+              "confidence": 0.7,
+              "evidence": "visible text content",
+              "params": {
+                "text": "Delete"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "div:nth-of-type(1) > table > tbody > tr:nth-of-type(1) > td:nth-of-type(6) > button:nth-of-type(2)",
+              "confidence": 0.55,
+              "evidence": "structural path (survives text changes, breaks on re-layout)",
+              "params": {
+                "css": "div:nth-of-type(1) > table > tbody > tr:nth-of-type(1) > td:nth-of-type(6) > button:nth-of-type(2)"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(1316,355)",
+              "confidence": 0.25,
+              "evidence": "last resort: geometry only, invalidated by any layout change",
+              "params": {
+                "x": 1315.6000000000001,
+                "y": 355.35
+              }
+            }
+          ],
+          "confidence": 0.95,
+          "source": "dom+ax",
+          "snapshot_ref": "r12",
+          "in_dialog": false,
+          "in_form": null,
+          "section": "Customer list"
+        },
+        {
+          "element_id": "e_f5af3cf982e7",
+          "semantic_role": "BUTTON",
+          "visible_text": "Delete",
+          "accessible_name": "Delete Clara Bennett",
+          "tag": "button",
+          "attributes": {
+            "type": "button",
+            "aria-label": "Delete Clara Bennett",
+            "__css_path": "div:nth-of-type(1) > table > tbody > tr:nth-of-type(2) > td:nth-of-type(6) > button:nth-of-type(2)",
+            "__ax_role": "button"
+          },
+          "bounding_box": {
+            "x": 1287.9,
+            "y": 386.4,
+            "width": 55.4,
+            "height": 28.1
+          },
+          "parent_id": null,
+          "children_ids": [],
+          "enabled": true,
+          "visible": true,
+          "focused": false,
+          "editable": false,
+          "value_state": {
+            "value": "",
+            "checked": null,
+            "selected": null,
+            "disabled_reason": null
+          },
+          "locator_candidates": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=button[name=Delete Clara Bennett]",
+              "confidence": 0.95,
+              "evidence": "accessible name derived from label/aria/text",
+              "params": {
+                "role": "button",
+                "name": "Delete Clara Bennett"
+              }
+            },
+            {
+              "strategy": "LABEL",
+              "selector": "aria-label=Delete Clara Bennett",
+              "confidence": 0.92,
+              "evidence": "explicit aria-label/title attribute",
+              "params": {
+                "aria_label": "Delete Clara Bennett"
+              }
+            },
+            {
+              "strategy": "TEXT",
+              "selector": "text=Delete",
+              "confidence": 0.7,
+              "evidence": "visible text content",
+              "params": {
+                "text": "Delete"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "div:nth-of-type(1) > table > tbody > tr:nth-of-type(2) > td:nth-of-type(6) > button:nth-of-type(2)",
+              "confidence": 0.55,
+              "evidence": "structural path (survives text changes, breaks on re-layout)",
+              "params": {
+                "css": "div:nth-of-type(1) > table > tbody > tr:nth-of-type(2) > td:nth-of-type(6) > button:nth-of-type(2)"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(1316,400)",
+              "confidence": 0.25,
+              "evidence": "last resort: geometry only, invalidated by any layout change",
+              "params": {
+                "x": 1315.6000000000001,
+                "y": 400.45
+              }
+            }
+          ],
+          "confidence": 0.95,
+          "source": "dom+ax",
+          "snapshot_ref": "r14",
+          "in_dialog": false,
+          "in_form": null,
+          "section": "Customer list"
+        },
+        {
+          "element_id": "e_b15bde237190",
+          "semantic_role": "BUTTON",
+          "visible_text": "Delete",
+          "accessible_name": "Delete Daniel Whitfield",
+          "tag": "button",
+          "attributes": {
+            "type": "button",
+            "aria-label": "Delete Daniel Whitfield",
+            "__css_path": "div:nth-of-type(1) > table > tbody > tr:nth-of-type(3) > td:nth-of-type(6) > button:nth-of-type(2)",
+            "__ax_role": "button"
+          },
+          "bounding_box": {
+            "x": 1287.9,
+            "y": 431.5,
+            "width": 55.4,
+            "height": 28.1
+          },
+          "parent_id": null,
+          "children_ids": [],
+          "enabled": true,
+          "visible": true,
+          "focused": false,
+          "editable": false,
+          "value_state": {
+            "value": "",
+            "checked": null,
+            "selected": null,
+            "disabled_reason": null
+          },
+          "locator_candidates": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=button[name=Delete Daniel Whitfield]",
+              "confidence": 0.95,
+              "evidence": "accessible name derived from label/aria/text",
+              "params": {
+                "role": "button",
+                "name": "Delete Daniel Whitfield"
+              }
+            },
+            {
+              "strategy": "LABEL",
+              "selector": "aria-label=Delete Daniel Whitfield",
+              "confidence": 0.92,
+              "evidence": "explicit aria-label/title attribute",
+              "params": {
+                "aria_label": "Delete Daniel Whitfield"
+              }
+            },
+            {
+              "strategy": "TEXT",
+              "selector": "text=Delete",
+              "confidence": 0.7,
+              "evidence": "visible text content",
+              "params": {
+                "text": "Delete"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "div:nth-of-type(1) > table > tbody > tr:nth-of-type(3) > td:nth-of-type(6) > button:nth-of-type(2)",
+              "confidence": 0.55,
+              "evidence": "structural path (survives text changes, breaks on re-layout)",
+              "params": {
+                "css": "div:nth-of-type(1) > table > tbody > tr:nth-of-type(3) > td:nth-of-type(6) > button:nth-of-type(2)"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(1316,446)",
+              "confidence": 0.25,
+              "evidence": "last resort: geometry only, invalidated by any layout change",
+              "params": {
+                "x": 1315.6000000000001,
+                "y": 445.55
+              }
+            }
+          ],
+          "confidence": 0.95,
+          "source": "dom+ax",
+          "snapshot_ref": "r16",
+          "in_dialog": false,
+          "in_form": null,
+          "section": "Customer list"
+        },
+        {
+          "element_id": "e_f2a0d6ab6bb6",
+          "semantic_role": "BUTTON",
+          "visible_text": "Delete",
+          "accessible_name": "Delete Elena Marchetti",
+          "tag": "button",
+          "attributes": {
+            "type": "button",
+            "aria-label": "Delete Elena Marchetti",
+            "__css_path": "div:nth-of-type(1) > table > tbody > tr:nth-of-type(4) > td:nth-of-type(6) > button:nth-of-type(2)",
+            "__ax_role": "button"
+          },
+          "bounding_box": {
+            "x": 1287.9,
+            "y": 476.5,
+            "width": 55.4,
+            "height": 28.1
+          },
+          "parent_id": null,
+          "children_ids": [],
+          "enabled": true,
+          "visible": true,
+          "focused": false,
+          "editable": false,
+          "value_state": {
+            "value": "",
+            "checked": null,
+            "selected": null,
+            "disabled_reason": null
+          },
+          "locator_candidates": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=button[name=Delete Elena Marchetti]",
+              "confidence": 0.95,
+              "evidence": "accessible name derived from label/aria/text",
+              "params": {
+                "role": "button",
+                "name": "Delete Elena Marchetti"
+              }
+            },
+            {
+              "strategy": "LABEL",
+              "selector": "aria-label=Delete Elena Marchetti",
+              "confidence": 0.92,
+              "evidence": "explicit aria-label/title attribute",
+              "params": {
+                "aria_label": "Delete Elena Marchetti"
+              }
+            },
+            {
+              "strategy": "TEXT",
+              "selector": "text=Delete",
+              "confidence": 0.7,
+              "evidence": "visible text content",
+              "params": {
+                "text": "Delete"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "div:nth-of-type(1) > table > tbody > tr:nth-of-type(4) > td:nth-of-type(6) > button:nth-of-type(2)",
+              "confidence": 0.55,
+              "evidence": "structural path (survives text changes, breaks on re-layout)",
+              "params": {
+                "css": "div:nth-of-type(1) > table > tbody > tr:nth-of-type(4) > td:nth-of-type(6) > button:nth-of-type(2)"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(1316,491)",
+              "confidence": 0.25,
+              "evidence": "last resort: geometry only, invalidated by any layout change",
+              "params": {
+                "x": 1315.6000000000001,
+                "y": 490.55
+              }
+            }
+          ],
+          "confidence": 0.95,
+          "source": "dom+ax",
+          "snapshot_ref": "r18",
+          "in_dialog": false,
+          "in_form": null,
+          "section": "Customer list"
+        },
+        {
+          "element_id": "e_dba3e9f57180",
+          "semantic_role": "BUTTON",
+          "visible_text": "Delete",
+          "accessible_name": "Delete Grace Lindqvist",
+          "tag": "button",
+          "attributes": {
+            "type": "button",
+            "aria-label": "Delete Grace Lindqvist",
+            "__css_path": "div:nth-of-type(1) > table > tbody > tr:nth-of-type(5) > td:nth-of-type(6) > button:nth-of-type(2)",
+            "__ax_role": "button"
+          },
+          "bounding_box": {
+            "x": 1287.9,
+            "y": 521.6,
+            "width": 55.4,
+            "height": 28.1
+          },
+          "parent_id": null,
+          "children_ids": [],
+          "enabled": true,
+          "visible": true,
+          "focused": false,
+          "editable": false,
+          "value_state": {
+            "value": "",
+            "checked": null,
+            "selected": null,
+            "disabled_reason": null
+          },
+          "locator_candidates": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=button[name=Delete Grace Lindqvist]",
+              "confidence": 0.95,
+              "evidence": "accessible name derived from label/aria/text",
+              "params": {
+                "role": "button",
+                "name": "Delete Grace Lindqvist"
+              }
+            },
+            {
+              "strategy": "LABEL",
+              "selector": "aria-label=Delete Grace Lindqvist",
+              "confidence": 0.92,
+              "evidence": "explicit aria-label/title attribute",
+              "params": {
+                "aria_label": "Delete Grace Lindqvist"
+              }
+            },
+            {
+              "strategy": "TEXT",
+              "selector": "text=Delete",
+              "confidence": 0.7,
+              "evidence": "visible text content",
+              "params": {
+                "text": "Delete"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "div:nth-of-type(1) > table > tbody > tr:nth-of-type(5) > td:nth-of-type(6) > button:nth-of-type(2)",
+              "confidence": 0.55,
+              "evidence": "structural path (survives text changes, breaks on re-layout)",
+              "params": {
+                "css": "div:nth-of-type(1) > table > tbody > tr:nth-of-type(5) > td:nth-of-type(6) > button:nth-of-type(2)"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(1316,536)",
+              "confidence": 0.25,
+              "evidence": "last resort: geometry only, invalidated by any layout change",
+              "params": {
+                "x": 1315.6000000000001,
+                "y": 535.65
+              }
+            }
+          ],
+          "confidence": 0.95,
+          "source": "dom+ax",
+          "snapshot_ref": "r20",
+          "in_dialog": false,
+          "in_form": null,
+          "section": "Customer list"
+        },
+        {
+          "element_id": "e_3e80e1f97caa",
+          "semantic_role": "BUTTON",
+          "visible_text": "Edit",
+          "accessible_name": "Edit Amara Okafor",
+          "tag": "button",
+          "attributes": {
+            "type": "button",
+            "aria-label": "Edit Amara Okafor",
+            "__css_path": "div:nth-of-type(1) > table > tbody > tr:nth-of-type(1) > td:nth-of-type(6) > button:nth-of-type(1)",
+            "__ax_role": "button"
+          },
+          "bounding_box": {
+            "x": 1243.9,
+            "y": 341.3,
+            "width": 40.0,
+            "height": 28.1
+          },
+          "parent_id": null,
+          "children_ids": [],
+          "enabled": true,
+          "visible": true,
+          "focused": false,
+          "editable": false,
+          "value_state": {
+            "value": "",
+            "checked": null,
+            "selected": null,
+            "disabled_reason": null
+          },
+          "locator_candidates": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=button[name=Edit Amara Okafor]",
+              "confidence": 0.95,
+              "evidence": "accessible name derived from label/aria/text",
+              "params": {
+                "role": "button",
+                "name": "Edit Amara Okafor"
+              }
+            },
+            {
+              "strategy": "LABEL",
+              "selector": "aria-label=Edit Amara Okafor",
+              "confidence": 0.92,
+              "evidence": "explicit aria-label/title attribute",
+              "params": {
+                "aria_label": "Edit Amara Okafor"
+              }
+            },
+            {
+              "strategy": "TEXT",
+              "selector": "text=Edit",
+              "confidence": 0.7,
+              "evidence": "visible text content",
+              "params": {
+                "text": "Edit"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "div:nth-of-type(1) > table > tbody > tr:nth-of-type(1) > td:nth-of-type(6) > button:nth-of-type(1)",
+              "confidence": 0.55,
+              "evidence": "structural path (survives text changes, breaks on re-layout)",
+              "params": {
+                "css": "div:nth-of-type(1) > table > tbody > tr:nth-of-type(1) > td:nth-of-type(6) > button:nth-of-type(1)"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(1264,355)",
+              "confidence": 0.25,
+              "evidence": "last resort: geometry only, invalidated by any layout change",
+              "params": {
+                "x": 1263.9,
+                "y": 355.35
+              }
+            }
+          ],
+          "confidence": 0.95,
+          "source": "dom+ax",
+          "snapshot_ref": "r11",
+          "in_dialog": false,
+          "in_form": null,
+          "section": "Customer list"
+        },
+        {
+          "element_id": "e_5d60ebe70081",
+          "semantic_role": "BUTTON",
+          "visible_text": "Edit",
+          "accessible_name": "Edit Clara Bennett",
+          "tag": "button",
+          "attributes": {
+            "type": "button",
+            "aria-label": "Edit Clara Bennett",
+            "__css_path": "div:nth-of-type(1) > table > tbody > tr:nth-of-type(2) > td:nth-of-type(6) > button:nth-of-type(1)",
+            "__ax_role": "button"
+          },
+          "bounding_box": {
+            "x": 1243.9,
+            "y": 386.4,
+            "width": 40.0,
+            "height": 28.1
+          },
+          "parent_id": null,
+          "children_ids": [],
+          "enabled": true,
+          "visible": true,
+          "focused": false,
+          "editable": false,
+          "value_state": {
+            "value": "",
+            "checked": null,
+            "selected": null,
+            "disabled_reason": null
+          },
+          "locator_candidates": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=button[name=Edit Clara Bennett]",
+              "confidence": 0.95,
+              "evidence": "accessible name derived from label/aria/text",
+              "params": {
+                "role": "button",
+                "name": "Edit Clara Bennett"
+              }
+            },
+            {
+              "strategy": "LABEL",
+              "selector": "aria-label=Edit Clara Bennett",
+              "confidence": 0.92,
+              "evidence": "explicit aria-label/title attribute",
+              "params": {
+                "aria_label": "Edit Clara Bennett"
+              }
+            },
+            {
+              "strategy": "TEXT",
+              "selector": "text=Edit",
+              "confidence": 0.7,
+              "evidence": "visible text content",
+              "params": {
+                "text": "Edit"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "div:nth-of-type(1) > table > tbody > tr:nth-of-type(2) > td:nth-of-type(6) > button:nth-of-type(1)",
+              "confidence": 0.55,
+              "evidence": "structural path (survives text changes, breaks on re-layout)",
+              "params": {
+                "css": "div:nth-of-type(1) > table > tbody > tr:nth-of-type(2) > td:nth-of-type(6) > button:nth-of-type(1)"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(1264,400)",
+              "confidence": 0.25,
+              "evidence": "last resort: geometry only, invalidated by any layout change",
+              "params": {
+                "x": 1263.9,
+                "y": 400.45
+              }
+            }
+          ],
+          "confidence": 0.95,
+          "source": "dom+ax",
+          "snapshot_ref": "r13",
+          "in_dialog": false,
+          "in_form": null,
+          "section": "Customer list"
+        },
+        {
+          "element_id": "e_539f7ac8e738",
+          "semantic_role": "BUTTON",
+          "visible_text": "Edit",
+          "accessible_name": "Edit Daniel Whitfield",
+          "tag": "button",
+          "attributes": {
+            "type": "button",
+            "aria-label": "Edit Daniel Whitfield",
+            "__css_path": "div:nth-of-type(1) > table > tbody > tr:nth-of-type(3) > td:nth-of-type(6) > button:nth-of-type(1)",
+            "__ax_role": "button"
+          },
+          "bounding_box": {
+            "x": 1243.9,
+            "y": 431.5,
+            "width": 40.0,
+            "height": 28.1
+          },
+          "parent_id": null,
+          "children_ids": [],
+          "enabled": true,
+          "visible": true,
+          "focused": false,
+          "editable": false,
+          "value_state": {
+            "value": "",
+            "checked": null,
+            "selected": null,
+            "disabled_reason": null
+          },
+          "locator_candidates": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=button[name=Edit Daniel Whitfield]",
+              "confidence": 0.95,
+              "evidence": "accessible name derived from label/aria/text",
+              "params": {
+                "role": "button",
+                "name": "Edit Daniel Whitfield"
+              }
+            },
+            {
+              "strategy": "LABEL",
+              "selector": "aria-label=Edit Daniel Whitfield",
+              "confidence": 0.92,
+              "evidence": "explicit aria-label/title attribute",
+              "params": {
+                "aria_label": "Edit Daniel Whitfield"
+              }
+            },
+            {
+              "strategy": "TEXT",
+              "selector": "text=Edit",
+              "confidence": 0.7,
+              "evidence": "visible text content",
+              "params": {
+                "text": "Edit"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "div:nth-of-type(1) > table > tbody > tr:nth-of-type(3) > td:nth-of-type(6) > button:nth-of-type(1)",
+              "confidence": 0.55,
+              "evidence": "structural path (survives text changes, breaks on re-layout)",
+              "params": {
+                "css": "div:nth-of-type(1) > table > tbody > tr:nth-of-type(3) > td:nth-of-type(6) > button:nth-of-type(1)"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(1264,446)",
+              "confidence": 0.25,
+              "evidence": "last resort: geometry only, invalidated by any layout change",
+              "params": {
+                "x": 1263.9,
+                "y": 445.55
+              }
+            }
+          ],
+          "confidence": 0.95,
+          "source": "dom+ax",
+          "snapshot_ref": "r15",
+          "in_dialog": false,
+          "in_form": null,
+          "section": "Customer list"
+        },
+        {
+          "element_id": "e_5c483bd2899a",
+          "semantic_role": "BUTTON",
+          "visible_text": "Edit",
+          "accessible_name": "Edit Elena Marchetti",
+          "tag": "button",
+          "attributes": {
+            "type": "button",
+            "aria-label": "Edit Elena Marchetti",
+            "__css_path": "div:nth-of-type(1) > table > tbody > tr:nth-of-type(4) > td:nth-of-type(6) > button:nth-of-type(1)",
+            "__ax_role": "button"
+          },
+          "bounding_box": {
+            "x": 1243.9,
+            "y": 476.5,
+            "width": 40.0,
+            "height": 28.1
+          },
+          "parent_id": null,
+          "children_ids": [],
+          "enabled": true,
+          "visible": true,
+          "focused": false,
+          "editable": false,
+          "value_state": {
+            "value": "",
+            "checked": null,
+            "selected": null,
+            "disabled_reason": null
+          },
+          "locator_candidates": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=button[name=Edit Elena Marchetti]",
+              "confidence": 0.95,
+              "evidence": "accessible name derived from label/aria/text",
+              "params": {
+                "role": "button",
+                "name": "Edit Elena Marchetti"
+              }
+            },
+            {
+              "strategy": "LABEL",
+              "selector": "aria-label=Edit Elena Marchetti",
+              "confidence": 0.92,
+              "evidence": "explicit aria-label/title attribute",
+              "params": {
+                "aria_label": "Edit Elena Marchetti"
+              }
+            },
+            {
+              "strategy": "TEXT",
+              "selector": "text=Edit",
+              "confidence": 0.7,
+              "evidence": "visible text content",
+              "params": {
+                "text": "Edit"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "div:nth-of-type(1) > table > tbody > tr:nth-of-type(4) > td:nth-of-type(6) > button:nth-of-type(1)",
+              "confidence": 0.55,
+              "evidence": "structural path (survives text changes, breaks on re-layout)",
+              "params": {
+                "css": "div:nth-of-type(1) > table > tbody > tr:nth-of-type(4) > td:nth-of-type(6) > button:nth-of-type(1)"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(1264,491)",
+              "confidence": 0.25,
+              "evidence": "last resort: geometry only, invalidated by any layout change",
+              "params": {
+                "x": 1263.9,
+                "y": 490.55
+              }
+            }
+          ],
+          "confidence": 0.95,
+          "source": "dom+ax",
+          "snapshot_ref": "r17",
+          "in_dialog": false,
+          "in_form": null,
+          "section": "Customer list"
+        },
+        {
+          "element_id": "e_bcddf74ec5e7",
+          "semantic_role": "BUTTON",
+          "visible_text": "Edit",
+          "accessible_name": "Edit Grace Lindqvist",
+          "tag": "button",
+          "attributes": {
+            "type": "button",
+            "aria-label": "Edit Grace Lindqvist",
+            "__css_path": "div:nth-of-type(1) > table > tbody > tr:nth-of-type(5) > td:nth-of-type(6) > button:nth-of-type(1)",
+            "__ax_role": "button"
+          },
+          "bounding_box": {
+            "x": 1243.9,
+            "y": 521.6,
+            "width": 40.0,
+            "height": 28.1
+          },
+          "parent_id": null,
+          "children_ids": [],
+          "enabled": true,
+          "visible": true,
+          "focused": false,
+          "editable": false,
+          "value_state": {
+            "value": "",
+            "checked": null,
+            "selected": null,
+            "disabled_reason": null
+          },
+          "locator_candidates": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=button[name=Edit Grace Lindqvist]",
+              "confidence": 0.95,
+              "evidence": "accessible name derived from label/aria/text",
+              "params": {
+                "role": "button",
+                "name": "Edit Grace Lindqvist"
+              }
+            },
+            {
+              "strategy": "LABEL",
+              "selector": "aria-label=Edit Grace Lindqvist",
+              "confidence": 0.92,
+              "evidence": "explicit aria-label/title attribute",
+              "params": {
+                "aria_label": "Edit Grace Lindqvist"
+              }
+            },
+            {
+              "strategy": "TEXT",
+              "selector": "text=Edit",
+              "confidence": 0.7,
+              "evidence": "visible text content",
+              "params": {
+                "text": "Edit"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "div:nth-of-type(1) > table > tbody > tr:nth-of-type(5) > td:nth-of-type(6) > button:nth-of-type(1)",
+              "confidence": 0.55,
+              "evidence": "structural path (survives text changes, breaks on re-layout)",
+              "params": {
+                "css": "div:nth-of-type(1) > table > tbody > tr:nth-of-type(5) > td:nth-of-type(6) > button:nth-of-type(1)"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(1264,536)",
+              "confidence": 0.25,
+              "evidence": "last resort: geometry only, invalidated by any layout change",
+              "params": {
+                "x": 1263.9,
+                "y": 535.65
+              }
+            }
+          ],
+          "confidence": 0.95,
+          "source": "dom+ax",
+          "snapshot_ref": "r19",
+          "in_dialog": false,
+          "in_form": null,
+          "section": "Customer list"
+        },
+        {
+          "element_id": "e_e84fd59fc54e",
+          "semantic_role": "BUTTON",
+          "visible_text": "NAME",
+          "accessible_name": "NAME",
+          "tag": "button",
+          "attributes": {
+            "type": "button",
+            "__css_path": "div:nth-of-type(1) > table > thead > tr > th:nth-of-type(1) > button",
+            "__ax_role": "button"
+          },
+          "bounding_box": {
+            "x": 298.2,
+            "y": 305.8,
+            "width": 40.2,
+            "height": 18.5
+          },
+          "parent_id": null,
+          "children_ids": [],
+          "enabled": true,
+          "visible": true,
+          "focused": false,
+          "editable": false,
+          "value_state": {
+            "value": "",
+            "checked": null,
+            "selected": null,
+            "disabled_reason": null
+          },
+          "locator_candidates": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=button[name=NAME]",
+              "confidence": 0.95,
+              "evidence": "accessible name derived from label/aria/text",
+              "params": {
+                "role": "button",
+                "name": "NAME"
+              }
+            },
+            {
+              "strategy": "TEXT",
+              "selector": "text=NAME",
+              "confidence": 0.7,
+              "evidence": "visible text content",
+              "params": {
+                "text": "NAME"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "div:nth-of-type(1) > table > thead > tr > th:nth-of-type(1) > button",
+              "confidence": 0.55,
+              "evidence": "structural path (survives text changes, breaks on re-layout)",
+              "params": {
+                "css": "div:nth-of-type(1) > table > thead > tr > th:nth-of-type(1) > button"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(318,315)",
+              "confidence": 0.25,
+              "evidence": "last resort: geometry only, invalidated by any layout change",
+              "params": {
+                "x": 318.3,
+                "y": 315.05
+              }
+            }
+          ],
+          "confidence": 0.95,
+          "source": "dom+ax",
+          "snapshot_ref": "r9",
+          "in_dialog": false,
+          "in_form": null,
+          "section": "Customer list"
+        },
+        {
+          "element_id": "e_418b0726e619",
+          "semantic_role": "BUTTON",
+          "visible_text": "Next",
+          "accessible_name": "Next",
+          "tag": "button",
+          "attributes": {
+            "id": "next-page",
+            "type": "button",
+            "__css_path": "#next-page",
+            "__ax_role": "button"
+          },
+          "bounding_box": {
+            "x": 1340.7,
+            "y": 579.3,
+            "width": 60.7,
+            "height": 38.0
+          },
+          "parent_id": null,
+          "children_ids": [],
+          "enabled": true,
+          "visible": true,
+          "focused": false,
+          "editable": false,
+          "value_state": {
+            "value": "",
+            "checked": null,
+            "selected": null,
+            "disabled_reason": null
+          },
+          "locator_candidates": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=button[name=Next]",
+              "confidence": 0.95,
+              "evidence": "accessible name derived from label/aria/text",
+              "params": {
+                "role": "button",
+                "name": "Next"
+              }
+            },
+            {
+              "strategy": "ELEMENT_ID",
+              "selector": "#next-page",
+              "confidence": 0.88,
+              "evidence": "element id (re-checked for stability across states)",
+              "params": {
+                "css": "#next-page"
+              }
+            },
+            {
+              "strategy": "TEXT",
+              "selector": "text=Next",
+              "confidence": 0.7,
+              "evidence": "visible text content",
+              "params": {
+                "text": "Next"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "#next-page",
+              "confidence": 0.55,
+              "evidence": "structural path (survives text changes, breaks on re-layout)",
+              "params": {
+                "css": "#next-page"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(1371,598)",
+              "confidence": 0.25,
+              "evidence": "last resort: geometry only, invalidated by any layout change",
+              "params": {
+                "x": 1371.05,
+                "y": 598.3
+              }
+            }
+          ],
+          "confidence": 0.95,
+          "source": "dom+ax",
+          "snapshot_ref": "r22",
+          "in_dialog": false,
+          "in_form": null,
+          "section": "Customer list"
+        },
+        {
+          "element_id": "e_24f12772d9d4",
+          "semantic_role": "BUTTON",
+          "visible_text": "REVENUE",
+          "accessible_name": "REVENUE",
+          "tag": "button",
+          "attributes": {
+            "type": "button",
+            "__css_path": "div:nth-of-type(1) > table > thead > tr > th:nth-of-type(5) > button",
+            "__ax_role": "button"
+          },
+          "bounding_box": {
+            "x": 1131.8,
+            "y": 305.8,
+            "width": 60.4,
+            "height": 18.5
+          },
+          "parent_id": null,
+          "children_ids": [],
+          "enabled": true,
+          "visible": true,
+          "focused": false,
+          "editable": false,
+          "value_state": {
+            "value": "",
+            "checked": null,
+            "selected": null,
+            "disabled_reason": null
+          },
+          "locator_candidates": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=button[name=REVENUE]",
+              "confidence": 0.95,
+              "evidence": "accessible name derived from label/aria/text",
+              "params": {
+                "role": "button",
+                "name": "REVENUE"
+              }
+            },
+            {
+              "strategy": "TEXT",
+              "selector": "text=REVENUE",
+              "confidence": 0.7,
+              "evidence": "visible text content",
+              "params": {
+                "text": "REVENUE"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "div:nth-of-type(1) > table > thead > tr > th:nth-of-type(5) > button",
+              "confidence": 0.55,
+              "evidence": "structural path (survives text changes, breaks on re-layout)",
+              "params": {
+                "css": "div:nth-of-type(1) > table > thead > tr > th:nth-of-type(5) > button"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(1162,315)",
+              "confidence": 0.25,
+              "evidence": "last resort: geometry only, invalidated by any layout change",
+              "params": {
+                "x": 1162.0,
+                "y": 315.05
+              }
+            }
+          ],
+          "confidence": 0.95,
+          "source": "dom+ax",
+          "snapshot_ref": "r10",
+          "in_dialog": false,
+          "in_form": null,
+          "section": "Customer list"
+        },
+        {
+          "element_id": "e_7443a57ce664",
+          "semantic_role": "LINK",
+          "visible_text": "Customers",
+          "accessible_name": "Customers",
+          "tag": "a",
+          "attributes": {
+            "href": "#/customers",
+            "__css_path": "body > div > nav > ul > li:nth-of-type(2) > a",
+            "__ax_role": "link"
+          },
+          "bounding_box": {
+            "x": 35.4,
+            "y": 174.2,
+            "width": 199.2,
+            "height": 37.6
+          },
+          "parent_id": null,
+          "children_ids": [],
+          "enabled": true,
+          "visible": true,
+          "focused": false,
+          "editable": false,
+          "value_state": {
+            "value": null,
+            "checked": null,
+            "selected": null,
+            "disabled_reason": null
+          },
+          "locator_candidates": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=a[name=Customers]",
+              "confidence": 0.95,
+              "evidence": "accessible name derived from label/aria/text",
+              "params": {
+                "role": "a",
+                "name": "Customers"
+              }
+            },
+            {
+              "strategy": "SEMANTIC_ATTR",
+              "selector": "a[href=\"#/customers\"]",
+              "confidence": 0.78,
+              "evidence": "link destination",
+              "params": {
+                "css": "a[href=\"#/customers\"]"
+              }
+            },
+            {
+              "strategy": "TEXT",
+              "selector": "text=Customers",
+              "confidence": 0.7,
+              "evidence": "visible text content",
+              "params": {
+                "text": "Customers"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "body > div > nav > ul > li:nth-of-type(2) > a",
+              "confidence": 0.55,
+              "evidence": "structural path (survives text changes, breaks on re-layout)",
+              "params": {
+                "css": "body > div > nav > ul > li:nth-of-type(2) > a"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(135,193)",
+              "confidence": 0.25,
+              "evidence": "last resort: geometry only, invalidated by any layout change",
+              "params": {
+                "x": 135.0,
+                "y": 193.0
+              }
+            }
+          ],
+          "confidence": 0.95,
+          "source": "dom+ax",
+          "snapshot_ref": "r2",
+          "in_dialog": false,
+          "in_form": null,
+          "section": "Northwind CRM"
+        },
+        {
+          "element_id": "e_276ea5bc9968",
+          "semantic_role": "LINK",
+          "visible_text": "Dashboard",
+          "accessible_name": "Dashboard",
+          "tag": "a",
+          "attributes": {
+            "href": "#/dashboard",
+            "__css_path": "body > div > nav > ul > li:nth-of-type(1) > a",
+            "__ax_role": "link"
+          },
+          "bounding_box": {
+            "x": 35.4,
+            "y": 133.5,
+            "width": 199.2,
+            "height": 37.6
+          },
+          "parent_id": null,
+          "children_ids": [],
+          "enabled": true,
+          "visible": true,
+          "focused": false,
+          "editable": false,
+          "value_state": {
+            "value": null,
+            "checked": null,
+            "selected": null,
+            "disabled_reason": null
+          },
+          "locator_candidates": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=a[name=Dashboard]",
+              "confidence": 0.95,
+              "evidence": "accessible name derived from label/aria/text",
+              "params": {
+                "role": "a",
+                "name": "Dashboard"
+              }
+            },
+            {
+              "strategy": "SEMANTIC_ATTR",
+              "selector": "a[href=\"#/dashboard\"]",
+              "confidence": 0.78,
+              "evidence": "link destination",
+              "params": {
+                "css": "a[href=\"#/dashboard\"]"
+              }
+            },
+            {
+              "strategy": "TEXT",
+              "selector": "text=Dashboard",
+              "confidence": 0.7,
+              "evidence": "visible text content",
+              "params": {
+                "text": "Dashboard"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "body > div > nav > ul > li:nth-of-type(1) > a",
+              "confidence": 0.55,
+              "evidence": "structural path (survives text changes, breaks on re-layout)",
+              "params": {
+                "css": "body > div > nav > ul > li:nth-of-type(1) > a"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(135,152)",
+              "confidence": 0.25,
+              "evidence": "last resort: geometry only, invalidated by any layout change",
+              "params": {
+                "x": 135.0,
+                "y": 152.3
+              }
+            }
+          ],
+          "confidence": 0.95,
+          "source": "dom+ax",
+          "snapshot_ref": "r1",
+          "in_dialog": false,
+          "in_form": null,
+          "section": "Northwind CRM"
+        },
+        {
+          "element_id": "e_c63f3244a713",
+          "semantic_role": "LINK",
+          "visible_text": "Reports",
+          "accessible_name": "Reports",
+          "tag": "a",
+          "attributes": {
+            "href": "#/reports",
+            "__css_path": "body > div > nav > ul > li:nth-of-type(3) > a",
+            "__ax_role": "link"
+          },
+          "bounding_box": {
+            "x": 35.4,
+            "y": 215.0,
+            "width": 199.2,
+            "height": 37.6
+          },
+          "parent_id": null,
+          "children_ids": [],
+          "enabled": true,
+          "visible": true,
+          "focused": false,
+          "editable": false,
+          "value_state": {
+            "value": null,
+            "checked": null,
+            "selected": null,
+            "disabled_reason": null
+          },
+          "locator_candidates": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=a[name=Reports]",
+              "confidence": 0.95,
+              "evidence": "accessible name derived from label/aria/text",
+              "params": {
+                "role": "a",
+                "name": "Reports"
+              }
+            },
+            {
+              "strategy": "SEMANTIC_ATTR",
+              "selector": "a[href=\"#/reports\"]",
+              "confidence": 0.78,
+              "evidence": "link destination",
+              "params": {
+                "css": "a[href=\"#/reports\"]"
+              }
+            },
+            {
+              "strategy": "TEXT",
+              "selector": "text=Reports",
+              "confidence": 0.7,
+              "evidence": "visible text content",
+              "params": {
+                "text": "Reports"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "body > div > nav > ul > li:nth-of-type(3) > a",
+              "confidence": 0.55,
+              "evidence": "structural path (survives text changes, breaks on re-layout)",
+              "params": {
+                "css": "body > div > nav > ul > li:nth-of-type(3) > a"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(135,234)",
+              "confidence": 0.25,
+              "evidence": "last resort: geometry only, invalidated by any layout change",
+              "params": {
+                "x": 135.0,
+                "y": 233.8
+              }
+            }
+          ],
+          "confidence": 0.95,
+          "source": "dom+ax",
+          "snapshot_ref": "r3",
+          "in_dialog": false,
+          "in_form": null,
+          "section": "Northwind CRM"
+        },
+        {
+          "element_id": "e_c6b957cea1ac",
+          "semantic_role": "LINK",
+          "visible_text": "Settings",
+          "accessible_name": "Settings",
+          "tag": "a",
+          "attributes": {
+            "href": "#/settings",
+            "__css_path": "body > div > nav > ul > li:nth-of-type(4) > a",
+            "__ax_role": "link"
+          },
+          "bounding_box": {
+            "x": 35.4,
+            "y": 255.7,
+            "width": 199.2,
+            "height": 37.6
+          },
+          "parent_id": null,
+          "children_ids": [],
+          "enabled": true,
+          "visible": true,
+          "focused": false,
+          "editable": false,
+          "value_state": {
+            "value": null,
+            "checked": null,
+            "selected": null,
+            "disabled_reason": null
+          },
+          "locator_candidates": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=a[name=Settings]",
+              "confidence": 0.95,
+              "evidence": "accessible name derived from label/aria/text",
+              "params": {
+                "role": "a",
+                "name": "Settings"
+              }
+            },
+            {
+              "strategy": "SEMANTIC_ATTR",
+              "selector": "a[href=\"#/settings\"]",
+              "confidence": 0.78,
+              "evidence": "link destination",
+              "params": {
+                "css": "a[href=\"#/settings\"]"
+              }
+            },
+            {
+              "strategy": "TEXT",
+              "selector": "text=Settings",
+              "confidence": 0.7,
+              "evidence": "visible text content",
+              "params": {
+                "text": "Settings"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "body > div > nav > ul > li:nth-of-type(4) > a",
+              "confidence": 0.55,
+              "evidence": "structural path (survives text changes, breaks on re-layout)",
+              "params": {
+                "css": "body > div > nav > ul > li:nth-of-type(4) > a"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(135,274)",
+              "confidence": 0.25,
+              "evidence": "last resort: geometry only, invalidated by any layout change",
+              "params": {
+                "x": 135.0,
+                "y": 274.5
+              }
+            }
+          ],
+          "confidence": 0.95,
+          "source": "dom+ax",
+          "snapshot_ref": "r4",
+          "in_dialog": false,
+          "in_form": null,
+          "section": "Northwind CRM"
+        },
+        {
+          "element_id": "e_1408cd2dc54b",
+          "semantic_role": "LINK",
+          "visible_text": "Skip to main content",
+          "accessible_name": "Skip to main content",
+          "tag": "a",
+          "attributes": {
+            "href": "#main",
+            "__offscreen": "true",
+            "__css_path": "html > body > a",
+            "__ax_role": "link"
+          },
+          "bounding_box": {
+            "x": -9999.0,
+            "y": 0.0,
+            "width": 175.4,
+            "height": 39.2
+          },
+          "parent_id": null,
+          "children_ids": [],
+          "enabled": true,
+          "visible": true,
+          "focused": false,
+          "editable": false,
+          "value_state": {
+            "value": null,
+            "checked": null,
+            "selected": null,
+            "disabled_reason": null
+          },
+          "locator_candidates": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=a[name=Skip to main content]",
+              "confidence": 0.95,
+              "evidence": "accessible name derived from label/aria/text",
+              "params": {
+                "role": "a",
+                "name": "Skip to main content"
+              }
+            },
+            {
+              "strategy": "SEMANTIC_ATTR",
+              "selector": "a[href=\"#main\"]",
+              "confidence": 0.78,
+              "evidence": "link destination",
+              "params": {
+                "css": "a[href=\"#main\"]"
+              }
+            },
+            {
+              "strategy": "TEXT",
+              "selector": "text=Skip to main content",
+              "confidence": 0.7,
+              "evidence": "visible text content",
+              "params": {
+                "text": "Skip to main content"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "html > body > a",
+              "confidence": 0.55,
+              "evidence": "structural path (survives text changes, breaks on re-layout)",
+              "params": {
+                "css": "html > body > a"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(-9911,20)",
+              "confidence": 0.25,
+              "evidence": "last resort: geometry only, invalidated by any layout change",
+              "params": {
+                "x": -9911.3,
+                "y": 19.6
+              }
+            }
+          ],
+          "confidence": 0.95,
+          "source": "dom+ax",
+          "snapshot_ref": "r0",
+          "in_dialog": false,
+          "in_form": null,
+          "section": ""
+        },
+        {
+          "element_id": "e_172877b0a0c4",
+          "semantic_role": "SEARCH",
+          "visible_text": "",
+          "accessible_name": "Search customers",
+          "tag": "input",
+          "attributes": {
+            "id": "customer-search",
+            "type": "search",
+            "placeholder": "Name, email or company",
+            "__css_path": "#customer-search",
+            "__label": "Search customers",
+            "__ax_role": "searchbox"
+          },
+          "bounding_box": {
+            "x": 288.6,
+            "y": 220.1,
+            "width": 199.0,
+            "height": 38.0
+          },
+          "parent_id": null,
+          "children_ids": [],
+          "enabled": true,
+          "visible": true,
+          "focused": false,
+          "editable": true,
+          "value_state": {
+            "value": "",
+            "checked": null,
+            "selected": null,
+            "disabled_reason": null
+          },
+          "locator_candidates": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=input[name=Search customers]",
+              "confidence": 0.95,
+              "evidence": "accessible name derived from label/aria/text",
+              "params": {
+                "role": "input",
+                "name": "Search customers"
+              }
+            },
+            {
+              "strategy": "LABEL",
+              "selector": "label=Search customers",
+              "confidence": 0.89,
+              "evidence": "associated <label> element",
+              "params": {
+                "label": "Search customers"
+              }
+            },
+            {
+              "strategy": "ELEMENT_ID",
+              "selector": "#customer-search",
+              "confidence": 0.88,
+              "evidence": "element id (re-checked for stability across states)",
+              "params": {
+                "css": "#customer-search"
+              }
+            },
+            {
+              "strategy": "PLACEHOLDER",
+              "selector": "[placeholder=Name, email or company]",
+              "confidence": 0.85,
+              "evidence": "placeholder text is visible to the user",
+              "params": {
+                "placeholder": "Name, email or company"
+              }
+            },
+            {
+              "strategy": "SEMANTIC_ATTR",
+              "selector": "input[type=\"search\"]",
+              "confidence": 0.68,
+              "evidence": "input type (weak: many controls share it)",
+              "params": {
+                "css": "input[type=\"search\"]"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "#customer-search",
+              "confidence": 0.55,
+              "evidence": "structural path (survives text changes, breaks on re-layout)",
+              "params": {
+                "css": "#customer-search"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(388,239)",
+              "confidence": 0.25,
+              "evidence": "last resort: geometry only, invalidated by any layout change",
+              "params": {
+                "x": 388.1,
+                "y": 239.1
+              }
+            }
+          ],
+          "confidence": 0.95,
+          "source": "dom+ax",
+          "snapshot_ref": "r6",
+          "in_dialog": false,
+          "in_form": null,
+          "section": "Customer list"
+        },
+        {
+          "element_id": "e_38afe42e0d66",
+          "semantic_role": "SELECT",
+          "visible_text": "5 10 25",
+          "accessible_name": "Rows per page",
+          "tag": "select",
+          "attributes": {
+            "id": "page-size",
+            "__options": "5,10,25",
+            "__css_path": "#page-size",
+            "__label": "Rows per page",
+            "__expanded": "false",
+            "__ax_role": "combobox"
+          },
+          "bounding_box": {
+            "x": 692.4,
+            "y": 220.3,
+            "width": 176.0,
+            "height": 37.8
+          },
+          "parent_id": null,
+          "children_ids": [],
+          "enabled": true,
+          "visible": true,
+          "focused": false,
+          "editable": true,
+          "value_state": {
+            "value": "5",
+            "checked": null,
+            "selected": null,
+            "disabled_reason": null
+          },
+          "locator_candidates": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=select[name=Rows per page]",
+              "confidence": 0.95,
+              "evidence": "accessible name derived from label/aria/text",
+              "params": {
+                "role": "select",
+                "name": "Rows per page"
+              }
+            },
+            {
+              "strategy": "LABEL",
+              "selector": "label=Rows per page",
+              "confidence": 0.89,
+              "evidence": "associated <label> element",
+              "params": {
+                "label": "Rows per page"
+              }
+            },
+            {
+              "strategy": "ELEMENT_ID",
+              "selector": "#page-size",
+              "confidence": 0.88,
+              "evidence": "element id (re-checked for stability across states)",
+              "params": {
+                "css": "#page-size"
+              }
+            },
+            {
+              "strategy": "TEXT",
+              "selector": "text=5 10 25",
+              "confidence": 0.7,
+              "evidence": "visible text content",
+              "params": {
+                "text": "5 10 25"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "#page-size",
+              "confidence": 0.55,
+              "evidence": "structural path (survives text changes, breaks on re-layout)",
+              "params": {
+                "css": "#page-size"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(780,239)",
+              "confidence": 0.25,
+              "evidence": "last resort: geometry only, invalidated by any layout change",
+              "params": {
+                "x": 780.4,
+                "y": 239.20000000000002
+              }
+            }
+          ],
+          "confidence": 0.95,
+          "source": "dom+ax",
+          "snapshot_ref": "r8",
+          "in_dialog": false,
+          "in_form": null,
+          "section": "Customer list"
+        },
+        {
+          "element_id": "e_1f48804b073d",
+          "semantic_role": "SELECT",
+          "visible_text": "All Active Inactive Lead",
+          "accessible_name": "Status",
+          "tag": "select",
+          "attributes": {
+            "id": "status-filter",
+            "__options": "All,Active,Inactive,Lead",
+            "__css_path": "#status-filter",
+            "__label": "Status",
+            "__expanded": "false",
+            "__ax_role": "combobox"
+          },
+          "bounding_box": {
+            "x": 502.0,
+            "y": 220.3,
+            "width": 176.0,
+            "height": 37.8
+          },
+          "parent_id": null,
+          "children_ids": [],
+          "enabled": true,
+          "visible": true,
+          "focused": false,
+          "editable": true,
+          "value_state": {
+            "value": "All",
+            "checked": null,
+            "selected": null,
+            "disabled_reason": null
+          },
+          "locator_candidates": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=select[name=Status]",
+              "confidence": 0.95,
+              "evidence": "accessible name derived from label/aria/text",
+              "params": {
+                "role": "select",
+                "name": "Status"
+              }
+            },
+            {
+              "strategy": "LABEL",
+              "selector": "label=Status",
+              "confidence": 0.89,
+              "evidence": "associated <label> element",
+              "params": {
+                "label": "Status"
+              }
+            },
+            {
+              "strategy": "ELEMENT_ID",
+              "selector": "#status-filter",
+              "confidence": 0.88,
+              "evidence": "element id (re-checked for stability across states)",
+              "params": {
+                "css": "#status-filter"
+              }
+            },
+            {
+              "strategy": "TEXT",
+              "selector": "text=All Active Inactive Lead",
+              "confidence": 0.7,
+              "evidence": "visible text content",
+              "params": {
+                "text": "All Active Inactive Lead"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "#status-filter",
+              "confidence": 0.55,
+              "evidence": "structural path (survives text changes, breaks on re-layout)",
+              "params": {
+                "css": "#status-filter"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(590,239)",
+              "confidence": 0.25,
+              "evidence": "last resort: geometry only, invalidated by any layout change",
+              "params": {
+                "x": 590.0,
+                "y": 239.20000000000002
+              }
+            }
+          ],
+          "confidence": 0.95,
+          "source": "dom+ax",
+          "snapshot_ref": "r7",
+          "in_dialog": false,
+          "in_form": null,
+          "section": "Customer list"
+        },
+        {
+          "element_id": "e_1bfe53c82db5",
+          "semantic_role": "BUTTON",
+          "visible_text": "Previous",
+          "accessible_name": "Previous",
+          "tag": "button",
+          "attributes": {
+            "id": "prev-page",
+            "type": "button",
+            "__css_path": "#prev-page",
+            "__ax_role": "button"
+          },
+          "bounding_box": {
+            "x": 1244.7,
+            "y": 579.3,
+            "width": 87.3,
+            "height": 38.0
+          },
+          "parent_id": null,
+          "children_ids": [],
+          "enabled": false,
+          "visible": true,
+          "focused": false,
+          "editable": false,
+          "value_state": {
+            "value": "",
+            "checked": null,
+            "selected": null,
+            "disabled_reason": null
+          },
+          "locator_candidates": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=button[name=Previous]",
+              "confidence": 0.95,
+              "evidence": "accessible name derived from label/aria/text",
+              "params": {
+                "role": "button",
+                "name": "Previous"
+              }
+            },
+            {
+              "strategy": "ELEMENT_ID",
+              "selector": "#prev-page",
+              "confidence": 0.88,
+              "evidence": "element id (re-checked for stability across states)",
+              "params": {
+                "css": "#prev-page"
+              }
+            },
+            {
+              "strategy": "TEXT",
+              "selector": "text=Previous",
+              "confidence": 0.7,
+              "evidence": "visible text content",
+              "params": {
+                "text": "Previous"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "#prev-page",
+              "confidence": 0.55,
+              "evidence": "structural path (survives text changes, breaks on re-layout)",
+              "params": {
+                "css": "#prev-page"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(1288,598)",
+              "confidence": 0.25,
+              "evidence": "last resort: geometry only, invalidated by any layout change",
+              "params": {
+                "x": 1288.3500000000001,
+                "y": 598.3
+              }
+            }
+          ],
+          "confidence": 0.9,
+          "source": "dom+ax",
+          "snapshot_ref": "r21",
+          "in_dialog": false,
+          "in_form": null,
+          "section": "Customer list"
+        }
+      ],
+      "forms": [
+        {
+          "form_id": "customer-form",
+          "name": "",
+          "action_hint": "",
+          "fields": [
+            {
+              "element_id": "e_90003d394277",
+              "name": "name",
+              "label": "Name *",
+              "role": "TEXT_FIELD",
+              "required": true,
+              "value": "",
+              "checked": null,
+              "options": []
+            },
+            {
+              "element_id": "e_36476f418db3",
+              "name": "email",
+              "label": "Email *",
+              "role": "TEXT_FIELD",
+              "required": true,
+              "value": "",
+              "checked": null,
+              "options": []
+            },
+            {
+              "element_id": "e_0b163b25357c",
+              "name": "company",
+              "label": "Company",
+              "role": "TEXT_FIELD",
+              "required": false,
+              "value": "",
+              "checked": null,
+              "options": []
+            },
+            {
+              "element_id": "e_b12bb3d8685e",
+              "name": "status",
+              "label": "Status",
+              "role": "SELECT",
+              "required": false,
+              "value": "Active",
+              "checked": null,
+              "options": [
+                "Active",
+                "Inactive",
+                "Lead"
+              ]
+            },
+            {
+              "element_id": "e_881a76b9b84c",
+              "name": "revenue",
+              "label": "Revenue",
+              "role": "TEXT_FIELD",
+              "required": false,
+              "value": "0",
+              "checked": null,
+              "options": []
+            }
+          ],
+          "submit_element_ids": [
+            "e_97d0f9f589fb",
+            "e_652714c2c454"
+          ],
+          "in_dialog": true
+        }
+      ],
+      "dialogs": [],
+      "pagination": {
+        "page_label": "Page 1 of 3",
+        "page_index": 1,
+        "page_count": 3,
+        "has_next": true,
+        "has_previous": false
+      },
+      "session": {
+        "authenticated": false,
+        "user_hint": null,
+        "cookie_names": [],
+        "notes": []
+      },
+      "semantic_summary": "Northwind CRM | table: 5 rows, columns NAME, EMAIL, COMPANY, STATUS, REVENUE, ACTIONS | 1 form(s) | Page 1 of 3 | controls: CANCEL, CREATE, DELETE, FILTER, PAGINATE, SEARCH, UPDATE | 32 interactive elements",
+      "confidence": 0.7,
+      "status": "CURRENT",
+      "observation_id": "o_a9cac4e03870",
+      "screenshot_ref": "artifacts\\screenshots\\obs-96e482df92e712c4.png",
+      "first_seen": "2026-10-08T18:53:04.214025+00:00",
+      "last_seen": "2026-10-08T18:53:04.214025+00:00",
+      "visit_count": 1
+    }
+  ],
+  "transitions": [
+    {
+      "transition_id": "t_fb234ca5a2bd",
+      "source_state": "s_db233137f595",
+      "action": {
+        "action_id": "a_ff98bcf71e94",
+        "type": "CLICK",
+        "target": {
+          "element_id": "e_631ff242cd7b",
+          "role": "BUTTON",
+          "name": "Customers",
+          "tag": "button",
+          "locators": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=button[name=Customers]",
+              "confidence": 0.95,
+              "params": {
+                "role": "button",
+                "name": "Customers"
+              }
+            },
+            {
+              "strategy": "ELEMENT_ID",
+              "selector": "#dashboard-customers",
+              "confidence": 0.88,
+              "params": {
+                "css": "#dashboard-customers"
+              }
+            },
+            {
+              "strategy": "TEXT",
+              "selector": "text=Customers",
+              "confidence": 0.7,
+              "params": {
+                "text": "Customers"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "#dashboard-customers",
+              "confidence": 0.55,
+              "params": {
+                "css": "#dashboard-customers"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(340,345)",
+              "confidence": 0.25,
+              "params": {
+                "x": 339.90000000000003,
+                "y": 345.3
+              }
+            }
+          ]
+        },
+        "parameters": {},
+        "expected_effect": [
+          "DIALOG_OPENED",
+          "NAVIGATION",
+          "ELEMENTS_CHANGED"
+        ],
+        "risk": "LOW",
+        "confidence": 0.95,
+        "origin": "generator",
+        "rationale": "click Customers"
+      },
+      "target_state": "s_c90cfdf139fd",
+      "observed_effects": [
+        {
+          "kind": "NAVIGATION",
+          "detail": "http://127.0.0.1:3001/#/dashboard -> http://127.0.0.1:3001/#/customers",
+          "before": "http://127.0.0.1:3001/#/dashboard",
+          "after": "http://127.0.0.1:3001/#/customers",
+          "element_id": null,
+          "message": null
+        },
+        {
+          "kind": "ELEMENTS_ADDED",
+          "detail": "BUTTON:Delete Amara Okafor",
+          "before": null,
+          "after": "BUTTON:Delete Amara Okafor",
+          "element_id": null,
+          "message": null
+        },
+        {
+          "kind": "ELEMENTS_ADDED",
+          "detail": "BUTTON:Delete Clara Bennett",
+          "before": null,
+          "after": "BUTTON:Delete Clara Bennett",
+          "element_id": null,
+          "message": null
+        },
+        {
+          "kind": "ELEMENTS_ADDED",
+          "detail": "BUTTON:Delete Daniel Whitfield",
+          "before": null,
+          "after": "BUTTON:Delete Daniel Whitfield",
+          "element_id": null,
+          "message": null
+        },
+        {
+          "kind": "ELEMENTS_ADDED",
+          "detail": "BUTTON:Delete Elena Marchetti",
+          "before": null,
+          "after": "BUTTON:Delete Elena Marchetti",
+          "element_id": null,
+          "message": null
+        },
+        {
+          "kind": "ELEMENTS_ADDED",
+          "detail": "BUTTON:Delete Grace Lindqvist",
+          "before": null,
+          "after": "BUTTON:Delete Grace Lindqvist",
+          "element_id": null,
+          "message": null
+        },
+        {
+          "kind": "ELEMENTS_ADDED",
+          "detail": "BUTTON:Edit Amara Okafor",
+          "before": null,
+          "after": "BUTTON:Edit Amara Okafor",
+          "element_id": null,
+          "message": null
+        },
+        {
+          "kind": "ELEMENTS_ADDED",
+          "detail": "BUTTON:Edit Clara Bennett",
+          "before": null,
+          "after": "BUTTON:Edit Clara Bennett",
+          "element_id": null,
+          "message": null
+        },
+        {
+          "kind": "ELEMENTS_ADDED",
+          "detail": "BUTTON:Edit Daniel Whitfield",
+          "before": null,
+          "after": "BUTTON:Edit Daniel Whitfield",
+          "element_id": null,
+          "message": null
+        },
+        {
+          "kind": "ELEMENTS_ADDED",
+          "detail": "BUTTON:Edit Elena Marchetti",
+          "before": null,
+          "after": "BUTTON:Edit Elena Marchetti",
+          "element_id": null,
+          "message": null
+        },
+        {
+          "kind": "ELEMENTS_ADDED",
+          "detail": "BUTTON:Edit Grace Lindqvist",
+          "before": null,
+          "after": "BUTTON:Edit Grace Lindqvist",
+          "element_id": null,
+          "message": null
+        },
+        {
+          "kind": "ELEMENTS_ADDED",
+          "detail": "BUTTON:NAME",
+          "before": null,
+          "after": "BUTTON:NAME",
+          "element_id": null,
+          "message": null
+        },
+        {
+          "kind": "ELEMENTS_ADDED",
+          "detail": "BUTTON:Next",
+          "before": null,
+          "after": "BUTTON:Next",
+          "element_id": null,
+          "message": null
+        },
+        {
+          "kind": "ELEMENTS_REMOVED",
+          "detail": "BUTTON:Customers",
+          "before": "BUTTON:Customers",
+          "after": null,
+          "element_id": null,
+          "message": null
+        },
+        {
+          "kind": "TEXT_CHANGED",
+          "detail": "added: lane 1–5 marchetti status daniel $48,250 $12,400 studio; removed: record. a jump full customers8 quick change. bo",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "preconditions": [],
+      "postconditions": [
+        "url~http://127.0.0.1:3001/#/customers",
+        "element_added:BUTTON:Delete Amara Okafor",
+        "element_added:BUTTON:Delete Clara Bennett",
+        "element_added:BUTTON:Delete Daniel Whitfield",
+        "element_added:BUTTON:Delete Elena Marchetti",
+        "element_added:BUTTON:Delete Grace Lindqvist",
+        "element_added:BUTTON:Edit Amara Okafor",
+        "element_added:BUTTON:Edit Clara Bennett",
+        "element_added:BUTTON:Edit Daniel Whitfield",
+        "element_added:BUTTON:Edit Elena Marchetti",
+        "element_added:BUTTON:Edit Grace Lindqvist",
+        "element_added:BUTTON:NAME",
+        "element_added:BUTTON:Next",
+        "element_removed:BUTTON:Customers"
+      ],
+      "confidence": 0.8200000000000001,
+      "status": "VERIFIED",
+      "execution_count": 3,
+      "success_count": 3,
+      "failure_count": 0,
+      "evidence_ids": [
+        "ev_86a2e82cbf63"
+      ],
+      "created_at": "2026-10-08T18:53:04.217013+00:00",
+      "updated_at": "2026-10-08T18:53:04.217013+00:00"
+    },
+    {
+      "transition_id": "t_684b40896c5c",
+      "source_state": "s_db233137f595",
+      "action": {
+        "action_id": "a_9d08ad511bb9",
+        "type": "CLICK",
+        "target": {
+          "element_id": "e_276ea5bc9968",
+          "role": "LINK",
+          "name": "Dashboard",
+          "tag": "a",
+          "locators": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=a[name=Dashboard]",
+              "confidence": 0.95,
+              "params": {
+                "role": "a",
+                "name": "Dashboard"
+              }
+            },
+            {
+              "strategy": "SEMANTIC_ATTR",
+              "selector": "a[href=\"#/dashboard\"]",
+              "confidence": 0.78,
+              "params": {
+                "css": "a[href=\"#/dashboard\"]"
+              }
+            },
+            {
+              "strategy": "TEXT",
+              "selector": "text=Dashboard",
+              "confidence": 0.7,
+              "params": {
+                "text": "Dashboard"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "body > div > nav > ul > li:nth-of-type(1) > a",
+              "confidence": 0.55,
+              "params": {
+                "css": "body > div > nav > ul > li:nth-of-type(1) > a"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(135,152)",
+              "confidence": 0.25,
+              "params": {
+                "x": 135.0,
+                "y": 152.3
+              }
+            }
+          ]
+        },
+        "parameters": {},
+        "expected_effect": [
+          "NAVIGATION",
+          "URL_CHANGE"
+        ],
+        "risk": "LOW",
+        "confidence": 0.95,
+        "origin": "generator",
+        "rationale": "click Dashboard"
+      },
+      "target_state": "s_db233137f595",
+      "observed_effects": [
+        {
+          "kind": "NO_EFFECT",
+          "detail": "no observable change",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "preconditions": [],
+      "postconditions": [],
+      "confidence": 0.09999999999999998,
+      "status": "REFUTED",
+      "execution_count": 2,
+      "success_count": 0,
+      "failure_count": 2,
+      "evidence_ids": [
+        "ev_6fc0177db47e"
+      ],
+      "created_at": "2026-10-08T18:53:42.011589+00:00",
+      "updated_at": "2026-10-08T18:53:42.011589+00:00"
+    }
+  ],
+  "workflows": [],
+  "constraints": [],
+  "hypotheses": [],
+  "pages": [],
+  "evidence": [
+    {
+      "evidence_id": "ev_86a2e82cbf63",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_806b3c8b8288",
+      "session_id": null,
+      "step_index": 0,
+      "action_id": "a_ff98bcf71e94",
+      "source_state": "s_db233137f595",
+      "target_state": "s_c90cfdf139fd",
+      "transition_id": "t_fb234ca5a2bd",
+      "effects": [
+        {
+          "kind": "NAVIGATION",
+          "detail": "http://127.0.0.1:3001/#/dashboard -> http://127.0.0.1:3001/#/customers",
+          "before": "http://127.0.0.1:3001/#/dashboard",
+          "after": "http://127.0.0.1:3001/#/customers",
+          "element_id": null,
+          "message": null
+        },
+        {
+          "kind": "ELEMENTS_ADDED",
+          "detail": "BUTTON:Delete Amara Okafor",
+          "before": null,
+          "after": "BUTTON:Delete Amara Okafor",
+          "element_id": null,
+          "message": null
+        },
+        {
+          "kind": "ELEMENTS_ADDED",
+          "detail": "BUTTON:Delete Clara Bennett",
+          "before": null,
+          "after": "BUTTON:Delete Clara Bennett",
+          "element_id": null,
+          "message": null
+        },
+        {
+          "kind": "ELEMENTS_ADDED",
+          "detail": "BUTTON:Delete Daniel Whitfield",
+          "before": null,
+          "after": "BUTTON:Delete Daniel Whitfield",
+          "element_id": null,
+          "message": null
+        },
+        {
+          "kind": "ELEMENTS_ADDED",
+          "detail": "BUTTON:Delete Elena Marchetti",
+          "before": null,
+          "after": "BUTTON:Delete Elena Marchetti",
+          "element_id": null,
+          "message": null
+        },
+        {
+          "kind": "ELEMENTS_ADDED",
+          "detail": "BUTTON:Delete Grace Lindqvist",
+          "before": null,
+          "after": "BUTTON:Delete Grace Lindqvist",
+          "element_id": null,
+          "message": null
+        },
+        {
+          "kind": "ELEMENTS_ADDED",
+          "detail": "BUTTON:Edit Amara Okafor",
+          "before": null,
+          "after": "BUTTON:Edit Amara Okafor",
+          "element_id": null,
+          "message": null
+        },
+        {
+          "kind": "ELEMENTS_ADDED",
+          "detail": "BUTTON:Edit Clara Bennett",
+          "before": null,
+          "after": "BUTTON:Edit Clara Bennett",
+          "element_id": null,
+          "message": null
+        },
+        {
+          "kind": "ELEMENTS_ADDED",
+          "detail": "BUTTON:Edit Daniel Whitfield",
+          "before": null,
+          "after": "BUTTON:Edit Daniel Whitfield",
+          "element_id": null,
+          "message": null
+        },
+        {
+          "kind": "ELEMENTS_ADDED",
+          "detail": "BUTTON:Edit Elena Marchetti",
+          "before": null,
+          "after": "BUTTON:Edit Elena Marchetti",
+          "element_id": null,
+          "message": null
+        },
+        {
+          "kind": "ELEMENTS_ADDED",
+          "detail": "BUTTON:Edit Grace Lindqvist",
+          "before": null,
+          "after": "BUTTON:Edit Grace Lindqvist",
+          "element_id": null,
+          "message": null
+        },
+        {
+          "kind": "ELEMENTS_ADDED",
+          "detail": "BUTTON:NAME",
+          "before": null,
+          "after": "BUTTON:NAME",
+          "element_id": null,
+          "message": null
+        },
+        {
+          "kind": "ELEMENTS_ADDED",
+          "detail": "BUTTON:Next",
+          "before": null,
+          "after": "BUTTON:Next",
+          "element_id": null,
+          "message": null
+        },
+        {
+          "kind": "ELEMENTS_REMOVED",
+          "detail": "BUTTON:Customers",
+          "before": "BUTTON:Customers",
+          "after": null,
+          "element_id": null,
+          "message": null
+        },
+        {
+          "kind": "TEXT_CHANGED",
+          "detail": "added: lane 1–5 marchetti status daniel $48,250 $12,400 studio; removed: record. a jump full customers8 quick change. bo",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_1cbb8027ef61",
+        "o_a9cac4e03870"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-8ec5ed6bebf106f4.png",
+        "artifacts\\screenshots\\obs-96e482df92e712c4.png"
+      ],
+      "message": "NAVIGATION: http://127.0.0.1:3001/#/dashboard -> http://127.0.0.1:3001/#/customers; ELEMENTS_ADDED: button:delete amara okafor; ELEMENTS_ADDED: button:delete clara bennett; ELEMENTS_ADDED: button:delete daniel whitfield; ELEMENTS_ADDED: button:delete elena marchetti; ELEMENTS_ADDED: button:delete grace lindqvist",
+      "notes": [],
+      "created_at": "2026-10-08T18:53:04.217013+00:00"
+    },
+    {
+      "evidence_id": "ev_6fc0177db47e",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_e71cf188ddc0",
+      "session_id": null,
+      "step_index": 0,
+      "action_id": "a_9d08ad511bb9",
+      "source_state": "s_db233137f595",
+      "target_state": "s_db233137f595",
+      "transition_id": "t_684b40896c5c",
+      "effects": [
+        {
+          "kind": "NO_EFFECT",
+          "detail": "no observable change",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_a1c17b40aefe",
+        "o_0175ed3d821e"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-8ec5ed6bebf106f4.png",
+        "artifacts\\screenshots\\obs-8ec5ed6bebf106f4.png"
+      ],
+      "message": "NO_EFFECT: no observable change",
+      "notes": [],
+      "created_at": "2026-10-08T18:53:42.011589+00:00"
+    }
+  ],
+  "experiments": [
+    {
+      "experiment_id": "exp_e71cf188ddc0",
+      "target_id": "api_probe",
+      "kind": "exploration",
+      "seed": 7,
+      "browser_version": "Chrome/153.0.8010.12",
+      "model_version": 1,
+      "prompt_version": "v1",
+      "budget": {
+        "max_actions": 1,
+        "max_duration_seconds": 15.0,
+        "max_states": 3,
+        "max_transitions": 200,
+        "max_repeated_action": 2,
+        "max_same_state_visits": 10,
+        "max_browser_restarts": 1
+      },
+      "configuration": {
+        "budget": {
+          "max_actions": 1,
+          "max_duration_seconds": 15.0,
+          "max_states": 3,
+          "max_transitions": 200,
+          "max_repeated_action": 2,
+          "max_same_state_visits": 10,
+          "max_browser_restarts": 1
+        },
+        "mode": "SAFE",
+        "seed": 7,
+        "capture_screenshots": true,
+        "settle_quiet_ms": 250,
+        "max_actions_without_new_state": 40,
+        "weights": {
+          "url": 0.2,
+          "title": 0.06,
+          "text": 0.22,
+          "elements": 0.24,
+          "accessibility": 0.08,
+          "forms": 0.05,
+          "controls": 0.05,
+          "dialogs": 0.06,
+          "screenshot": 0.04
+        },
+        "thresholds": {
+          "same_state": 0.9,
+          "same_page": 0.68
+        },
+        "configuration_label": "api-verification"
+      },
+      "started_at": "2026-10-08T18:53:40.139715+00:00",
+      "finished_at": "2026-10-08T18:53:42.015111+00:00",
+      "status": "completed",
+      "steps": [],
+      "metrics": {
+        "experiment_id": "exp_e71cf188ddc0",
+        "target_id": "api_probe",
+        "stop_reason": "action budget reached (1)",
+        "actions_executed": 1,
+        "actions_blocked": 0,
+        "actions_failed": 0,
+        "approvals_requested": 0,
+        "approvals_granted": 0,
+        "new_states": 0,
+        "new_transitions": 1,
+        "verified_transitions": 0,
+        "recoveries": 0,
+        "hypotheses_proposed": 0,
+        "hypotheses_verified": 0,
+        "duration_seconds": 1.88,
+        "mean_action_ms": 78.64,
+        "mean_observation_ms": 720.15,
+        "metrics": {
+          "novelty": {
+            "distinct_states": 1,
+            "total_state_visits": 2,
+            "distinct_actions_tried": 2,
+            "productive_actions": 1,
+            "transitions_seen": 2,
+            "unvisited_ratio": 0.0
+          },
+          "hypotheses": {
+            "total": 0,
+            "by_status": {},
+            "verified": []
+          },
+          "causal": {
+            "actions_observed": 2,
+            "conditional_actions": []
+          },
+          "budget": {
+            "actions_used": 1,
+            "states_seen": 2,
+            "transitions_seen": 2,
+            "elapsed_seconds": 1.88,
+            "remaining": {
+              "actions": 0,
+              "seconds": 13.1,
+              "states": 1,
+              "transitions": 198
+            },
+            "exhausted": "action budget reached (1)"
+          },
+          "sandbox": {
+            "allowed_origins": [
+              "http://127.0.0.1:3001"
+            ],
+            "blocked_count": 0,
+            "blocked": []
+          },
+          "network_guard": {
+            "observed_requests": 0,
+            "observed_by_type": {},
+            "blocked_agent_requests": 0,
+            "blocked_commands": 0,
+            "external_origins_seen": [],
+            "blocked_recent": [],
+            "policy": "the browser is the interaction boundary; APIs are never called directly"
+          }
+        }
+      },
+      "notes": []
+    },
+    {
+      "experiment_id": "exp_806b3c8b8288",
+      "target_id": "api_probe",
+      "kind": "exploration",
+      "seed": 7,
+      "browser_version": "Chrome/153.0.8010.12",
+      "model_version": 1,
+      "prompt_version": "v1",
+      "budget": {
+        "max_actions": 1,
+        "max_duration_seconds": 15.0,
+        "max_states": 3,
+        "max_transitions": 200,
+        "max_repeated_action": 2,
+        "max_same_state_visits": 10,
+        "max_browser_restarts": 1
+      },
+      "configuration": {
+        "budget": {
+          "max_actions": 1,
+          "max_duration_seconds": 15.0,
+          "max_states": 3,
+          "max_transitions": 200,
+          "max_repeated_action": 2,
+          "max_same_state_visits": 10,
+          "max_browser_restarts": 1
+        },
+        "mode": "SAFE",
+        "seed": 7,
+        "capture_screenshots": true,
+        "settle_quiet_ms": 250,
+        "max_actions_without_new_state": 40,
+        "weights": {
+          "url": 0.2,
+          "title": 0.06,
+          "text": 0.22,
+          "elements": 0.24,
+          "accessibility": 0.08,
+          "forms": 0.05,
+          "controls": 0.05,
+          "dialogs": 0.06,
+          "screenshot": 0.04
+        },
+        "thresholds": {
+          "same_state": 0.9,
+          "same_page": 0.68
+        },
+        "configuration_label": "api-verification"
+      },
+      "started_at": "2026-10-08T18:53:01.874117+00:00",
+      "finished_at": "2026-10-08T18:53:04.221018+00:00",
+      "status": "completed",
+      "steps": [],
+      "metrics": {
+        "experiment_id": "exp_806b3c8b8288",
+        "target_id": "api_probe",
+        "stop_reason": "action budget reached (1)",
+        "actions_executed": 1,
+        "actions_blocked": 0,
+        "actions_failed": 0,
+        "approvals_requested": 0,
+        "approvals_granted": 0,
+        "new_states": 2,
+        "new_transitions": 1,
+        "verified_transitions": 1,
+        "recoveries": 0,
+        "hypotheses_proposed": 0,
+        "hypotheses_verified": 0,
+        "duration_seconds": 2.34,
+        "mean_action_ms": 79.74,
+        "mean_observation_ms": 786.03,
+        "metrics": {
+          "novelty": {
+            "distinct_states": 1,
+            "total_state_visits": 1,
+            "distinct_actions_tried": 1,
+            "productive_actions": 1,
+            "transitions_seen": 1,
+            "unvisited_ratio": 1.0
+          },
+          "hypotheses": {
+            "total": 0,
+            "by_status": {},
+            "verified": []
+          },
+          "causal": {
+            "actions_observed": 1,
+            "conditional_actions": []
+          },
+          "budget": {
+            "actions_used": 1,
+            "states_seen": 1,
+            "transitions_seen": 1,
+            "elapsed_seconds": 2.34,
+            "remaining": {
+              "actions": 0,
+              "seconds": 12.7,
+              "states": 2,
+              "transitions": 199
+            },
+            "exhausted": "action budget reached (1)"
+          },
+          "sandbox": {
+            "allowed_origins": [
+              "http://127.0.0.1:3001"
+            ],
+            "blocked_count": 0,
+            "blocked": []
+          },
+          "network_guard": {
+            "observed_requests": 0,
+            "observed_by_type": {},
+            "blocked_agent_requests": 0,
+            "blocked_commands": 0,
+            "external_origins_seen": [],
+            "blocked_recent": [],
+            "policy": "the browser is the interaction boundary; APIs are never called directly"
+          }
+        }
+      },
+      "notes": []
+    }
+  ],
+  "stats": {
+    "target_id": "api_probe",
+    "model_version": 1,
+    "states": 2,
+    "transitions": 2,
+    "verified_transitions": 1,
+    "workflows": 0,
+    "constraints": 0,
+    "hypotheses": 0,
+    "evidence": 2,
+    "experiments": 2,
+    "pages": 0
+  }
+}

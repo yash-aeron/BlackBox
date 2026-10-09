@@ -1,0 +1,116 @@
+{
+  "target": "demo_forms",
+  "base_url": "http://127.0.0.1:3004",
+  "notes": "Four-step wizard with conditional fields. Conditional visibility, per-step validation and the submit gate are the interesting behaviors.",
+  "tasks": [
+    {
+      "task_id": "form_full_name_required",
+      "text": "Continue past the applicant step without entering a full name",
+      "tags": ["validation", "step-1"],
+      "difficulty": "easy",
+      "predicates": [
+        {"kind": "ALERT_CONTAINS", "value": "Full name is required."}
+      ]
+    },
+    {
+      "task_id": "form_invalid_email",
+      "text": "Enter the full name Ada Lovelace with email not-an-email and continue to the next step",
+      "tags": ["validation", "step-1"],
+      "difficulty": "medium",
+      "predicates": [
+        {"kind": "ALERT_CONTAINS", "value": "Email must contain an @ character."}
+      ]
+    },
+    {
+      "task_id": "form_invalid_phone",
+      "text": "Enter the full name Ada Lovelace, email ada@example.com and phone 123 then continue to the next step",
+      "tags": ["validation", "step-1"],
+      "difficulty": "medium",
+      "predicates": [
+        {"kind": "ALERT_CONTAINS", "value": "Phone must be exactly 10 digits."}
+      ]
+    },
+    {
+      "task_id": "form_advance_to_step_2",
+      "text": "Enter the full name Ada Lovelace with email ada@example.com and continue to the employment step",
+      "tags": ["navigation", "step-1"],
+      "difficulty": "medium",
+      "predicates": [
+        {"kind": "TEXT_PRESENT", "value": "Step 2 of 4"}
+      ]
+    },
+    {
+      "task_id": "form_conditional_income_visible",
+      "text": "On the employment step choose the status Employed and check whether an annual income field is shown",
+      "tags": ["conditional", "step-2"],
+      "difficulty": "hard",
+      "predicates": [
+        {"kind": "TEXT_PRESENT", "value": "Annual income"}
+      ]
+    },
+    {
+      "task_id": "form_conditional_income_required",
+      "text": "Choose the employment status Self-employed and continue without entering an annual income",
+      "tags": ["conditional", "validation", "step-2"],
+      "difficulty": "hard",
+      "predicates": [
+        {"kind": "ALERT_CONTAINS", "value": "Annual income is required for employed and self-employed applicants."}
+      ]
+    },
+    {
+      "task_id": "form_employment_required",
+      "text": "Continue from the employment step without choosing an employment status",
+      "tags": ["validation", "step-2"],
+      "difficulty": "medium",
+      "predicates": [
+        {"kind": "ALERT_CONTAINS", "value": "Employment status is required."}
+      ]
+    },
+    {
+      "task_id": "form_document_required",
+      "text": "On the documents step continue without uploading an ID document",
+      "tags": ["validation", "step-3"],
+      "difficulty": "medium",
+      "predicates": [
+        {"kind": "ALERT_CONTAINS", "value": "Upload ID document is required."}
+      ]
+    },
+    {
+      "task_id": "form_reference_code_format",
+      "text": "Enter the reference code XY-1 on the documents step and continue",
+      "tags": ["validation", "pattern", "step-3"],
+      "difficulty": "hard",
+      "predicates": [
+        {"kind": "ALERT_CONTAINS", "value": "Reference code must use the format ABC-1234."}
+      ]
+    },
+    {
+      "task_id": "form_review_step",
+      "text": "Complete the applicant, employment and documents steps with name Ada Lovelace, email ada@example.com, employment Employed and income 90000, uploading an ID document and confirming it is genuine, then reach the review step",
+      "tags": ["multi-step", "navigation"],
+      "difficulty": "hard",
+      "predicates": [
+        {"kind": "TEXT_PRESENT", "value": "Step 4 of 4"}
+      ]
+    },
+    {
+      "task_id": "form_submit_requires_terms",
+      "text": "Reach the review step and try to submit the application without agreeing to the terms",
+      "tags": ["gated-submit", "edge"],
+      "difficulty": "hard",
+      "predicates": [
+        {"kind": "TEXT_PRESENT", "value": "Step 4 of 4"},
+        {"kind": "TEXT_ABSENT", "value": "Application submitted"}
+      ]
+    },
+    {
+      "task_id": "form_complete_application",
+      "text": "Complete the whole application: full name Ada Lovelace, email ada@example.com, phone 5551234567, employment status Employed, annual income 90000, upload an ID document, confirm the documents are genuine, agree to the terms and submit",
+      "tags": ["end-to-end", "multi-step"],
+      "difficulty": "hard",
+      "predicates": [
+        {"kind": "TEXT_PRESENT", "value": "Application submitted"}
+      ]
+    }
+  ]
+}

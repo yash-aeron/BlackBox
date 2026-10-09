@@ -1,0 +1,41 @@
+{
+  "rows": [
+    {
+      "configuration": "1_no_model_baseline",
+      "success_rate": 0.25,
+      "mean_actions": 23.0,
+      "mean_planning_latency_ms": 44.66,
+      "exploration_actions": 0,
+      "model_reuse_rate": 0.0,
+      "tasks_run": 8
+    },
+    {
+      "configuration": "2_states_only",
+      "success_rate": 0.0,
+      "mean_actions": 30.0,
+      "mean_planning_latency_ms": 0.08,
+      "exploration_actions": 0,
+      "model_reuse_rate": 0.0,
+      "tasks_run": 8
+    },
+    {
+      "configuration": "3_states_and_transitions",
+      "success_rate": 0.5,
+      "mean_actions": 8.125,
+      "mean_planning_latency_ms": 2.61,
+      "exploration_actions": 0,
+      "model_reuse_rate": 0.625,
+      "tasks_run": 8
+    },
+    {
+      "configuration": "4_full_model_with_workflows",
+      "success_rate": 0.5,
+      "mean_actions": 8.125,
+      "mean_planning_latency_ms": 2.51,
+      "exploration_actions": 0,
+      "model_reuse_rate": 0.625,
+      "tasks_run": 8
+    }
+  ],
+  "measured": true
+}

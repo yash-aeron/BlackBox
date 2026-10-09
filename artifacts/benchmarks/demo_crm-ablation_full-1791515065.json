@@ -1,0 +1,1116 @@
+{
+  "target": "demo_crm",
+  "mode": "ablation_full",
+  "seed": 7,
+  "browser_version": "Chrome/153.0.8010.12",
+  "model_version": 1,
+  "model": {
+    "states": 10,
+    "transitions": 195,
+    "workflows": 2
+  },
+  "configuration": {
+    "use_workflows": true,
+    "use_transitions": true,
+    "allow_exploration": true,
+    "max_actions": 30
+  },
+  "started_at": "2026-10-09T08:32:47",
+  "finished_at": "2026-10-09T08:34:25",
+  "duration_seconds": 97.33,
+  "metrics": {
+    "target": "demo_crm",
+    "mode": "ablation_full",
+    "tasks_total": 8,
+    "tasks_run": 8,
+    "successes": 4,
+    "policy_blocked": 0,
+    "success_rate": 0.5,
+    "mean_actions": 8.125,
+    "mean_unnecessary_actions": 0.0,
+    "mean_duration_seconds": 11.18,
+    "mean_planning_latency_ms": 2.51,
+    "total_recoveries": 4,
+    "total_replans": 4,
+    "model_reuse_rate": 0.625,
+    "workflow_reuse_rate": 0.375,
+    "workflow_reuse_success_rate": 0.6667,
+    "state_recognition_accuracy": 1.0,
+    "transition_prediction_accuracy": 1.0,
+    "mean_step_verification_rate": 0.9111,
+    "exploration_actions": 0,
+    "per_task": [
+      {
+        "task_id": "crm_create_customer",
+        "mode": "ablation_full",
+        "success": true,
+        "policy_blocked": false,
+        "actions": 6,
+        "unnecessary_actions": 0,
+        "duration_seconds": 6.52,
+        "planning_latency_ms": 2.22,
+        "recoveries": 0,
+        "replans": 0,
+        "steps_verified": 6,
+        "steps_total": 6,
+        "used_workflow": true,
+        "used_exploration": false,
+        "exploration_actions": 0,
+        "plan_source": "workflow",
+        "state_matched": true,
+        "predictions_hit": 0,
+        "predictions_missed": 0,
+        "model_reuse": true,
+        "verification": {
+          "success": true,
+          "steps_verified": 6,
+          "steps_total": 6,
+          "final_state_id": "s_db233137f595",
+          "confidence": 1.0,
+          "notes": [],
+          "predicates": [
+            {
+              "kind": "TEXT_PRESENT",
+              "value": "Customer created.",
+              "satisfied": true,
+              "evidence": "searched 417 chars of visible text"
+            }
+          ]
+        },
+        "plan": {
+          "plan_id": "plan_321be76983dc",
+          "task": {
+            "task_id": "task_cf5d6f834909",
+            "goal": "create_customer",
+            "entities": {
+              "email": "yash@example.com",
+              "name": "Yash Malhotra"
+            },
+            "constraints": [],
+            "expected_end_state": "customer_created",
+            "source_text": "Create a customer named Yash Malhotra with email yash@example.com",
+            "parse_source": "deterministic",
+            "predicates": [
+              {
+                "kind": "TEXT_PRESENT",
+                "value": "Customer created.",
+                "target": ""
+              }
+            ]
+          },
+          "source": "workflow",
+          "workflow_id": "w_b5485c1c71e6",
+          "start_state_id": "s_db233137f595",
+          "expected_end_state": "create a customer",
+          "confidence": 0.863,
+          "estimated_cost": 6.0,
+          "steps": [
+            {
+              "index": 0,
+              "action": "CLICK Add customer",
+              "action_type": "CLICK",
+              "description": "CLICK Add customer",
+              "transition_id": "t_224088559c21",
+              "target_state": "",
+              "risk": "LOW",
+              "parameters": {}
+            },
+            {
+              "index": 1,
+              "action": "TYPE Company = 'BlackBox Labs'",
+              "action_type": "TYPE",
+              "description": "TYPE Company = 'BlackBox Labs' (parameters: company)",
+              "transition_id": "t_a50146ae7209",
+              "target_state": "",
+              "risk": "LOW",
+              "parameters": {
+                "value": "BlackBox Labs"
+              }
+            },
+            {
+              "index": 2,
+              "action": "TYPE Email * = 'yash@example.com'",
+              "action_type": "TYPE",
+              "description": "TYPE Email * = 'blackbox.sample1@example.com' (parameters: email)",
+              "transition_id": "t_e99f5bf2e2d4",
+              "target_state": "",
+              "risk": "LOW",
+              "parameters": {
+                "value": "yash@example.com"
+              }
+            },
+            {
+              "index": 3,
+              "action": "TYPE Name * = 'Yash Malhotra'",
+              "action_type": "TYPE",
+              "description": "TYPE Name * = 'BlackBox Sample' (parameters: name)",
+              "transition_id": "t_26197642734b",
+              "target_state": "",
+              "risk": "LOW",
+              "parameters": {
+                "value": "Yash Malhotra"
+              }
+            },
+            {
+              "index": 4,
+              "action": "TYPE Revenue = '43'",
+              "action_type": "TYPE",
+              "description": "TYPE Revenue = '43' (parameters: revenue)",
+              "transition_id": "t_d8a275ea4652",
+              "target_state": "",
+              "risk": "LOW",
+              "parameters": {
+                "value": "43"
+              }
+            },
+            {
+              "index": 5,
+              "action": "CLICK Save customer",
+              "action_type": "CLICK",
+              "description": "CLICK Save customer -> Customer created.",
+              "transition_id": "t_ffec0c7bff3f",
+              "target_state": "",
+              "risk": "LOW",
+              "parameters": {}
+            }
+          ],
+          "notes": [
+            "reused learned workflow w_b5485c1c71e6 (create_customer)",
+            "parameters using synthesized defaults: company, revenue"
+          ],
+          "exploration_hint": {}
+        },
+        "notes": [
+          "reused learned workflow w_b5485c1c71e6 (create_customer)",
+          "parameters using synthesized defaults: company, revenue"
+        ]
+      },
+      {
+        "task_id": "crm_invalid_email",
+        "mode": "ablation_full",
+        "success": true,
+        "policy_blocked": false,
+        "actions": 9,
+        "unnecessary_actions": 0,
+        "duration_seconds": 8.23,
+        "planning_latency_ms": 2.34,
+        "recoveries": 4,
+        "replans": 4,
+        "steps_verified": 5,
+        "steps_total": 9,
+        "used_workflow": true,
+        "used_exploration": false,
+        "exploration_actions": 0,
+        "plan_source": "workflow",
+        "state_matched": true,
+        "predictions_hit": 0,
+        "predictions_missed": 0,
+        "model_reuse": true,
+        "verification": {
+          "success": true,
+          "steps_verified": 5,
+          "steps_total": 9,
+          "final_state_id": "s_0c3313f77f4f",
+          "confidence": 0.778,
+          "notes": [
+            "4 step(s) did not produce their predicted effect"
+          ],
+          "predicates": [
+            {
+              "kind": "ALERT_CONTAINS",
+              "value": "Enter a valid email address.",
+              "satisfied": true,
+              "evidence": "Enter a valid email address."
+            }
+          ]
+        },
+        "plan": {
+          "plan_id": "plan_c9297d0fa7b8",
+          "task": {
+            "task_id": "task_ba72d481ecf8",
+            "goal": "create_customer",
+            "entities": {
+              "name": "Test Person",
+              "email": "not-an-email"
+            },
+            "constraints": [],
+            "expected_end_state": "customer_created",
+            "source_text": "Add a customer named Test Person with email not-an-email",
+            "parse_source": "deterministic",
+            "predicates": [
+              {
+                "kind": "ALERT_CONTAINS",
+                "value": "Enter a valid email address.",
+                "target": ""
+              }
+            ]
+          },
+          "source": "workflow",
+          "workflow_id": "w_b5485c1c71e6",
+          "start_state_id": "s_db233137f595",
+          "expected_end_state": "create a customer",
+          "confidence": 0.85,
+          "estimated_cost": 6.0,
+          "steps": [
+            {
+              "index": 0,
+              "action": "CLICK Add customer",
+              "action_type": "CLICK",
+              "description": "CLICK Add customer",
+              "transition_id": "t_224088559c21",
+              "target_state": "",
+              "risk": "LOW",
+              "parameters": {}
+            },
+            {
+              "index": 1,
+              "action": "TYPE Company = 'BlackBox Labs'",
+              "action_type": "TYPE",
+              "description": "TYPE Company = 'BlackBox Labs' (parameters: company)",
+              "transition_id": "t_a50146ae7209",
+              "target_state": "",
+              "risk": "LOW",
+              "parameters": {
+                "value": "BlackBox Labs"
+              }
+            },
+            {
+              "index": 2,
+              "action": "TYPE Email * = 'not-an-email'",
+              "action_type": "TYPE",
+              "description": "TYPE Email * = 'blackbox.sample1@example.com' (parameters: email)",
+              "transition_id": "t_e99f5bf2e2d4",
+              "target_state": "",
+              "risk": "LOW",
+              "parameters": {
+                "value": "not-an-email"
+              }
+            },
+            {
+              "index": 3,
+              "action": "TYPE Name * = 'Test Person'",
+              "action_type": "TYPE",
+              "description": "TYPE Name * = 'BlackBox Sample' (parameters: name)",
+              "transition_id": "t_26197642734b",
+              "target_state": "",
+              "risk": "LOW",
+              "parameters": {
+                "value": "Test Person"
+              }
+            },
+            {
+              "index": 4,
+              "action": "TYPE Revenue = '43'",
+              "action_type": "TYPE",
+              "description": "TYPE Revenue = '43' (parameters: revenue)",
+              "transition_id": "t_d8a275ea4652",
+              "target_state": "",
+              "risk": "LOW",
+              "parameters": {
+                "value": "43"
+              }
+            },
+            {
+              "index": 5,
+              "action": "CLICK Save customer",
+              "action_type": "CLICK",
+              "description": "CLICK Save customer -> Customer created.",
+              "transition_id": "t_ffec0c7bff3f",
+              "target_state": "",
+              "risk": "LOW",
+              "parameters": {}
+            }
+          ],
+          "notes": [
+            "reused learned workflow w_b5485c1c71e6 (create_customer)",
+            "parameters using synthesized defaults: company, revenue"
+          ],
+          "exploration_hint": {}
+        },
+        "notes": [
+          "reused learned workflow w_b5485c1c71e6 (create_customer)",
+          "parameters using synthesized defaults: company, revenue",
+          "step 5 recovery: RETRY_STEP - retrying step 5 after: step produced no predicted effect",
+          "step 5 recovery: RETRY_STEP - retrying step 5 after: step produced no predicted effect",
+          "step 5 recovery: RETRY_STEP - retrying step 5 after: step produced no predicted effect",
+          "step 5 recovery: ABANDON - replan budget exhausted after 3 attempts (step produced no predicted effect)"
+        ]
+      },
+      {
+        "task_id": "crm_search_customer",
+        "mode": "ablation_full",
+        "success": false,
+        "policy_blocked": false,
+        "actions": 30,
+        "unnecessary_actions": 0,
+        "duration_seconds": 45.06,
+        "planning_latency_ms": 3.62,
+        "recoveries": 0,
+        "replans": 0,
+        "steps_verified": 0,
+        "steps_total": 0,
+        "used_workflow": false,
+        "used_exploration": true,
+        "exploration_actions": 0,
+        "plan_source": "none",
+        "state_matched": true,
+        "predictions_hit": 0,
+        "predictions_missed": 0,
+        "model_reuse": false,
+        "verification": {},
+        "plan": {
+          "plan_id": "plan_b3b7021591e9",
+          "task": {
+            "task_id": "task_caf2b22d2104",
+            "goal": "search_customer",
+            "entities": {},
+            "constraints": [],
+            "expected_end_state": "results_filtered",
+            "source_text": "Search the customer list for Elena",
+            "parse_source": "deterministic",
+            "predicates": [
+              {
+                "kind": "TABLE_ROW_CONTAINS",
+                "value": "elena@vinetoworks.it",
+                "target": ""
+              }
+            ]
+          },
+          "source": "none",
+          "workflow_id": null,
+          "start_state_id": "s_0c3313f77f4f",
+          "expected_end_state": "declared success conditions: TABLE_ROW_CONTAINS",
+          "confidence": 0.0,
+          "estimated_cost": 0.0,
+          "steps": [],
+          "notes": [
+            "no learned route matches this task",
+            "targeted exploration required around: ['customer', 'search']"
+          ],
+          "exploration_hint": {
+            "reason": "no route found; explore the region that mentions the goal",
+            "keywords": [
+              "customer",
+              "search"
+            ],
+            "start_state_id": "s_0c3313f77f4f",
+            "region": [
+              {
+                "state_id": "s_c90cfdf139fd",
+                "label": "Northwind CRM",
+                "url": "http://127.0.0.1:3001/#/customers",
+                "summary": "Northwind CRM | table: 5 rows, columns NAME, EMAIL, COMPANY, STATUS, REVENUE, ACTIONS | 1 form(s) | Page 1 of 3 | controls: CANCEL, CREATE, DELETE, FILTER, PAGI"
+              },
+              {
+                "state_id": "s_c7f5fac284da",
+                "label": "Northwind CRM",
+                "url": "http://127.0.0.1:3001/#/customers",
+                "summary": "Northwind CRM | table: 1 rows, columns NAME, EMAIL, COMPANY, STATUS, REVENUE, ACTIONS | 1 form(s) | Page 1 of 1 | controls: CANCEL, CREATE, DELETE, FILTER, PAGI"
+              },
+              {
+                "state_id": "s_b9926ade5519",
+                "label": "Northwind CRM",
+                "url": "http://127.0.0.1:3001/#/customers",
+                "summary": "Northwind CRM | dialog: Add customer | table: 1 rows, columns NAME, EMAIL, COMPANY, STATUS, REVENUE, ACTIONS | 1 form(s) | Page 1 of 1 | controls: CANCEL, CREAT"
+              },
+              {
+                "state_id": "s_52db974aa164",
+                "label": "Northwind CRM",
+                "url": "http://127.0.0.1:3001/#/customers",
+                "summary": "Northwind CRM | table: 5 rows, columns NAME, EMAIL, COMPANY, STATUS, REVENUE, ACTIONS | 1 form(s) | Page 2 of 3 | controls: CANCEL, CREATE, DELETE, FILTER, PAGI"
+              },
+              {
+                "state_id": "s_55eee504b8d7",
+                "label": "Northwind CRM",
+                "url": "http://127.0.0.1:3001/#/customers",
+                "summary": "Northwind CRM | table: 5 rows, columns NAME, EMAIL, COMPANY, STATUS, REVENUE, ACTIONS | 1 form(s) | Page 1 of 3 | controls: CANCEL, CREATE, DELETE, FILTER, PAGI"
+              }
+            ],
+            "max_actions": 25
+          }
+        },
+        "notes": [
+          "no learned route matches this task",
+          "targeted exploration required around: ['customer', 'search']",
+          "re-planned after 30 targeted exploration action(s)",
+          "no learned route matches this task",
+          "targeted exploration required around: ['customer', 'search']",
+          "no usable plan: the model does not yet know a route for this task"
+        ]
+      },
+      {
+        "task_id": "crm_filter_leads",
+        "mode": "ablation_full",
+        "success": false,
+        "policy_blocked": false,
+        "actions": 10,
+        "unnecessary_actions": 0,
+        "duration_seconds": 15.75,
+        "planning_latency_ms": 3.83,
+        "recoveries": 0,
+        "replans": 0,
+        "steps_verified": 0,
+        "steps_total": 0,
+        "used_workflow": false,
+        "used_exploration": true,
+        "exploration_actions": 0,
+        "plan_source": "none",
+        "state_matched": true,
+        "predictions_hit": 0,
+        "predictions_missed": 0,
+        "model_reuse": false,
+        "verification": {},
+        "plan": {
+          "plan_id": "plan_a840d5ba99c0",
+          "task": {
+            "task_id": "task_9086f8233a2a",
+            "goal": "filter_customer",
+            "entities": {},
+            "constraints": [],
+            "expected_end_state": "filter_done",
+            "source_text": "Filter the customer list to show only leads",
+            "parse_source": "deterministic",
+            "predicates": [
+              {
+                "kind": "TABLE_ROW_CONTAINS",
+                "value": "tomas.bergstrom@nordvik.se",
+                "target": ""
+              },
+              {
+                "kind": "TEXT_ABSENT",
+                "value": "amara.okafor@brightlaneco.com",
+                "target": ""
+              }
+            ]
+          },
+          "source": "none",
+          "workflow_id": null,
+          "start_state_id": "s_c7f5fac284da",
+          "expected_end_state": "declared success conditions: TABLE_ROW_CONTAINS; TEXT_ABSENT",
+          "confidence": 0.0,
+          "estimated_cost": 0.0,
+          "steps": [],
+          "notes": [
+            "no learned route matches this task",
+            "targeted exploration required around: ['customer', 'filter']"
+          ],
+          "exploration_hint": {
+            "reason": "no route found; explore the region that mentions the goal",
+            "keywords": [
+              "customer",
+              "filter"
+            ],
+            "start_state_id": "s_c7f5fac284da",
+            "region": [
+              {
+                "state_id": "s_c90cfdf139fd",
+                "label": "Northwind CRM",
+                "url": "http://127.0.0.1:3001/#/customers",
+                "summary": "Northwind CRM | table: 5 rows, columns NAME, EMAIL, COMPANY, STATUS, REVENUE, ACTIONS | 1 form(s) | Page 1 of 3 | controls: CANCEL, CREATE, DELETE, FILTER, PAGI"
+              },
+              {
+                "state_id": "s_c7f5fac284da",
+                "label": "Northwind CRM",
+                "url": "http://127.0.0.1:3001/#/customers",
+                "summary": "Northwind CRM | table: 1 rows, columns NAME, EMAIL, COMPANY, STATUS, REVENUE, ACTIONS | 1 form(s) | Page 1 of 1 | controls: CANCEL, CREATE, DELETE, FILTER, PAGI"
+              },
+              {
+                "state_id": "s_b9926ade5519",
+                "label": "Northwind CRM",
+                "url": "http://127.0.0.1:3001/#/customers",
+                "summary": "Northwind CRM | dialog: Add customer | table: 1 rows, columns NAME, EMAIL, COMPANY, STATUS, REVENUE, ACTIONS | 1 form(s) | Page 1 of 1 | controls: CANCEL, CREAT"
+              },
+              {
+                "state_id": "s_52db974aa164",
+                "label": "Northwind CRM",
+                "url": "http://127.0.0.1:3001/#/customers",
+                "summary": "Northwind CRM | table: 5 rows, columns NAME, EMAIL, COMPANY, STATUS, REVENUE, ACTIONS | 1 form(s) | Page 2 of 3 | controls: CANCEL, CREATE, DELETE, FILTER, PAGI"
+              },
+              {
+                "state_id": "s_55eee504b8d7",
+                "label": "Northwind CRM",
+                "url": "http://127.0.0.1:3001/#/customers",
+                "summary": "Northwind CRM | table: 5 rows, columns NAME, EMAIL, COMPANY, STATUS, REVENUE, ACTIONS | 1 form(s) | Page 1 of 3 | controls: CANCEL, CREATE, DELETE, FILTER, PAGI"
+              }
+            ],
+            "max_actions": 25
+          }
+        },
+        "notes": [
+          "no learned route matches this task",
+          "targeted exploration required around: ['customer', 'filter']",
+          "re-planned after 10 targeted exploration action(s)",
+          "no learned route matches this task",
+          "targeted exploration required around: ['customer', 'filter']",
+          "no usable plan: the model does not yet know a route for this task"
+        ]
+      },
+      {
+        "task_id": "crm_sort_revenue_desc",
+        "mode": "ablation_full",
+        "success": false,
+        "policy_blocked": false,
+        "actions": 6,
+        "unnecessary_actions": 0,
+        "duration_seconds": 6.2,
+        "planning_latency_ms": 2.1,
+        "recoveries": 0,
+        "replans": 0,
+        "steps_verified": 6,
+        "steps_total": 6,
+        "used_workflow": true,
+        "used_exploration": false,
+        "exploration_actions": 0,
+        "plan_source": "workflow",
+        "state_matched": true,
+        "predictions_hit": 0,
+        "predictions_missed": 0,
+        "model_reuse": true,
+        "verification": {
+          "success": false,
+          "steps_verified": 6,
+          "steps_total": 6,
+          "final_state_id": "s_db233137f595",
+          "confidence": 0.5,
+          "notes": [],
+          "predicates": [
+            {
+              "kind": "TABLE_ROW_CONTAINS",
+              "value": "Hannah Petrov",
+              "satisfied": false,
+              "evidence": "0 table(s) inspected"
+            }
+          ]
+        },
+        "plan": {
+          "plan_id": "plan_29cb8622d4ee",
+          "task": {
+            "task_id": "task_02c7d6b9ed80",
+            "goal": "customer",
+            "entities": {},
+            "constraints": [],
+            "expected_end_state": "task_done",
+            "source_text": "Sort the customers by revenue from highest to lowest",
+            "parse_source": "deterministic",
+            "predicates": [
+              {
+                "kind": "TABLE_ROW_CONTAINS",
+                "value": "Hannah Petrov",
+                "target": ""
+              }
+            ]
+          },
+          "source": "workflow",
+          "workflow_id": "w_b5485c1c71e6",
+          "start_state_id": "s_db233137f595",
+          "expected_end_state": "create a customer",
+          "confidence": 0.873,
+          "estimated_cost": 6.0,
+          "steps": [
+            {
+              "index": 0,
+              "action": "CLICK Add customer",
+              "action_type": "CLICK",
+              "description": "CLICK Add customer",
+              "transition_id": "t_224088559c21",
+              "target_state": "",
+              "risk": "LOW",
+              "parameters": {}
+            },
+            {
+              "index": 1,
+              "action": "TYPE Company = 'BlackBox Labs'",
+              "action_type": "TYPE",
+              "description": "TYPE Company = 'BlackBox Labs' (parameters: company)",
+              "transition_id": "t_a50146ae7209",
+              "target_state": "",
+              "risk": "LOW",
+              "parameters": {
+                "value": "BlackBox Labs"
+              }
+            },
+            {
+              "index": 2,
+              "action": "TYPE Email * = 'blackbox.sample1@example.com'",
+              "action_type": "TYPE",
+              "description": "TYPE Email * = 'blackbox.sample1@example.com' (parameters: email)",
+              "transition_id": "t_e99f5bf2e2d4",
+              "target_state": "",
+              "risk": "LOW",
+              "parameters": {
+                "value": "blackbox.sample1@example.com"
+              }
+            },
+            {
+              "index": 3,
+              "action": "TYPE Name * = 'BlackBox Sample'",
+              "action_type": "TYPE",
+              "description": "TYPE Name * = 'BlackBox Sample' (parameters: name)",
+              "transition_id": "t_26197642734b",
+              "target_state": "",
+              "risk": "LOW",
+              "parameters": {
+                "value": "BlackBox Sample"
+              }
+            },
+            {
+              "index": 4,
+              "action": "TYPE Revenue = '43'",
+              "action_type": "TYPE",
+              "description": "TYPE Revenue = '43' (parameters: revenue)",
+              "transition_id": "t_d8a275ea4652",
+              "target_state": "",
+              "risk": "LOW",
+              "parameters": {
+                "value": "43"
+              }
+            },
+            {
+              "index": 5,
+              "action": "CLICK Save customer",
+              "action_type": "CLICK",
+              "description": "CLICK Save customer -> Customer created.",
+              "transition_id": "t_ffec0c7bff3f",
+              "target_state": "",
+              "risk": "LOW",
+              "parameters": {}
+            }
+          ],
+          "notes": [
+            "reused learned workflow w_b5485c1c71e6 (create_customer)",
+            "parameters using synthesized defaults: company, email, name, revenue"
+          ],
+          "exploration_hint": {}
+        },
+        "notes": [
+          "reused learned workflow w_b5485c1c71e6 (create_customer)",
+          "parameters using synthesized defaults: company, email, name, revenue"
+        ]
+      },
+      {
+        "task_id": "crm_pagination_next",
+        "mode": "ablation_full",
+        "success": true,
+        "policy_blocked": false,
+        "actions": 2,
+        "unnecessary_actions": 0,
+        "duration_seconds": 2.83,
+        "planning_latency_ms": 1.34,
+        "recoveries": 0,
+        "replans": 0,
+        "steps_verified": 2,
+        "steps_total": 2,
+        "used_workflow": false,
+        "used_exploration": false,
+        "exploration_actions": 0,
+        "plan_source": "graph",
+        "state_matched": true,
+        "predictions_hit": 2,
+        "predictions_missed": 0,
+        "model_reuse": true,
+        "verification": {
+          "success": true,
+          "steps_verified": 2,
+          "steps_total": 2,
+          "final_state_id": "s_52db974aa164",
+          "confidence": 1.0,
+          "notes": [],
+          "predicates": [
+            {
+              "kind": "TEXT_PRESENT",
+              "value": "Page 2 of 3",
+              "satisfied": true,
+              "evidence": "searched 800 chars of visible text"
+            }
+          ]
+        },
+        "plan": {
+          "plan_id": "plan_a45c56160644",
+          "task": {
+            "task_id": "task_bc2ff4fd8b03",
+            "goal": "view_customer",
+            "entities": {},
+            "constraints": [],
+            "expected_end_state": "view_done",
+            "source_text": "Go to the second page of the customer list",
+            "parse_source": "deterministic",
+            "predicates": [
+              {
+                "kind": "TEXT_PRESENT",
+                "value": "Page 2 of 3",
+                "target": ""
+              }
+            ]
+          },
+          "source": "graph",
+          "workflow_id": null,
+          "start_state_id": "s_db233137f595",
+          "expected_end_state": "declared success conditions: TEXT_PRESENT",
+          "confidence": 0.95,
+          "estimated_cost": 2.39,
+          "steps": [
+            {
+              "index": 0,
+              "action": "CLICK Customers",
+              "action_type": "CLICK",
+              "description": "CLICK Customers",
+              "transition_id": "t_fb234ca5a2bd",
+              "target_state": "s_c90cfdf139fd",
+              "risk": "LOW",
+              "parameters": {}
+            },
+            {
+              "index": 1,
+              "action": "CLICK Next",
+              "action_type": "CLICK",
+              "description": "CLICK Next",
+              "transition_id": "t_28e47f1fc77b",
+              "target_state": "s_52db974aa164",
+              "risk": "LOW",
+              "parameters": {}
+            }
+          ],
+          "notes": [
+            "planned over 2 learned transitions by graph search"
+          ],
+          "exploration_hint": {}
+        },
+        "notes": [
+          "planned over 2 learned transitions by graph search"
+        ]
+      },
+      {
+        "task_id": "crm_open_add_dialog",
+        "mode": "ablation_full",
+        "success": true,
+        "policy_blocked": false,
+        "actions": 1,
+        "unnecessary_actions": 0,
+        "duration_seconds": 2.09,
+        "planning_latency_ms": 0.91,
+        "recoveries": 0,
+        "replans": 0,
+        "steps_verified": 1,
+        "steps_total": 1,
+        "used_workflow": false,
+        "used_exploration": false,
+        "exploration_actions": 0,
+        "plan_source": "graph",
+        "state_matched": true,
+        "predictions_hit": 1,
+        "predictions_missed": 0,
+        "model_reuse": true,
+        "verification": {
+          "success": true,
+          "steps_verified": 1,
+          "steps_total": 1,
+          "final_state_id": "s_0c3313f77f4f",
+          "confidence": 1.0,
+          "notes": [],
+          "predicates": [
+            {
+              "kind": "DIALOG_OPEN",
+              "value": "Add customer",
+              "satisfied": true,
+              "evidence": "Add customer"
+            }
+          ]
+        },
+        "plan": {
+          "plan_id": "plan_bba8a815985d",
+          "task": {
+            "task_id": "task_e7ce2ef73c1e",
+            "goal": "create_customer",
+            "entities": {},
+            "constraints": [],
+            "expected_end_state": "customer_created",
+            "source_text": "Open the Add customer form",
+            "parse_source": "deterministic",
+            "predicates": [
+              {
+                "kind": "DIALOG_OPEN",
+                "value": "Add customer",
+                "target": ""
+              }
+            ]
+          },
+          "source": "graph",
+          "workflow_id": null,
+          "start_state_id": "s_db233137f595",
+          "expected_end_state": "declared success conditions: DIALOG_OPEN",
+          "confidence": 0.61,
+          "estimated_cost": 2.95,
+          "steps": [
+            {
+              "index": 0,
+              "action": "CLICK Add customer",
+              "action_type": "CLICK",
+              "description": "CLICK Add customer",
+              "transition_id": "t_224088559c21",
+              "target_state": "s_0c3313f77f4f",
+              "risk": "LOW",
+              "parameters": {}
+            }
+          ],
+          "notes": [
+            "planned over 1 learned transitions by graph search",
+            "chosen over workflow w_b5485c1c71e6: 1 steps vs 6"
+          ],
+          "exploration_hint": {}
+        },
+        "notes": [
+          "planned over 1 learned transitions by graph search",
+          "chosen over workflow w_b5485c1c71e6: 1 steps vs 6"
+        ]
+      },
+      {
+        "task_id": "crm_save_settings",
+        "mode": "ablation_full",
+        "success": false,
+        "policy_blocked": false,
+        "actions": 1,
+        "unnecessary_actions": 0,
+        "duration_seconds": 2.78,
+        "planning_latency_ms": 3.74,
+        "recoveries": 0,
+        "replans": 0,
+        "steps_verified": 0,
+        "steps_total": 0,
+        "used_workflow": false,
+        "used_exploration": true,
+        "exploration_actions": 0,
+        "plan_source": "none",
+        "state_matched": true,
+        "predictions_hit": 0,
+        "predictions_missed": 0,
+        "model_reuse": false,
+        "verification": {},
+        "plan": {
+          "plan_id": "plan_11f9656e764f",
+          "task": {
+            "task_id": "task_2361283ac017",
+            "goal": "update_setting",
+            "entities": {},
+            "constraints": [],
+            "expected_end_state": "setting_updated",
+            "source_text": "In settings change the default page size to 25 and save",
+            "parse_source": "deterministic",
+            "predicates": [
+              {
+                "kind": "TEXT_PRESENT",
+                "value": "Settings saved.",
+                "target": ""
+              }
+            ]
+          },
+          "source": "none",
+          "workflow_id": null,
+          "start_state_id": "s_8a4cae085e56",
+          "expected_end_state": "declared success conditions: TEXT_PRESENT",
+          "confidence": 0.0,
+          "estimated_cost": 0.0,
+          "steps": [],
+          "notes": [
+            "no learned route matches this task",
+            "targeted exploration required around: ['setting', 'update']"
+          ],
+          "exploration_hint": {
+            "reason": "no route found; explore the region that mentions the goal",
+            "keywords": [
+              "setting",
+              "update"
+            ],
+            "start_state_id": "s_8a4cae085e56",
+            "region": [
+              {
+                "state_id": "s_c90cfdf139fd",
+                "label": "Northwind CRM",
+                "url": "http://127.0.0.1:3001/#/customers",
+                "summary": "Northwind CRM | table: 5 rows, columns NAME, EMAIL, COMPANY, STATUS, REVENUE, ACTIONS | 1 form(s) | Page 1 of 3 | controls: CANCEL, CREATE, DELETE, FILTER, PAGI"
+              },
+              {
+                "state_id": "s_c7f5fac284da",
+                "label": "Northwind CRM",
+                "url": "http://127.0.0.1:3001/#/customers",
+                "summary": "Northwind CRM | table: 1 rows, columns NAME, EMAIL, COMPANY, STATUS, REVENUE, ACTIONS | 1 form(s) | Page 1 of 1 | controls: CANCEL, CREATE, DELETE, FILTER, PAGI"
+              },
+              {
+                "state_id": "s_b9926ade5519",
+                "label": "Northwind CRM",
+                "url": "http://127.0.0.1:3001/#/customers",
+                "summary": "Northwind CRM | dialog: Add customer | table: 1 rows, columns NAME, EMAIL, COMPANY, STATUS, REVENUE, ACTIONS | 1 form(s) | Page 1 of 1 | controls: CANCEL, CREAT"
+              },
+              {
+                "state_id": "s_52db974aa164",
+                "label": "Northwind CRM",
+                "url": "http://127.0.0.1:3001/#/customers",
+                "summary": "Northwind CRM | table: 5 rows, columns NAME, EMAIL, COMPANY, STATUS, REVENUE, ACTIONS | 1 form(s) | Page 2 of 3 | controls: CANCEL, CREATE, DELETE, FILTER, PAGI"
+              },
+              {
+                "state_id": "s_55eee504b8d7",
+                "label": "Northwind CRM",
+                "url": "http://127.0.0.1:3001/#/customers",
+                "summary": "Northwind CRM | table: 5 rows, columns NAME, EMAIL, COMPANY, STATUS, REVENUE, ACTIONS | 1 form(s) | Page 1 of 3 | controls: CANCEL, CREATE, DELETE, FILTER, PAGI"
+              }
+            ],
+            "max_actions": 25
+          }
+        },
+        "notes": [
+          "no learned route matches this task",
+          "targeted exploration required around: ['setting', 'update']",
+          "re-planned after 1 targeted exploration action(s)",
+          "no learned route matches this task",
+          "targeted exploration required around: ['setting', 'update']",
+          "no usable plan: the model does not yet know a route for this task"
+        ]
+      }
+    ]
+  },
+  "tasks": [
+    {
+      "task_id": "crm_create_customer",
+      "text": "Create a customer named Yash Malhotra with email yash@example.com",
+      "target": "demo_crm",
+      "tags": [
+        "crud",
+        "create",
+        "workflow"
+      ],
+      "difficulty": "medium",
+      "expect_blocked": false,
+      "predicates": [
+        {
+          "kind": "TEXT_PRESENT",
+          "value": "Customer created.",
+          "target": ""
+        }
+      ]
+    },
+    {
+      "task_id": "crm_invalid_email",
+      "text": "Add a customer named Test Person with email not-an-email",
+      "target": "demo_crm",
+      "tags": [
+        "validation"
+      ],
+      "difficulty": "easy",
+      "expect_blocked": false,
+      "predicates": [
+        {
+          "kind": "ALERT_CONTAINS",
+          "value": "Enter a valid email address.",
+          "target": ""
+        }
+      ]
+    },
+    {
+      "task_id": "crm_search_customer",
+      "text": "Search the customer list for Elena",
+      "target": "demo_crm",
+      "tags": [
+        "search"
+      ],
+      "difficulty": "easy",
+      "expect_blocked": false,
+      "predicates": [
+        {
+          "kind": "TABLE_ROW_CONTAINS",
+          "value": "elena@vinetoworks.it",
+          "target": ""
+        }
+      ]
+    },
+    {
+      "task_id": "crm_filter_leads",
+      "text": "Filter the customer list to show only leads",
+      "target": "demo_crm",
+      "tags": [
+        "filter"
+      ],
+      "difficulty": "medium",
+      "expect_blocked": false,
+      "predicates": [
+        {
+          "kind": "TABLE_ROW_CONTAINS",
+          "value": "tomas.bergstrom@nordvik.se",
+          "target": ""
+        },
+        {
+          "kind": "TEXT_ABSENT",
+          "value": "amara.okafor@brightlaneco.com",
+          "target": ""
+        }
+      ]
+    },
+    {
+      "task_id": "crm_sort_revenue_desc",
+      "text": "Sort the customers by revenue from highest to lowest",
+      "target": "demo_crm",
+      "tags": [
+        "sort"
+      ],
+      "difficulty": "medium",
+      "expect_blocked": false,
+      "predicates": [
+        {
+          "kind": "TABLE_ROW_CONTAINS",
+          "value": "Hannah Petrov",
+          "target": ""
+        }
+      ]
+    },
+    {
+      "task_id": "crm_pagination_next",
+      "text": "Go to the second page of the customer list",
+      "target": "demo_crm",
+      "tags": [
+        "pagination"
+      ],
+      "difficulty": "easy",
+      "expect_blocked": false,
+      "predicates": [
+        {
+          "kind": "TEXT_PRESENT",
+          "value": "Page 2 of 3",
+          "target": ""
+        }
+      ]
+    },
+    {
+      "task_id": "crm_open_add_dialog",
+      "text": "Open the Add customer form",
+      "target": "demo_crm",
+      "tags": [
+        "dialog"
+      ],
+      "difficulty": "easy",
+      "expect_blocked": false,
+      "predicates": [
+        {
+          "kind": "DIALOG_OPEN",
+          "value": "Add customer",
+          "target": ""
+        }
+      ]
+    },
+    {
+      "task_id": "crm_save_settings",
+      "text": "In settings change the default page size to 25 and save",
+      "target": "demo_crm",
+      "tags": [
+        "settings",
+        "form"
+      ],
+      "difficulty": "medium",
+      "expect_blocked": false,
+      "predicates": [
+        {
+          "kind": "TEXT_PRESENT",
+          "value": "Settings saved.",
+          "target": ""
+        }
+      ]
+    }
+  ]
+}

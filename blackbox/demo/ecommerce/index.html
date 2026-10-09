@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Marlowe &amp; Finch</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="site-header">
+  <div class="brand">
+    <span class="brand-mark" aria-hidden="true">M&amp;F</span>
+    <div>
+      <h1>Marlowe &amp; Finch</h1>
+      <p class="tagline">Books, electronics, homeware and toys</p>
+    </div>
+  </div>
+
+  <nav class="site-nav" aria-label="Shop">
+    <ul>
+      <li><a href="#/products" data-route="products">Products</a></li>
+      <li><a href="#/cart" data-route="cart" id="nav-cart">Cart (<span id="nav-cart-count">0</span>)</a></li>
+      <li><a href="#/checkout" data-route="checkout">Checkout</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="main" tabindex="-1">
+  <div id="status-banner" class="banner banner-status" role="status" aria-live="polite" hidden></div>
+  <div id="alert-banner" class="banner banner-alert" role="alert" aria-live="assertive" hidden></div>
+  <div id="view-root"></div>
+</main>
+
+<dialog id="product-dialog" class="modal" aria-labelledby="product-dialog-title">
+  <div id="product-dialog-body"></div>
+</dialog>
+
+<dialog id="empty-cart-dialog" class="modal" aria-labelledby="empty-cart-title">
+  <h2 id="empty-cart-title">Empty cart? This cannot be undone.</h2>
+  <p class="dialog-intro" id="empty-cart-body">Every item will be removed from your cart.</p>
+  <div class="dialog-actions">
+    <button type="button" class="btn btn-ghost" id="empty-cart-cancel">Cancel</button>
+    <button type="button" class="btn btn-danger" id="empty-cart-confirm">Empty cart</button>
+  </div>
+</dialog>
+
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,138 @@
+{
+  "target": "demo_ecommerce",
+  "base_url": "http://127.0.0.1:3002",
+  "notes": "No real payment is processed by the demo; checkout is a simulation.",
+  "tasks": [
+    {
+      "task_id": "eco_filter_toys",
+      "text": "Filter the products to the Toys category",
+      "tags": ["filter"],
+      "difficulty": "easy",
+      "predicates": [
+        {"kind": "TEXT_PRESENT", "value": "Wooden Railway Starter Set"},
+        {"kind": "TEXT_ABSENT", "value": "Lumen Wireless Headphones"}
+      ]
+    },
+    {
+      "task_id": "eco_filter_books_count",
+      "text": "Filter the products to the Books category",
+      "tags": ["filter"],
+      "difficulty": "easy",
+      "predicates": [
+        {"kind": "TEXT_PRESENT", "value": "The Quiet Harbour"},
+        {"kind": "TEXT_ABSENT", "value": "Brass Desk Lamp"}
+      ]
+    },
+    {
+      "task_id": "eco_search_cedar",
+      "text": "Search the store for cedar",
+      "tags": ["search"],
+      "difficulty": "easy",
+      "predicates": [
+        {"kind": "TEXT_PRESENT", "value": "Cedar Cutting Board"},
+        {"kind": "TEXT_ABSENT", "value": "Plush Fox Hand Puppet"}
+      ]
+    },
+    {
+      "task_id": "eco_price_filter",
+      "text": "Filter products with a minimum price of 50 and a maximum price of 100",
+      "tags": ["filter", "multi-field"],
+      "difficulty": "medium",
+      "predicates": [
+        {"kind": "TEXT_PRESENT", "value": "Brass Desk Lamp"},
+        {"kind": "TEXT_ABSENT", "value": "Pocket Power Bank 10000"}
+      ]
+    },
+    {
+      "task_id": "eco_add_to_cart",
+      "text": "Add the Brass Desk Lamp to the cart",
+      "tags": ["cart"],
+      "difficulty": "medium",
+      "predicates": [
+        {"kind": "TEXT_PRESENT", "value": "Added to cart: Brass Desk Lamp."}
+      ]
+    },
+    {
+      "task_id": "eco_add_out_of_stock",
+      "text": "Add the out of stock product Everyday Bread Baking to the cart",
+      "tags": ["edge", "disabled-control"],
+      "difficulty": "medium",
+      "predicates": [
+        {"kind": "TEXT_PRESENT", "value": "Out of stock"},
+        {"kind": "TEXT_ABSENT", "value": "Added to cart: Everyday Bread Baking."}
+      ]
+    },
+    {
+      "task_id": "eco_coupon_valid",
+      "text": "Add the Stoneware Mug Set of 4 to the cart and apply the coupon code SAVE10",
+      "tags": ["cart", "coupon", "multi-step"],
+      "difficulty": "hard",
+      "predicates": [
+        {"kind": "TEXT_PRESENT", "value": "Coupon applied."}
+      ]
+    },
+    {
+      "task_id": "eco_coupon_invalid",
+      "text": "Add the Stoneware Mug Set of 4 to the cart and apply the coupon code WRONGCODE",
+      "tags": ["cart", "coupon", "validation"],
+      "difficulty": "hard",
+      "predicates": [
+        {"kind": "ALERT_CONTAINS", "value": "Invalid coupon code."}
+      ]
+    },
+    {
+      "task_id": "eco_cart_empty",
+      "text": "Add the Puzzle Globe 500 Pieces to the cart and then empty the cart",
+      "tags": ["cart", "confirm-dialog"],
+      "difficulty": "hard",
+      "predicates": [
+        {"kind": "TEXT_PRESENT", "value": "Cart emptied."}
+      ]
+    },
+    {
+      "task_id": "eco_remove_from_cart",
+      "text": "Add the Puzzle Globe 500 Pieces to the cart and then remove it from the cart",
+      "tags": ["cart", "remove"],
+      "difficulty": "hard",
+      "predicates": [
+        {"kind": "TEXT_PRESENT", "value": "Removed Puzzle Globe 500 Pieces from cart."}
+      ]
+    },
+    {
+      "task_id": "eco_checkout_invalid_zip",
+      "text": "Place an order with full name Ada Lovelace, address 12 Example Street, city Springfield, ZIP 1234, card number 4111111111111111, expiry 12/30 and CVC 123",
+      "tags": ["checkout", "validation"],
+      "difficulty": "hard",
+      "predicates": [
+        {"kind": "ALERT_CONTAINS", "value": "Enter a 5 digit ZIP code."}
+      ]
+    },
+    {
+      "task_id": "eco_checkout_success",
+      "text": "Place an order with full name Ada Lovelace, address 12 Example Street, city Springfield, ZIP 12345, card number 4111111111111111, expiry 12/30 and CVC 123",
+      "tags": ["checkout", "simulated-payment"],
+      "difficulty": "hard",
+      "predicates": [
+        {"kind": "TEXT_PRESENT", "value": "Order placed."}
+      ]
+    },
+    {
+      "task_id": "eco_checkout_empty_cart",
+      "text": "Try to proceed to checkout with an empty cart",
+      "tags": ["edge", "precondition"],
+      "difficulty": "medium",
+      "predicates": [
+        {"kind": "TEXT_PRESENT", "value": "Browse products"}
+      ]
+    },
+    {
+      "task_id": "eco_cart_quantity",
+      "text": "Add the Lumen Wireless Headphones to the cart and set its quantity to 3",
+      "tags": ["cart", "quantity"],
+      "difficulty": "hard",
+      "predicates": [
+        {"kind": "VALUE_EQUALS", "target": "quantity", "value": "3"}
+      ]
+    }
+  ]
+}

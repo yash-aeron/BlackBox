@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Project Manager</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="app-header">
+  <h1>Project Manager</h1>
+  <p class="app-sub">Northwind Product Team</p>
+</header>
+
+<div class="layout">
+  <nav class="sidenav" aria-label="Sections">
+    <ul>
+      <li><a href="#/projects" data-route="projects">Projects</a></li>
+      <li><a href="#/tasks" data-route="tasks">My tasks</a></li>
+      <li><a href="#/team" data-route="team">Team</a></li>
+      <li><a href="#/settings" data-route="settings">Settings</a></li>
+    </ul>
+  </nav>
+
+  <main id="main" tabindex="-1">
+
+    <!-- ============ Projects ============ -->
+    <section class="view" id="view-projects" aria-labelledby="projects-heading" hidden>
+      <div class="view-head">
+        <h2 id="projects-heading">Projects</h2>
+        <button type="button" class="btn primary" id="new-project-btn">New project</button>
+      </div>
+
+      <form class="filters" id="project-filters" role="search" aria-label="Filter projects" novalidate>
+        <div class="field">
+          <label for="project-search">Search projects</label>
+          <input type="search" id="project-search" name="projectSearch" placeholder="Name or owner" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="project-status-filter">Filter by status</label>
+          <select id="project-status-filter" name="projectStatus">
+            <option value="All">All</option>
+            <option value="Active">Active</option>
+            <option value="On hold">On hold</option>
+            <option value="Completed">Completed</option>
+          </select>
+        </div>
+      </form>
+
+      <p class="muted" id="projects-summary"></p>
+      <p class="error" id="projects-error" role="alert" hidden></p>
+
+      <table class="data-table">
+        <caption class="sr-only">Projects in the workspace</caption>
+        <thead>
+          <tr>
+            <th scope="col">Project</th>
+            <th scope="col">Owner</th>
+            <th scope="col">Status</th>
+            <th scope="col">Due date</th>
+            <th scope="col">Tasks</th>
+            <th scope="col">Progress</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="projects-body"></tbody>
+      </table>
+      <p class="empty" id="projects-empty" hidden>No projects match your filters.</p>
+    </section>
+
+    <!-- ============ Project detail ============ -->
+    <section class="view" id="view-project" aria-labelledby="project-heading" hidden>
+      <p><button type="button" class="link" id="back-to-projects">&larr; Back to projects</button></p>
+      <h2 id="project-heading">Project</h2>
+      <dl class="meta" id="project-meta"></dl>
+
+      <p class="error" id="project-error" role="alert" hidden></p>
+
+      <div class="view-head">
+        <h3 id="project-tasks-heading">Tasks</h3>
+        <button type="button" class="btn primary" id="add-task-btn">Add task</button>
+      </div>
+
+      <table class="data-table">
+        <caption class="sr-only">Tasks in this project</caption>
+        <thead>
+          <tr>
+            <th scope="col">Title</th>
+            <th scope="col">Status</th>
+            <th scope="col">Assignee</th>
+            <th scope="col">Priority</th>
+            <th scope="col">Due date</th>
+            <th scope="col">Blocked by</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="project-tasks-body"></tbody>
+      </table>
+      <p class="empty" id="project-tasks-empty" hidden>No tasks in this project yet.</p>
+    </section>
+
+    <!-- ============ My tasks ============ -->
+    <section class="view" id="view-tasks" aria-labelledby="tasks-heading" hidden>
+      <h2 id="tasks-heading">My tasks</h2>
+
+      <form class="filters" id="task-filters" role="search" aria-label="Filter tasks" novalidate>
+        <div class="field">
+          <label for="task-search">Search tasks</label>
+          <input type="search" id="task-search" name="taskSearch" placeholder="Task, project or assignee" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="task-status-filter">Filter by status</label>
+          <select id="task-status-filter" name="taskStatus">
+            <option value="All">All</option>
+            <option value="Not started">Not started</option>
+            <option value="In progress">In progress</option>
+            <option value="In review">In review</option>
+            <option value="Blocked">Blocked</option>
+            <option value="Completed">Completed</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="task-priority-filter">Filter by priority</label>
+          <select id="task-priority-filter" name="taskPriority">
+            <option value="All">All</option>
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+          </select>
+        </div>
+      </form>
+
+      <p class="muted" id="tasks-summary"></p>
+
+      <table class="data-table">
+        <caption class="sr-only">All tasks across projects</caption>
+        <thead>
+          <tr>
+            <th scope="col">Task</th>
+            <th scope="col">Project</th>
+            <th scope="col">Status</th>
+            <th scope="col">Priority</th>
+            <th scope="col">Assignee</th>
+            <th scope="col">Due date</th>
+            <th scope="col">Blocked by</th>
+          </tr>
+        </thead>
+        <tbody id="tasks-body"></tbody>
+      </table>
+      <p class="empty" id="tasks-empty" hidden>No tasks match your filters.</p>
+    </section>
+
+    <!-- ============ Team ============ -->
+    <section class="view" id="view-team" aria-labelledby="team-heading" hidden>
+      <h2 id="team-heading">Team</h2>
+      <p class="muted">Assigned task counts include every project in the workspace.</p>
+
+      <table class="data-table">
+        <caption class="sr-only">Team members</caption>
+        <thead>
+          <tr>
+            <th scope="col">Member</th>
+            <th scope="col">Role</th>
+            <th scope="col">Assigned tasks</th>
+            <th scope="col">Open tasks</th>
+          </tr>
+        </thead>
+        <tbody id="team-body"></tbody>
+      </table>
+    </section>
+
+    <!-- ============ Settings ============ -->
+    <section class="view" id="view-settings" aria-labelledby="settings-heading" hidden>
+      <h2 id="settings-heading">Settings</h2>
+
+      <form class="panel" id="settings-form" novalidate>
+        <fieldset>
+          <legend>Project defaults</legend>
+          <p class="hint">This status is preselected when you create a new project.</p>
+          <p class="error" id="settings-error" role="alert" hidden></p>
+          <div class="field">
+            <label for="setting-default-status">Default project status</label>
+            <select id="setting-default-status" name="defaultProjectStatus">
+              <option value="Active">Active</option>
+              <option value="On hold">On hold</option>
+              <option value="Completed">Completed</option>
+            </select>
+          </div>
+        </fieldset>
+        <div class="actions">
+          <button type="submit" class="btn primary" id="save-settings-btn">Save settings</button>
+        </div>
+      </form>
+    </section>
+
+  </main>
+</div>
+
+<div id="status-region" class="toast" role="status" aria-live="polite"></div>
+
+<!-- ============ New project dialog ============ -->
+<dialog id="project-dialog" aria-labelledby="project-dialog-title">
+  <form id="project-form" novalidate>
+    <h2 id="project-dialog-title">New project</h2>
+    <p class="hint">Name and Owner are required before Save becomes available. The due date cannot be in the past.</p>
+    <p class="error" id="project-form-error" role="alert" hidden></p>
+
+    <div class="field">
+      <label for="np-name">Name</label>
+      <input type="text" id="np-name" name="name" required autocomplete="off">
+    </div>
+    <div class="field">
+      <label for="np-owner">Owner</label>
+      <input type="text" id="np-owner" name="owner" required autocomplete="off">
+    </div>
+    <div class="field">
+      <label for="np-status">Status</label>
+      <select id="np-status" name="status">
+        <option value="Active">Active</option>
+        <option value="On hold">On hold</option>
+        <option value="Completed">Completed</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="np-due">Due date</label>
+      <input type="date" id="np-due" name="due">
+    </div>
+
+    <div class="dialog-actions">
+      <button type="button" class="btn" id="np-cancel">Cancel</button>
+      <button type="submit" class="btn primary" id="np-save" disabled>Save</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- ============ Add / edit task dialog ============ -->
+<dialog id="task-dialog" aria-labelledby="task-dialog-title">
+  <form id="task-form" novalidate>
+    <h2 id="task-dialog-title">Add task</h2>
+    <p class="hint">Title is required before Save becomes available. A task cannot be blocked by itself.</p>
+    <p class="error" id="task-form-error" role="alert" hidden></p>
+
+    <div class="field">
+      <label for="nt-title">Title</label>
+      <input type="text" id="nt-title" name="title" required autocomplete="off">
+    </div>
+    <div class="field">
+      <label for="nt-assignee">Assignee</label>
+      <select id="nt-assignee" name="assignee"></select>
+    </div>
+    <div class="field">
+      <label for="nt-priority">Priority</label>
+      <select id="nt-priority" name="priority">
+        <option value="Low">Low</option>
+        <option value="Medium">Medium</option>
+        <option value="High">High</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="nt-due">Due date</label>
+      <input type="date" id="nt-due" name="due">
+    </div>
+    <div class="field">
+      <label for="nt-blocked">Blocked by</label>
+      <select id="nt-blocked" name="blockedBy"></select>
+    </div>
+
+    <div class="dialog-actions">
+      <button type="button" class="btn" id="nt-cancel">Cancel</button>
+      <button type="submit" class="btn primary" id="nt-save" disabled>Save task</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- ============ Delete confirmation dialog ============ -->
+<dialog id="confirm-dialog" aria-labelledby="confirm-title" aria-describedby="confirm-message">
+  <h2 id="confirm-title">Delete project?</h2>
+  <p id="confirm-message">This cannot be undone.</p>
+  <p class="muted" id="confirm-target"></p>
+  <div class="dialog-actions">
+    <button type="button" class="btn" id="confirm-cancel">Cancel</button>
+    <button type="button" class="btn danger" id="confirm-delete">Delete project</button>
+  </div>
+</dialog>
+
+<script src="app.js"></script>
+</body>
+</html>

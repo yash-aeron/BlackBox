@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Northwind CRM</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="app-header">
+  <div class="brand">
+    <span class="brand-mark" aria-hidden="true">NW</span>
+    <div>
+      <h1>Northwind CRM</h1>
+      <p class="app-sub">Customer records for the sales team</p>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <nav class="app-nav" aria-label="Main">
+    <h2 class="nav-heading">Sections</h2>
+    <ul>
+      <li><a href="#/dashboard" data-route="dashboard">Dashboard</a></li>
+      <li><a href="#/customers" data-route="customers">Customers</a></li>
+      <li><a href="#/reports" data-route="reports">Reports</a></li>
+      <li><a href="#/settings" data-route="settings">Settings</a></li>
+    </ul>
+    <p class="nav-note">Signed in as Morgan Hale<br><span class="muted">Account manager</span></p>
+  </nav>
+
+  <main id="main" tabindex="-1">
+    <div id="status-banner" class="banner banner-status" role="status" aria-live="polite" hidden></div>
+    <div id="alert-banner" class="banner banner-alert" role="alert" aria-live="assertive" hidden></div>
+    <div id="view-root"></div>
+  </main>
+</div>
+
+<dialog id="customer-dialog" aria-labelledby="customer-dialog-title" class="modal">
+  <form id="customer-form" novalidate>
+    <h2 id="customer-dialog-title">Add customer</h2>
+    <p class="dialog-intro">Fields marked with an asterisk are required.</p>
+
+    <p class="field">
+      <label for="customer-name">Name *</label>
+      <input type="text" id="customer-name" name="name" autocomplete="off" required>
+    </p>
+
+    <p class="field">
+      <label for="customer-email">Email *</label>
+      <input type="text" id="customer-email" name="email" autocomplete="off" required aria-describedby="customer-email-hint">
+      <span class="hint" id="customer-email-hint">Must contain an @ sign.</span>
+    </p>
+
+    <p class="field">
+      <label for="customer-company">Company</label>
+      <input type="text" id="customer-company" name="company" autocomplete="off">
+    </p>
+
+    <p class="field">
+      <label for="customer-status">Status</label>
+      <select id="customer-status" name="status">
+        <option value="Active">Active</option>
+        <option value="Inactive">Inactive</option>
+        <option value="Lead">Lead</option>
+      </select>
+    </p>
+
+    <p class="field">
+      <label for="customer-revenue">Revenue</label>
+      <input type="number" id="customer-revenue" name="revenue" min="0" step="1" value="0">
+      <span class="hint" id="customer-revenue-hint">Whole currency units, zero or more.</span>
+    </p>
+
+    <p class="form-error" id="customer-form-error" role="alert" hidden></p>
+
+    <div class="dialog-actions">
+      <button type="button" class="btn btn-ghost" id="customer-cancel">Cancel</button>
+      <button type="submit" class="btn btn-primary" id="customer-save" disabled>Save customer</button>
+    </div>
+    <p class="hint" id="customer-save-hint">Enter a name and an email address to enable saving.</p>
+  </form>
+</dialog>
+
+<dialog id="confirm-dialog" aria-labelledby="confirm-dialog-title" class="modal">
+  <h2 id="confirm-dialog-title">Delete customer? This cannot be undone.</h2>
+  <p id="confirm-dialog-body" class="dialog-intro">The record will be removed from the customer list.</p>
+  <div class="dialog-actions">
+    <button type="button" class="btn btn-ghost" id="confirm-cancel">Cancel</button>
+    <button type="button" class="btn btn-danger" id="confirm-delete">Delete customer</button>
+  </div>
+</dialog>
+
+<script src="app.js"></script>
+</body>
+</html>

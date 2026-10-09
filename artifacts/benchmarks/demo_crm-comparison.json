@@ -1,0 +1,49 @@
+{
+  "rows": [
+    {
+      "mode": "baseline",
+      "success_rate": 0.2,
+      "mean_actions": 24.4,
+      "mean_unnecessary_actions": 21.267,
+      "mean_duration_seconds": 39.71,
+      "mean_planning_latency_ms": 81.57,
+      "model_reuse_rate": 0.0,
+      "workflow_reuse_rate": 0.0,
+      "recoveries": 29,
+      "tasks_run": 15,
+      "policy_blocked": 0
+    },
+    {
+      "mode": "learned",
+      "success_rate": 0.2667,
+      "mean_actions": 2.4,
+      "mean_unnecessary_actions": 0.0,
+      "mean_duration_seconds": 3.02,
+      "mean_planning_latency_ms": 1.54,
+      "model_reuse_rate": 0.5333,
+      "workflow_reuse_rate": 0.3333,
+      "recoveries": 4,
+      "tasks_run": 15,
+      "policy_blocked": 0
+    },
+    {
+      "mode": "learned_exploratory",
+      "success_rate": 0.2667,
+      "mean_actions": 11.8,
+      "mean_unnecessary_actions": 0.0,
+      "mean_duration_seconds": 16.26,
+      "mean_planning_latency_ms": 2.5,
+      "model_reuse_rate": 0.5333,
+      "workflow_reuse_rate": 0.3333,
+      "recoveries": 4,
+      "tasks_run": 15,
+      "policy_blocked": 0
+    }
+  ],
+  "learned_vs_baseline": {
+    "success_rate_delta": 0.0667,
+    "actions_delta": -22.0,
+    "actions_reduction_pct": 90.16,
+    "planning_latency_delta_ms": -80.03
+  }
+}

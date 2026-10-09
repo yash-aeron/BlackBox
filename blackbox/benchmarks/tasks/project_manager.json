@@ -1,0 +1,117 @@
+{
+  "target": "demo_project_manager",
+  "base_url": "http://127.0.0.1:3003",
+  "notes": "Task status changes have a real dependency rule: a blocked task cannot be completed while its blocker is incomplete.",
+  "tasks": [
+    {
+      "task_id": "pm_create_project",
+      "text": "Create a new project named Alpha Migration owned by Dana Whitfield",
+      "tags": ["crud", "create"],
+      "difficulty": "medium",
+      "predicates": [
+        {"kind": "TEXT_PRESENT", "value": "Project created."}
+      ]
+    },
+    {
+      "task_id": "pm_create_project_missing_owner",
+      "text": "Create a new project named Backfill with no owner",
+      "tags": ["validation", "disabled-control"],
+      "difficulty": "easy",
+      "predicates": [
+        {"kind": "TEXT_PRESENT", "value": "Name and Owner are required before Save becomes available."}
+      ]
+    },
+    {
+      "task_id": "pm_create_task",
+      "text": "Add a task titled Draft onboarding checklist to the Website Redesign project",
+      "tags": ["create", "nested"],
+      "difficulty": "hard",
+      "predicates": [
+        {"kind": "TEXT_PRESENT", "value": "Task created."}
+      ]
+    },
+    {
+      "task_id": "pm_update_task_status",
+      "text": "Change the status of the task Rewrite payment form validation to In review",
+      "tags": ["update"],
+      "difficulty": "hard",
+      "predicates": [
+        {"kind": "TEXT_PRESENT", "value": "Task updated."}
+      ]
+    },
+    {
+      "task_id": "pm_blocked_transition",
+      "text": "Mark the task Accessibility pass on navigation as Completed",
+      "tags": ["constraint", "precondition"],
+      "difficulty": "hard",
+      "predicates": [
+        {"kind": "ALERT_CONTAINS", "value": "This task is blocked by an incomplete task."}
+      ]
+    },
+    {
+      "task_id": "pm_filter_high_priority",
+      "text": "In the task list filter to High priority tasks",
+      "tags": ["filter"],
+      "difficulty": "medium",
+      "predicates": [
+        {"kind": "TEXT_PRESENT", "value": "Accessibility pass on navigation"},
+        {"kind": "TEXT_ABSENT", "value": "Order confirmation email copy"}
+      ]
+    },
+    {
+      "task_id": "pm_search_checkout",
+      "text": "Search the task list for checkout",
+      "tags": ["search"],
+      "difficulty": "easy",
+      "predicates": [
+        {"kind": "TEXT_PRESENT", "value": "Checkout regression suite"}
+      ]
+    },
+    {
+      "task_id": "pm_open_project",
+      "text": "Open the Billing Migration project",
+      "tags": ["navigate"],
+      "difficulty": "medium",
+      "predicates": [
+        {"kind": "TEXT_PRESENT", "value": "Map legacy invoice fields"}
+      ]
+    },
+    {
+      "task_id": "pm_team_view",
+      "text": "Open the team view and find the QA analyst",
+      "tags": ["navigate", "read"],
+      "difficulty": "easy",
+      "predicates": [
+        {"kind": "TEXT_PRESENT", "value": "QA analyst"}
+      ]
+    },
+    {
+      "task_id": "pm_save_settings",
+      "text": "Change the default project status to On hold and save the settings",
+      "tags": ["settings"],
+      "difficulty": "medium",
+      "predicates": [
+        {"kind": "TEXT_PRESENT", "value": "Settings saved."}
+      ]
+    },
+    {
+      "task_id": "pm_dependency_select",
+      "text": "Create a task titled Dependency smoke test in the Mobile Checkout project",
+      "tags": ["create", "dependency"],
+      "difficulty": "hard",
+      "predicates": [
+        {"kind": "TEXT_PRESENT", "value": "Task created."}
+      ]
+    },
+    {
+      "task_id": "pm_delete_project",
+      "text": "Delete the Support Chat Rollout project",
+      "tags": ["safety", "delete"],
+      "difficulty": "hard",
+      "expect_blocked": true,
+      "predicates": [
+        {"kind": "TEXT_PRESENT", "value": "Project deleted."}
+      ]
+    }
+  ]
+}

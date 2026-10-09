@@ -1,0 +1,183 @@
+{
+  "target": "demo_crm",
+  "mode": "learned",
+  "seed": 7,
+  "browser_version": "Chrome/153.0.8010.12",
+  "model_version": 1,
+  "model": {
+    "states": 7,
+    "transitions": 92,
+    "workflows": 2
+  },
+  "configuration": {
+    "use_workflows": true,
+    "use_transitions": true,
+    "allow_exploration": false,
+    "max_actions": 30
+  },
+  "started_at": "2026-10-08T23:55:04",
+  "finished_at": "2026-10-08T23:55:20",
+  "duration_seconds": 15.84,
+  "metrics": {
+    "target": "demo_crm",
+    "mode": "learned",
+    "tasks_total": 3,
+    "tasks_run": 3,
+    "successes": 0,
+    "policy_blocked": 0,
+    "success_rate": 0.0,
+    "mean_actions": 4.0,
+    "mean_unnecessary_actions": 0.0,
+    "mean_duration_seconds": 4.04,
+    "mean_planning_latency_ms": 0.48,
+    "total_recoveries": 0,
+    "total_replans": 0,
+    "model_reuse_rate": 1.0,
+    "workflow_reuse_rate": 0.6667,
+    "workflow_reuse_success_rate": 0.0,
+    "state_recognition_accuracy": 1.0,
+    "transition_prediction_accuracy": 0.0,
+    "mean_step_verification_rate": 1.0,
+    "exploration_actions": 0,
+    "per_task": [
+      {
+        "task_id": "crm_create_customer",
+        "mode": "learned",
+        "success": false,
+        "policy_blocked": false,
+        "actions": 6,
+        "unnecessary_actions": 0,
+        "duration_seconds": 5.98,
+        "planning_latency_ms": 0.43,
+        "recoveries": 0,
+        "replans": 0,
+        "steps_verified": 6,
+        "steps_total": 6,
+        "used_workflow": true,
+        "used_exploration": false,
+        "exploration_actions": 0,
+        "plan_source": "workflow",
+        "state_matched": true,
+        "predictions_hit": 0,
+        "predictions_missed": 0,
+        "model_reuse": true,
+        "notes": [
+          "reused learned workflow w_b5485c1c71e6 (create_customer)",
+          "parameters using synthesized defaults: company, revenue"
+        ]
+      },
+      {
+        "task_id": "crm_search_customer",
+        "mode": "learned",
+        "success": false,
+        "policy_blocked": false,
+        "actions": 0,
+        "unnecessary_actions": 0,
+        "duration_seconds": 0.67,
+        "planning_latency_ms": 0.43,
+        "recoveries": 0,
+        "replans": 0,
+        "steps_verified": 0,
+        "steps_total": 0,
+        "used_workflow": false,
+        "used_exploration": false,
+        "exploration_actions": 0,
+        "plan_source": "graph",
+        "state_matched": true,
+        "predictions_hit": 0,
+        "predictions_missed": 0,
+        "model_reuse": true,
+        "notes": [
+          "planned over 0 learned transitions by graph search",
+          "no usable plan: the model does not yet know a route for this task"
+        ]
+      },
+      {
+        "task_id": "crm_open_add_dialog",
+        "mode": "learned",
+        "success": false,
+        "policy_blocked": false,
+        "actions": 6,
+        "unnecessary_actions": 0,
+        "duration_seconds": 5.45,
+        "planning_latency_ms": 0.59,
+        "recoveries": 0,
+        "replans": 0,
+        "steps_verified": 6,
+        "steps_total": 6,
+        "used_workflow": true,
+        "used_exploration": false,
+        "exploration_actions": 0,
+        "plan_source": "workflow",
+        "state_matched": true,
+        "predictions_hit": 0,
+        "predictions_missed": 0,
+        "model_reuse": true,
+        "notes": [
+          "reused learned workflow w_b5485c1c71e6 (create_customer)",
+          "parameters using synthesized defaults: company, email, name, revenue"
+        ]
+      }
+    ]
+  },
+  "tasks": [
+    {
+      "task_id": "crm_create_customer",
+      "text": "Create a customer named Yash Malhotra with email yash@example.com",
+      "target": "demo_crm",
+      "tags": [
+        "crud",
+        "create",
+        "workflow"
+      ],
+      "difficulty": "medium",
+      "expect_blocked": false,
+      "predicates": [
+        {
+          "kind": "TEXT_PRESENT",
+          "value": "Customer created.",
+          "target": ""
+        },
+        {
+          "kind": "TABLE_ROW_CONTAINS",
+          "value": "yash@example.com",
+          "target": ""
+        }
+      ]
+    },
+    {
+      "task_id": "crm_search_customer",
+      "text": "Search the customer list for Elena",
+      "target": "demo_crm",
+      "tags": [
+        "search"
+      ],
+      "difficulty": "easy",
+      "expect_blocked": false,
+      "predicates": [
+        {
+          "kind": "TABLE_ROW_CONTAINS",
+          "value": "elena@vinetoworks.it",
+          "target": ""
+        }
+      ]
+    },
+    {
+      "task_id": "crm_open_add_dialog",
+      "text": "Open the Add customer form",
+      "target": "demo_crm",
+      "tags": [
+        "dialog"
+      ],
+      "difficulty": "easy",
+      "expect_blocked": false,
+      "predicates": [
+        {
+          "kind": "DIALOG_OPEN",
+          "value": "Add customer",
+          "target": ""
+        }
+      ]
+    }
+  ]
+}

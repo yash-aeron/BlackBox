@@ -1,0 +1,31 @@
+# BlackBox runtime dependencies.
+#
+# The versions below are the ones this implementation was developed and measured
+# against.  BlackBox deliberately keeps the hard requirement list small: the
+# browser layer speaks the Chrome DevTools Protocol over aiohttp, so the
+# `playwright` package is optional, and Persistence defaults to SQLite so the
+# system runs with no infrastructure at all.
+
+fastapi==0.143.0
+uvicorn==0.54.0
+pydantic==2.13.5
+aiohttp==3.14.3
+httpx==0.28.1
+
+# State-similarity signalling (perceptual hashing of screenshots). Optional:
+# without it, the visual channel degrades to a content digest.
+Pillow==12.3.0
+
+# Optional: PostgreSQL backend (docker-compose.yml provides the server).
+# psycopg[binary]==3.2.3
+
+# Optional: LLM/VLM provider abstraction. BlackBox works fully without it.
+# openai==2.54.0
+
+# Optional: the Playwright driver. BlackBox defaults to its own CDP driver,
+# which needs no additional packages.
+# playwright==1.48.0
+
+# Development / test tooling.
+pytest==9.1.1
+pytest-asyncio==1.4.0

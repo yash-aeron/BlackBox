@@ -1,0 +1,405 @@
+{
+  "target": "demo_crm",
+  "mode": "baseline",
+  "seed": 7,
+  "browser_version": "Chrome/153.0.8010.12",
+  "model_version": 0,
+  "model": {
+    "states": 0,
+    "transitions": 0,
+    "workflows": 0
+  },
+  "configuration": {
+    "max_actions": 30,
+    "uses_llm": false
+  },
+  "started_at": "2026-10-09T08:19:54",
+  "finished_at": "2026-10-09T08:24:59",
+  "duration_seconds": 304.61,
+  "metrics": {
+    "target": "demo_crm",
+    "mode": "baseline",
+    "tasks_total": 8,
+    "tasks_run": 8,
+    "successes": 2,
+    "policy_blocked": 0,
+    "success_rate": 0.25,
+    "mean_actions": 23.0,
+    "mean_unnecessary_actions": 21.75,
+    "mean_duration_seconds": 37.97,
+    "mean_planning_latency_ms": 44.66,
+    "total_recoveries": 0,
+    "total_replans": 0,
+    "model_reuse_rate": 0.0,
+    "workflow_reuse_rate": 0.0,
+    "workflow_reuse_success_rate": 0.0,
+    "state_recognition_accuracy": 0.0,
+    "transition_prediction_accuracy": 0.0,
+    "mean_step_verification_rate": 0.0,
+    "exploration_actions": 0,
+    "per_task": [
+      {
+        "task_id": "crm_create_customer",
+        "mode": "baseline",
+        "success": false,
+        "policy_blocked": false,
+        "actions": 30,
+        "unnecessary_actions": 29,
+        "duration_seconds": 55.28,
+        "planning_latency_ms": 58.76,
+        "recoveries": 0,
+        "replans": 0,
+        "steps_verified": 0,
+        "steps_total": 0,
+        "used_workflow": false,
+        "used_exploration": false,
+        "exploration_actions": 0,
+        "plan_source": "reactive",
+        "state_matched": false,
+        "predictions_hit": 0,
+        "predictions_missed": 0,
+        "model_reuse": false,
+        "verification": {},
+        "plan": {},
+        "notes": [
+          "action budget exhausted (30)"
+        ]
+      },
+      {
+        "task_id": "crm_invalid_email",
+        "mode": "baseline",
+        "success": false,
+        "policy_blocked": false,
+        "actions": 30,
+        "unnecessary_actions": 29,
+        "duration_seconds": 47.91,
+        "planning_latency_ms": 100.46,
+        "recoveries": 0,
+        "replans": 0,
+        "steps_verified": 0,
+        "steps_total": 0,
+        "used_workflow": false,
+        "used_exploration": false,
+        "exploration_actions": 0,
+        "plan_source": "reactive",
+        "state_matched": false,
+        "predictions_hit": 0,
+        "predictions_missed": 0,
+        "model_reuse": false,
+        "verification": {},
+        "plan": {},
+        "notes": [
+          "action budget exhausted (30)"
+        ]
+      },
+      {
+        "task_id": "crm_search_customer",
+        "mode": "baseline",
+        "success": false,
+        "policy_blocked": false,
+        "actions": 30,
+        "unnecessary_actions": 29,
+        "duration_seconds": 47.72,
+        "planning_latency_ms": 62.26,
+        "recoveries": 0,
+        "replans": 0,
+        "steps_verified": 0,
+        "steps_total": 0,
+        "used_workflow": false,
+        "used_exploration": false,
+        "exploration_actions": 0,
+        "plan_source": "reactive",
+        "state_matched": false,
+        "predictions_hit": 0,
+        "predictions_missed": 0,
+        "model_reuse": false,
+        "verification": {},
+        "plan": {},
+        "notes": [
+          "action budget exhausted (30)"
+        ]
+      },
+      {
+        "task_id": "crm_filter_leads",
+        "mode": "baseline",
+        "success": false,
+        "policy_blocked": false,
+        "actions": 30,
+        "unnecessary_actions": 29,
+        "duration_seconds": 48.36,
+        "planning_latency_ms": 55.0,
+        "recoveries": 0,
+        "replans": 0,
+        "steps_verified": 0,
+        "steps_total": 0,
+        "used_workflow": false,
+        "used_exploration": false,
+        "exploration_actions": 0,
+        "plan_source": "reactive",
+        "state_matched": false,
+        "predictions_hit": 0,
+        "predictions_missed": 0,
+        "model_reuse": false,
+        "verification": {},
+        "plan": {},
+        "notes": [
+          "action budget exhausted (30)"
+        ]
+      },
+      {
+        "task_id": "crm_sort_revenue_desc",
+        "mode": "baseline",
+        "success": true,
+        "policy_blocked": false,
+        "actions": 3,
+        "unnecessary_actions": 0,
+        "duration_seconds": 6.25,
+        "planning_latency_ms": 3.99,
+        "recoveries": 0,
+        "replans": 0,
+        "steps_verified": 0,
+        "steps_total": 0,
+        "used_workflow": false,
+        "used_exploration": false,
+        "exploration_actions": 0,
+        "plan_source": "reactive",
+        "state_matched": false,
+        "predictions_hit": 0,
+        "predictions_missed": 0,
+        "model_reuse": false,
+        "verification": {},
+        "plan": {},
+        "notes": [
+          "success condition met after 3 action(s)"
+        ]
+      },
+      {
+        "task_id": "crm_pagination_next",
+        "mode": "baseline",
+        "success": false,
+        "policy_blocked": false,
+        "actions": 30,
+        "unnecessary_actions": 29,
+        "duration_seconds": 48.28,
+        "planning_latency_ms": 49.6,
+        "recoveries": 0,
+        "replans": 0,
+        "steps_verified": 0,
+        "steps_total": 0,
+        "used_workflow": false,
+        "used_exploration": false,
+        "exploration_actions": 0,
+        "plan_source": "reactive",
+        "state_matched": false,
+        "predictions_hit": 0,
+        "predictions_missed": 0,
+        "model_reuse": false,
+        "verification": {},
+        "plan": {},
+        "notes": [
+          "action budget exhausted (30)"
+        ]
+      },
+      {
+        "task_id": "crm_open_add_dialog",
+        "mode": "baseline",
+        "success": true,
+        "policy_blocked": false,
+        "actions": 1,
+        "unnecessary_actions": 0,
+        "duration_seconds": 2.81,
+        "planning_latency_ms": 0.63,
+        "recoveries": 0,
+        "replans": 0,
+        "steps_verified": 0,
+        "steps_total": 0,
+        "used_workflow": false,
+        "used_exploration": false,
+        "exploration_actions": 0,
+        "plan_source": "reactive",
+        "state_matched": false,
+        "predictions_hit": 0,
+        "predictions_missed": 0,
+        "model_reuse": false,
+        "verification": {},
+        "plan": {},
+        "notes": [
+          "success condition met after 1 action(s)"
+        ]
+      },
+      {
+        "task_id": "crm_save_settings",
+        "mode": "baseline",
+        "success": false,
+        "policy_blocked": false,
+        "actions": 30,
+        "unnecessary_actions": 29,
+        "duration_seconds": 47.12,
+        "planning_latency_ms": 26.6,
+        "recoveries": 0,
+        "replans": 0,
+        "steps_verified": 0,
+        "steps_total": 0,
+        "used_workflow": false,
+        "used_exploration": false,
+        "exploration_actions": 0,
+        "plan_source": "reactive",
+        "state_matched": false,
+        "predictions_hit": 0,
+        "predictions_missed": 0,
+        "model_reuse": false,
+        "verification": {},
+        "plan": {},
+        "notes": [
+          "action budget exhausted (30)"
+        ]
+      }
+    ]
+  },
+  "tasks": [
+    {
+      "task_id": "crm_create_customer",
+      "text": "Create a customer named Yash Malhotra with email yash@example.com",
+      "target": "demo_crm",
+      "tags": [
+        "crud",
+        "create",
+        "workflow"
+      ],
+      "difficulty": "medium",
+      "expect_blocked": false,
+      "predicates": [
+        {
+          "kind": "TEXT_PRESENT",
+          "value": "Customer created.",
+          "target": ""
+        }
+      ]
+    },
+    {
+      "task_id": "crm_invalid_email",
+      "text": "Add a customer named Test Person with email not-an-email",
+      "target": "demo_crm",
+      "tags": [
+        "validation"
+      ],
+      "difficulty": "easy",
+      "expect_blocked": false,
+      "predicates": [
+        {
+          "kind": "ALERT_CONTAINS",
+          "value": "Enter a valid email address.",
+          "target": ""
+        }
+      ]
+    },
+    {
+      "task_id": "crm_search_customer",
+      "text": "Search the customer list for Elena",
+      "target": "demo_crm",
+      "tags": [
+        "search"
+      ],
+      "difficulty": "easy",
+      "expect_blocked": false,
+      "predicates": [
+        {
+          "kind": "TABLE_ROW_CONTAINS",
+          "value": "elena@vinetoworks.it",
+          "target": ""
+        }
+      ]
+    },
+    {
+      "task_id": "crm_filter_leads",
+      "text": "Filter the customer list to show only leads",
+      "target": "demo_crm",
+      "tags": [
+        "filter"
+      ],
+      "difficulty": "medium",
+      "expect_blocked": false,
+      "predicates": [
+        {
+          "kind": "TABLE_ROW_CONTAINS",
+          "value": "tomas.bergstrom@nordvik.se",
+          "target": ""
+        },
+        {
+          "kind": "TEXT_ABSENT",
+          "value": "amara.okafor@brightlaneco.com",
+          "target": ""
+        }
+      ]
+    },
+    {
+      "task_id": "crm_sort_revenue_desc",
+      "text": "Sort the customers by revenue from highest to lowest",
+      "target": "demo_crm",
+      "tags": [
+        "sort"
+      ],
+      "difficulty": "medium",
+      "expect_blocked": false,
+      "predicates": [
+        {
+          "kind": "TABLE_ROW_CONTAINS",
+          "value": "Hannah Petrov",
+          "target": ""
+        }
+      ]
+    },
+    {
+      "task_id": "crm_pagination_next",
+      "text": "Go to the second page of the customer list",
+      "target": "demo_crm",
+      "tags": [
+        "pagination"
+      ],
+      "difficulty": "easy",
+      "expect_blocked": false,
+      "predicates": [
+        {
+          "kind": "TEXT_PRESENT",
+          "value": "Page 2 of 3",
+          "target": ""
+        }
+      ]
+    },
+    {
+      "task_id": "crm_open_add_dialog",
+      "text": "Open the Add customer form",
+      "target": "demo_crm",
+      "tags": [
+        "dialog"
+      ],
+      "difficulty": "easy",
+      "expect_blocked": false,
+      "predicates": [
+        {
+          "kind": "DIALOG_OPEN",
+          "value": "Add customer",
+          "target": ""
+        }
+      ]
+    },
+    {
+      "task_id": "crm_save_settings",
+      "text": "In settings change the default page size to 25 and save",
+      "target": "demo_crm",
+      "tags": [
+        "settings",
+        "form"
+      ],
+      "difficulty": "medium",
+      "expect_blocked": false,
+      "predicates": [
+        {
+          "kind": "TEXT_PRESENT",
+          "value": "Settings saved.",
+          "target": ""
+        }
+      ]
+    }
+  ]
+}

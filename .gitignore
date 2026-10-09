@@ -1,0 +1,36 @@
+# BlackBox
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Runtime state: databases, screenshots, downloads, temporary scripts
+*.db
+*.db-wal
+*.db-shm
+artifacts/*
+!artifacts/dashboard-graph.png
+!artifacts/dashboard-overview.png
+!artifacts/benchmarks
+!artifacts/models
+
+
+# Environment
+.env
+.env.local
+
+# Dashboard (npm install is not part of the offline workflow)
+blackbox/dashboard/node_modules/
+blackbox/dashboard/dist/
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Agent harness files
+agents-skills-catalog.md

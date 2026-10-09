@@ -1,0 +1,146 @@
+{
+  "target": "demo_crm",
+  "base_url": "http://127.0.0.1:3001",
+  "notes": "Predicates were validated against the running demo. Each task starts from a freshly loaded page, so demo state is reset per task.",
+  "tasks": [
+    {
+      "task_id": "crm_create_customer",
+      "text": "Create a customer named Yash Malhotra with email yash@example.com",
+      "tags": ["crud", "create", "workflow"],
+      "difficulty": "medium",
+      "predicates": [
+        {"kind": "TEXT_PRESENT", "value": "Customer created."}
+      ]
+    },
+    {
+      "task_id": "crm_create_and_verify_row",
+      "text": "Open the customer list and add a customer named Yash Malhotra with email yash@example.com so the new record shows in the table",
+      "tags": ["crud", "create", "verify-visible"],
+      "difficulty": "hard",
+      "predicates": [
+        {"kind": "TEXT_PRESENT", "value": "Customer created."},
+        {"kind": "TABLE_ROW_CONTAINS", "value": "yash@example.com"}
+      ]
+    },
+    {
+      "task_id": "crm_create_customer_with_company",
+      "text": "Add a new customer named Lin Zhao with email lin.zhao@example.com in company Orbit Systems",
+      "tags": ["crud", "create"],
+      "difficulty": "medium",
+      "predicates": [
+        {"kind": "TABLE_ROW_CONTAINS", "value": "lin.zhao@example.com"},
+        {"kind": "TEXT_PRESENT", "value": "Customer created."}
+      ]
+    },
+    {
+      "task_id": "crm_invalid_email",
+      "text": "Add a customer named Test Person with email not-an-email",
+      "tags": ["validation"],
+      "difficulty": "easy",
+      "predicates": [
+        {"kind": "ALERT_CONTAINS", "value": "Enter a valid email address."}
+      ]
+    },
+    {
+      "task_id": "crm_search_customer",
+      "text": "Search the customer list for Elena",
+      "tags": ["search"],
+      "difficulty": "easy",
+      "predicates": [
+        {"kind": "TABLE_ROW_CONTAINS", "value": "elena@vinetoworks.it"}
+      ]
+    },
+    {
+      "task_id": "crm_search_no_match",
+      "text": "Search customers for zzznomatch",
+      "tags": ["search", "edge"],
+      "difficulty": "easy",
+      "predicates": [
+        {"kind": "TEXT_PRESENT", "value": "No customers match these filters."}
+      ]
+    },
+    {
+      "task_id": "crm_filter_leads",
+      "text": "Filter the customer list to show only leads",
+      "tags": ["filter"],
+      "difficulty": "medium",
+      "predicates": [
+        {"kind": "TABLE_ROW_CONTAINS", "value": "tomas.bergstrom@nordvik.se"},
+        {"kind": "TEXT_ABSENT", "value": "amara.okafor@brightlaneco.com"}
+      ]
+    },
+    {
+      "task_id": "crm_sort_revenue_desc",
+      "text": "Sort the customers by revenue from highest to lowest",
+      "tags": ["sort"],
+      "difficulty": "medium",
+      "predicates": [
+        {"kind": "TABLE_ROW_CONTAINS", "value": "Hannah Petrov"}
+      ]
+    },
+    {
+      "task_id": "crm_pagination_next",
+      "text": "Go to the second page of the customer list",
+      "tags": ["pagination"],
+      "difficulty": "easy",
+      "predicates": [
+        {"kind": "TEXT_PRESENT", "value": "Page 2 of 3"}
+      ]
+    },
+    {
+      "task_id": "crm_open_add_dialog",
+      "text": "Open the Add customer form",
+      "tags": ["dialog"],
+      "difficulty": "easy",
+      "predicates": [
+        {"kind": "DIALOG_OPEN", "value": "Add customer"}
+      ]
+    },
+    {
+      "task_id": "crm_export_report",
+      "text": "Export the customer report for the range 2024-01-01 to 2026-12-31 from the reports page",
+      "tags": ["export", "multi-step"],
+      "difficulty": "hard",
+      "predicates": [
+        {"kind": "TEXT_PRESENT", "value": "Report exported."}
+      ]
+    },
+    {
+      "task_id": "crm_export_hint",
+      "text": "Try to export the report with only the From date filled in",
+      "tags": ["precondition", "edge"],
+      "difficulty": "medium",
+      "predicates": [
+        {"kind": "TEXT_PRESENT", "value": "Select both From and To dates to enable export."}
+      ]
+    },
+    {
+      "task_id": "crm_edit_customer",
+      "text": "Edit the customer Grace Lindqvist and change her company to Fernwood Group",
+      "tags": ["crud", "update"],
+      "difficulty": "hard",
+      "predicates": [
+        {"kind": "TABLE_ROW_CONTAINS", "value": "Fernwood Group"}
+      ]
+    },
+    {
+      "task_id": "crm_save_settings",
+      "text": "In settings change the default page size to 25 and save",
+      "tags": ["settings", "form"],
+      "difficulty": "medium",
+      "predicates": [
+        {"kind": "TEXT_PRESENT", "value": "Settings saved."}
+      ]
+    },
+    {
+      "task_id": "crm_delete_customer",
+      "text": "Delete the customer Samuel Njoroge",
+      "tags": ["safety", "delete"],
+      "difficulty": "hard",
+      "expect_blocked": true,
+      "predicates": [
+        {"kind": "TEXT_PRESENT", "value": "Customer deleted."}
+      ]
+    }
+  ]
+}

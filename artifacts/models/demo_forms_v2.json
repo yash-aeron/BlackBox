@@ -1,0 +1,6122 @@
+{
+  "website": {
+    "target_id": "demo_forms",
+    "base_url": "http://127.0.0.1:3004",
+    "allowed_origins": [
+      "http://127.0.0.1:3004"
+    ],
+    "root_title": "Application Form",
+    "observed_version_hints": [],
+    "identity_hash": "863620811bf29945"
+  },
+  "model_version": {
+    "version": 1,
+    "schema_version": 1,
+    "created_at": "2026-10-08T18:51:46.949358+00:00",
+    "session_id": null,
+    "browser_version": "",
+    "prompt_version": "v1",
+    "parent_version": null,
+    "notes": []
+  },
+  "states": [
+    {
+      "state_id": "s_6481a1d32d51",
+      "fingerprint": {
+        "url": "http://127.0.0.1:3004/#/step-1",
+        "url_key": "127.0.0.1:3004/#/step-1",
+        "title": "application form",
+        "text_signature": "596bc9d8c6c0d623",
+        "text_shingles": [
+          "1c593d8ed634",
+          "1dfeb9dbc289",
+          "1e8c16580edf",
+          "20b71af93769",
+          "2b4050789347",
+          "2c8f8c7e9af5",
+          "39c87a3c525e",
+          "3b87560216ae",
+          "3fcb96f79539",
+          "4b29185661ff",
+          "5da3133bfb4b",
+          "60e2f1aa879f",
+          "62baf70f62c3",
+          "6681f00df8cc",
+          "69b1821e7aff",
+          "6a6adf21f3fb",
+          "6dc0e25e3f6b",
+          "6fefcc5a3b28",
+          "73221a78da78",
+          "7aee7f959049",
+          "7b09f648ff0f",
+          "7b9fb120bf29",
+          "8268316e083e",
+          "86b48940b8f4",
+          "9570206d1c93",
+          "997f4649b33d",
+          "9a7e7233a73c",
+          "9f48ec0e185a",
+          "9f5e58510fef",
+          "a0a6c5b7944c",
+          "a16adcc80a17",
+          "a3a758ff8480",
+          "ae44ba64b86e",
+          "aed6c2e4a475",
+          "b715eb4f046c",
+          "c195315cb039",
+          "c19db03d4586",
+          "c9775d884dc8",
+          "cf4302bbe4eb",
+          "d66a65bc87c7",
+          "de75087bf5fd",
+          "e114ea8de367",
+          "e30d0b92aed3",
+          "e55c4e1b3395",
+          "e59e4d58f170",
+          "e918281ec4db",
+          "eb5fa25c5926",
+          "edcb9b364a5b",
+          "ee4a8287ce7f",
+          "f1581096690c",
+          "f3517156ae03",
+          "f8c9d123f71e"
+        ],
+        "element_signature": [
+          "BUTTON:1. applicant",
+          "BUTTON:2. employment",
+          "BUTTON:3. documents",
+          "BUTTON:4. review",
+          "BUTTON:back",
+          "BUTTON:next",
+          "LINK:skip to main content",
+          "TEXT_FIELD:email",
+          "TEXT_FIELD:full name",
+          "TEXT_FIELD:phone (optional)"
+        ],
+        "accessibility_signature": [
+          "link:skip to main content",
+          "button:1. applicant",
+          "button:2. employment",
+          "button:3. documents",
+          "button:4. review",
+          "textbox:full name",
+          "textbox:email",
+          "textbox:phone (optional)",
+          "button:back",
+          "button:next"
+        ],
+        "form_signature": [
+          "annual income:empty",
+          "email:empty",
+          "employer name (optional):empty",
+          "employment status:filled",
+          "full name:empty",
+          "i agree to the terms:empty",
+          "i confirm the documents are genuine:empty",
+          "phone (optional):empty",
+          "reference code (optional):empty"
+        ],
+        "selected_controls": {
+          "SELECT:employment status": "Select a status"
+        },
+        "dialog_signature": [],
+        "pagination_signature": "|True|False",
+        "screenshot_hash": "4230304061626270",
+        "semantic_summary": "Application Form | 1 form(s) | controls: CANCEL, CREATE, FILTER, PAGINATE, UPLOAD | 19 interactive elements"
+      },
+      "page_identity": "127.0.0.1:3004",
+      "page_id": "p_66f1b8d0ab60",
+      "url": "http://127.0.0.1:3004/#/step-1",
+      "title": "Application Form",
+      "visible_text": "Skip to main content Community Grant Program Application form Grant application STEP 1 OF 4 1. Applicant 2. Employment 3. Documents 4. Review Step 1: Applicant Full name and email are required. Phone is optional. Full name Email Must contain an @ character. Phone (optional) If provided, exactly 10 digits, numbers only. Back Next",
+      "visible_elements": [
+        {
+          "element_id": "e_48a2f908bbcb",
+          "semantic_role": "BUTTON",
+          "visible_text": "1. Applicant",
+          "accessible_name": "1. Applicant",
+          "tag": "button",
+          "attributes": {
+            "type": "button",
+            "__css_path": "#step-list > li:nth-of-type(1) > button",
+            "__ax_role": "button"
+          },
+          "bounding_box": {
+            "x": 373.0,
+            "y": 182.6,
+            "width": 98.9,
+            "height": 36.9
+          },
+          "parent_id": null,
+          "children_ids": [],
+          "enabled": true,
+          "visible": true,
+          "focused": false,
+          "editable": false,
+          "value_state": {
+            "value": "",
+            "checked": null,
+            "selected": null,
+            "disabled_reason": null
+          },
+          "locator_candidates": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=button[name=1. Applicant]",
+              "confidence": 0.95,
+              "evidence": "accessible name derived from label/aria/text",
+              "params": {
+                "role": "button",
+                "name": "1. Applicant"
+              }
+            },
+            {
+              "strategy": "TEXT",
+              "selector": "text=1. Applicant",
+              "confidence": 0.7,
+              "evidence": "visible text content",
+              "params": {
+                "text": "1. Applicant"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "#step-list > li:nth-of-type(1) > button",
+              "confidence": 0.55,
+              "evidence": "structural path (survives text changes, breaks on re-layout)",
+              "params": {
+                "css": "#step-list > li:nth-of-type(1) > button"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(422,201)",
+              "confidence": 0.25,
+              "evidence": "last resort: geometry only, invalidated by any layout change",
+              "params": {
+                "x": 422.45,
+                "y": 201.04999999999998
+              }
+            }
+          ],
+          "confidence": 0.95,
+          "source": "dom+ax",
+          "snapshot_ref": "r1",
+          "in_dialog": false,
+          "in_form": null,
+          "section": "Community Grant Program"
+        },
+        {
+          "element_id": "e_c2c8520f6b76",
+          "semantic_role": "BUTTON",
+          "visible_text": "2. Employment",
+          "accessible_name": "2. Employment",
+          "tag": "button",
+          "attributes": {
+            "type": "button",
+            "__css_path": "#step-list > li:nth-of-type(2) > button",
+            "__ax_role": "button"
+          },
+          "bounding_box": {
+            "x": 479.9,
+            "y": 182.6,
+            "width": 119.9,
+            "height": 36.9
+          },
+          "parent_id": null,
+          "children_ids": [],
+          "enabled": true,
+          "visible": true,
+          "focused": false,
+          "editable": false,
+          "value_state": {
+            "value": "",
+            "checked": null,
+            "selected": null,
+            "disabled_reason": null
+          },
+          "locator_candidates": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=button[name=2. Employment]",
+              "confidence": 0.95,
+              "evidence": "accessible name derived from label/aria/text",
+              "params": {
+                "role": "button",
+                "name": "2. Employment"
+              }
+            },
+            {
+              "strategy": "TEXT",
+              "selector": "text=2. Employment",
+              "confidence": 0.7,
+              "evidence": "visible text content",
+              "params": {
+                "text": "2. Employment"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "#step-list > li:nth-of-type(2) > button",
+              "confidence": 0.55,
+              "evidence": "structural path (survives text changes, breaks on re-layout)",
+              "params": {
+                "css": "#step-list > li:nth-of-type(2) > button"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(540,201)",
+              "confidence": 0.25,
+              "evidence": "last resort: geometry only, invalidated by any layout change",
+              "params": {
+                "x": 539.85,
+                "y": 201.04999999999998
+              }
+            }
+          ],
+          "confidence": 0.95,
+          "source": "dom+ax",
+          "snapshot_ref": "r2",
+          "in_dialog": false,
+          "in_form": null,
+          "section": "Community Grant Program"
+        },
+        {
+          "element_id": "e_792d9cfd6729",
+          "semantic_role": "BUTTON",
+          "visible_text": "3. Documents",
+          "accessible_name": "3. Documents",
+          "tag": "button",
+          "attributes": {
+            "type": "button",
+            "__css_path": "#step-list > li:nth-of-type(3) > button",
+            "__ax_role": "button"
+          },
+          "bounding_box": {
+            "x": 607.8,
+            "y": 182.6,
+            "width": 112.1,
+            "height": 36.9
+          },
+          "parent_id": null,
+          "children_ids": [],
+          "enabled": true,
+          "visible": true,
+          "focused": false,
+          "editable": false,
+          "value_state": {
+            "value": "",
+            "checked": null,
+            "selected": null,
+            "disabled_reason": null
+          },
+          "locator_candidates": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=button[name=3. Documents]",
+              "confidence": 0.95,
+              "evidence": "accessible name derived from label/aria/text",
+              "params": {
+                "role": "button",
+                "name": "3. Documents"
+              }
+            },
+            {
+              "strategy": "TEXT",
+              "selector": "text=3. Documents",
+              "confidence": 0.7,
+              "evidence": "visible text content",
+              "params": {
+                "text": "3. Documents"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "#step-list > li:nth-of-type(3) > button",
+              "confidence": 0.55,
+              "evidence": "structural path (survives text changes, breaks on re-layout)",
+              "params": {
+                "css": "#step-list > li:nth-of-type(3) > button"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(664,201)",
+              "confidence": 0.25,
+              "evidence": "last resort: geometry only, invalidated by any layout change",
+              "params": {
+                "x": 663.8499999999999,
+                "y": 201.04999999999998
+              }
+            }
+          ],
+          "confidence": 0.95,
+          "source": "dom+ax",
+          "snapshot_ref": "r3",
+          "in_dialog": false,
+          "in_form": null,
+          "section": "Community Grant Program"
+        },
+        {
+          "element_id": "e_6267edf0dc78",
+          "semantic_role": "BUTTON",
+          "visible_text": "4. Review",
+          "accessible_name": "4. Review",
+          "tag": "button",
+          "attributes": {
+            "type": "button",
+            "__css_path": "#step-list > li:nth-of-type(4) > button",
+            "__ax_role": "button"
+          },
+          "bounding_box": {
+            "x": 728.0,
+            "y": 182.6,
+            "width": 85.7,
+            "height": 36.9
+          },
+          "parent_id": null,
+          "children_ids": [],
+          "enabled": true,
+          "visible": true,
+          "focused": false,
+          "editable": false,
+          "value_state": {
+            "value": "",
+            "checked": null,
+            "selected": null,
+            "disabled_reason": null
+          },
+          "locator_candidates": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=button[name=4. Review]",
+              "confidence": 0.95,
+              "evidence": "accessible name derived from label/aria/text",
+              "params": {
+                "role": "button",
+                "name": "4. Review"
+              }
+            },
+            {
+              "strategy": "TEXT",
+              "selector": "text=4. Review",
+              "confidence": 0.7,
+              "evidence": "visible text content",
+              "params": {
+                "text": "4. Review"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "#step-list > li:nth-of-type(4) > button",
+              "confidence": 0.55,
+              "evidence": "structural path (survives text changes, breaks on re-layout)",
+              "params": {
+                "css": "#step-list > li:nth-of-type(4) > button"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(771,201)",
+              "confidence": 0.25,
+              "evidence": "last resort: geometry only, invalidated by any layout change",
+              "params": {
+                "x": 770.85,
+                "y": 201.04999999999998
+              }
+            }
+          ],
+          "confidence": 0.95,
+          "source": "dom+ax",
+          "snapshot_ref": "r4",
+          "in_dialog": false,
+          "in_form": null,
+          "section": "Community Grant Program"
+        },
+        {
+          "element_id": "e_418b0726e619",
+          "semantic_role": "BUTTON",
+          "visible_text": "Next",
+          "accessible_name": "Next",
+          "tag": "button",
+          "attributes": {
+            "id": "next-btn",
+            "type": "button",
+            "__css_path": "#next-btn",
+            "__ax_role": "button"
+          },
+          "bounding_box": {
+            "x": 1000.6,
+            "y": 647.7,
+            "width": 66.4,
+            "height": 43.3
+          },
+          "parent_id": null,
+          "children_ids": [],
+          "enabled": true,
+          "visible": true,
+          "focused": false,
+          "editable": false,
+          "value_state": {
+            "value": "",
+            "checked": null,
+            "selected": null,
+            "disabled_reason": null
+          },
+          "locator_candidates": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=button[name=Next]",
+              "confidence": 0.95,
+              "evidence": "accessible name derived from label/aria/text",
+              "params": {
+                "role": "button",
+                "name": "Next"
+              }
+            },
+            {
+              "strategy": "ELEMENT_ID",
+              "selector": "#next-btn",
+              "confidence": 0.88,
+              "evidence": "element id (re-checked for stability across states)",
+              "params": {
+                "css": "#next-btn"
+              }
+            },
+            {
+              "strategy": "TEXT",
+              "selector": "text=Next",
+              "confidence": 0.7,
+              "evidence": "visible text content",
+              "params": {
+                "text": "Next"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "#next-btn",
+              "confidence": 0.55,
+              "evidence": "structural path (survives text changes, breaks on re-layout)",
+              "params": {
+                "css": "#next-btn"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(1034,669)",
+              "confidence": 0.25,
+              "evidence": "last resort: geometry only, invalidated by any layout change",
+              "params": {
+                "x": 1033.8,
+                "y": 669.35
+              }
+            }
+          ],
+          "confidence": 0.95,
+          "source": "dom+ax",
+          "snapshot_ref": "r16",
+          "in_dialog": false,
+          "in_form": "wizard-form",
+          "section": "Community Grant Program"
+        },
+        {
+          "element_id": "e_1408cd2dc54b",
+          "semantic_role": "LINK",
+          "visible_text": "Skip to main content",
+          "accessible_name": "Skip to main content",
+          "tag": "a",
+          "attributes": {
+            "href": "#main",
+            "__offscreen": "true",
+            "__css_path": "html > body > a",
+            "__ax_role": "link"
+          },
+          "bounding_box": {
+            "x": -9999.0,
+            "y": 0.0,
+            "width": 165.5,
+            "height": 43.3
+          },
+          "parent_id": null,
+          "children_ids": [],
+          "enabled": true,
+          "visible": true,
+          "focused": false,
+          "editable": false,
+          "value_state": {
+            "value": null,
+            "checked": null,
+            "selected": null,
+            "disabled_reason": null
+          },
+          "locator_candidates": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=a[name=Skip to main content]",
+              "confidence": 0.95,
+              "evidence": "accessible name derived from label/aria/text",
+              "params": {
+                "role": "a",
+                "name": "Skip to main content"
+              }
+            },
+            {
+              "strategy": "SEMANTIC_ATTR",
+              "selector": "a[href=\"#main\"]",
+              "confidence": 0.78,
+              "evidence": "link destination",
+              "params": {
+                "css": "a[href=\"#main\"]"
+              }
+            },
+            {
+              "strategy": "TEXT",
+              "selector": "text=Skip to main content",
+              "confidence": 0.7,
+              "evidence": "visible text content",
+              "params": {
+                "text": "Skip to main content"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "html > body > a",
+              "confidence": 0.55,
+              "evidence": "structural path (survives text changes, breaks on re-layout)",
+              "params": {
+                "css": "html > body > a"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(-9916,22)",
+              "confidence": 0.25,
+              "evidence": "last resort: geometry only, invalidated by any layout change",
+              "params": {
+                "x": -9916.25,
+                "y": 21.65
+              }
+            }
+          ],
+          "confidence": 0.95,
+          "source": "dom+ax",
+          "snapshot_ref": "r0",
+          "in_dialog": false,
+          "in_form": null,
+          "section": ""
+        },
+        {
+          "element_id": "e_5a362a950807",
+          "semantic_role": "TEXT_FIELD",
+          "visible_text": "",
+          "accessible_name": "Email",
+          "tag": "input",
+          "attributes": {
+            "id": "email",
+            "name": "email",
+            "type": "text",
+            "aria-describedby": "email-help",
+            "autocomplete": "email",
+            "__invalid": "true",
+            "__error_text": "Must contain an @ character.",
+            "__required": "true",
+            "__css_path": "#email",
+            "__validation_message": "Please fill out this field.",
+            "__valid": "false",
+            "__label": "Email",
+            "__ax_role": "textbox"
+          },
+          "bounding_box": {
+            "x": 373.0,
+            "y": 415.5,
+            "width": 380.0,
+            "height": 41.3
+          },
+          "parent_id": null,
+          "children_ids": [],
+          "enabled": true,
+          "visible": true,
+          "focused": false,
+          "editable": true,
+          "value_state": {
+            "value": "",
+            "checked": null,
+            "selected": null,
+            "disabled_reason": null
+          },
+          "locator_candidates": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=input[name=Email]",
+              "confidence": 0.95,
+              "evidence": "accessible name derived from label/aria/text",
+              "params": {
+                "role": "input",
+                "name": "Email"
+              }
+            },
+            {
+              "strategy": "LABEL",
+              "selector": "label=Email",
+              "confidence": 0.89,
+              "evidence": "associated <label> element",
+              "params": {
+                "label": "Email"
+              }
+            },
+            {
+              "strategy": "ELEMENT_ID",
+              "selector": "#email",
+              "confidence": 0.88,
+              "evidence": "element id (re-checked for stability across states)",
+              "params": {
+                "css": "#email"
+              }
+            },
+            {
+              "strategy": "NAME_ATTR",
+              "selector": "input[name=\"email\"]",
+              "confidence": 0.82,
+              "evidence": "form control name attribute",
+              "params": {
+                "css": "input[name=\"email\"]"
+              }
+            },
+            {
+              "strategy": "SEMANTIC_ATTR",
+              "selector": "input[type=\"text\"]",
+              "confidence": 0.68,
+              "evidence": "input type (weak: many controls share it)",
+              "params": {
+                "css": "input[type=\"text\"]"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "#email",
+              "confidence": 0.55,
+              "evidence": "structural path (survives text changes, breaks on re-layout)",
+              "params": {
+                "css": "#email"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(563,436)",
+              "confidence": 0.25,
+              "evidence": "last resort: geometry only, invalidated by any layout change",
+              "params": {
+                "x": 563.0,
+                "y": 436.15
+              }
+            }
+          ],
+          "confidence": 0.95,
+          "source": "dom+ax",
+          "snapshot_ref": "r6",
+          "in_dialog": false,
+          "in_form": "wizard-form",
+          "section": "Community Grant Program"
+        },
+        {
+          "element_id": "e_467c1a6649b7",
+          "semantic_role": "TEXT_FIELD",
+          "visible_text": "",
+          "accessible_name": "Full name",
+          "tag": "input",
+          "attributes": {
+            "id": "full-name",
+            "name": "fullName",
+            "type": "text",
+            "autocomplete": "name",
+            "__invalid": "true",
+            "__required": "true",
+            "__css_path": "#full-name",
+            "__validation_message": "Please fill out this field.",
+            "__valid": "false",
+            "__label": "Full name",
+            "__ax_role": "textbox"
+          },
+          "bounding_box": {
+            "x": 373.0,
+            "y": 332.4,
+            "width": 380.0,
+            "height": 41.3
+          },
+          "parent_id": null,
+          "children_ids": [],
+          "enabled": true,
+          "visible": true,
+          "focused": false,
+          "editable": true,
+          "value_state": {
+            "value": "",
+            "checked": null,
+            "selected": null,
+            "disabled_reason": null
+          },
+          "locator_candidates": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=input[name=Full name]",
+              "confidence": 0.95,
+              "evidence": "accessible name derived from label/aria/text",
+              "params": {
+                "role": "input",
+                "name": "Full name"
+              }
+            },
+            {
+              "strategy": "LABEL",
+              "selector": "label=Full name",
+              "confidence": 0.89,
+              "evidence": "associated <label> element",
+              "params": {
+                "label": "Full name"
+              }
+            },
+            {
+              "strategy": "ELEMENT_ID",
+              "selector": "#full-name",
+              "confidence": 0.88,
+              "evidence": "element id (re-checked for stability across states)",
+              "params": {
+                "css": "#full-name"
+              }
+            },
+            {
+              "strategy": "NAME_ATTR",
+              "selector": "input[name=\"fullName\"]",
+              "confidence": 0.82,
+              "evidence": "form control name attribute",
+              "params": {
+                "css": "input[name=\"fullName\"]"
+              }
+            },
+            {
+              "strategy": "SEMANTIC_ATTR",
+              "selector": "input[type=\"text\"]",
+              "confidence": 0.68,
+              "evidence": "input type (weak: many controls share it)",
+              "params": {
+                "css": "input[type=\"text\"]"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "#full-name",
+              "confidence": 0.55,
+              "evidence": "structural path (survives text changes, breaks on re-layout)",
+              "params": {
+                "css": "#full-name"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(563,353)",
+              "confidence": 0.25,
+              "evidence": "last resort: geometry only, invalidated by any layout change",
+              "params": {
+                "x": 563.0,
+                "y": 353.04999999999995
+              }
+            }
+          ],
+          "confidence": 0.95,
+          "source": "dom+ax",
+          "snapshot_ref": "r5",
+          "in_dialog": false,
+          "in_form": "wizard-form",
+          "section": "Community Grant Program"
+        },
+        {
+          "element_id": "e_fcdf340aa3fc",
+          "semantic_role": "TEXT_FIELD",
+          "visible_text": "",
+          "accessible_name": "Phone (optional)",
+          "tag": "input",
+          "attributes": {
+            "id": "phone",
+            "name": "phone",
+            "type": "text",
+            "aria-describedby": "phone-help",
+            "autocomplete": "tel",
+            "__error_text": "If provided, exactly 10 digits, numbers only.",
+            "__css_path": "#phone",
+            "__label": "Phone (optional)",
+            "__ax_role": "textbox"
+          },
+          "bounding_box": {
+            "x": 373.0,
+            "y": 523.1,
+            "width": 380.0,
+            "height": 41.3
+          },
+          "parent_id": null,
+          "children_ids": [],
+          "enabled": true,
+          "visible": true,
+          "focused": false,
+          "editable": true,
+          "value_state": {
+            "value": "",
+            "checked": null,
+            "selected": null,
+            "disabled_reason": null
+          },
+          "locator_candidates": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=input[name=Phone (optional)]",
+              "confidence": 0.95,
+              "evidence": "accessible name derived from label/aria/text",
+              "params": {
+                "role": "input",
+                "name": "Phone (optional)"
+              }
+            },
+            {
+              "strategy": "LABEL",
+              "selector": "label=Phone (optional)",
+              "confidence": 0.89,
+              "evidence": "associated <label> element",
+              "params": {
+                "label": "Phone (optional)"
+              }
+            },
+            {
+              "strategy": "ELEMENT_ID",
+              "selector": "#phone",
+              "confidence": 0.88,
+              "evidence": "element id (re-checked for stability across states)",
+              "params": {
+                "css": "#phone"
+              }
+            },
+            {
+              "strategy": "NAME_ATTR",
+              "selector": "input[name=\"phone\"]",
+              "confidence": 0.82,
+              "evidence": "form control name attribute",
+              "params": {
+                "css": "input[name=\"phone\"]"
+              }
+            },
+            {
+              "strategy": "SEMANTIC_ATTR",
+              "selector": "input[type=\"text\"]",
+              "confidence": 0.68,
+              "evidence": "input type (weak: many controls share it)",
+              "params": {
+                "css": "input[type=\"text\"]"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "#phone",
+              "confidence": 0.55,
+              "evidence": "structural path (survives text changes, breaks on re-layout)",
+              "params": {
+                "css": "#phone"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(563,544)",
+              "confidence": 0.25,
+              "evidence": "last resort: geometry only, invalidated by any layout change",
+              "params": {
+                "x": 563.0,
+                "y": 543.75
+              }
+            }
+          ],
+          "confidence": 0.95,
+          "source": "dom+ax",
+          "snapshot_ref": "r7",
+          "in_dialog": false,
+          "in_form": "wizard-form",
+          "section": "Community Grant Program"
+        },
+        {
+          "element_id": "e_69b05445c96d",
+          "semantic_role": "BUTTON",
+          "visible_text": "Back",
+          "accessible_name": "Back",
+          "tag": "button",
+          "attributes": {
+            "id": "back-btn",
+            "type": "button",
+            "__css_path": "#back-btn",
+            "__ax_role": "button"
+          },
+          "bounding_box": {
+            "x": 924.8,
+            "y": 647.7,
+            "width": 65.8,
+            "height": 43.3
+          },
+          "parent_id": null,
+          "children_ids": [],
+          "enabled": false,
+          "visible": true,
+          "focused": false,
+          "editable": false,
+          "value_state": {
+            "value": "",
+            "checked": null,
+            "selected": null,
+            "disabled_reason": null
+          },
+          "locator_candidates": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=button[name=Back]",
+              "confidence": 0.95,
+              "evidence": "accessible name derived from label/aria/text",
+              "params": {
+                "role": "button",
+                "name": "Back"
+              }
+            },
+            {
+              "strategy": "ELEMENT_ID",
+              "selector": "#back-btn",
+              "confidence": 0.88,
+              "evidence": "element id (re-checked for stability across states)",
+              "params": {
+                "css": "#back-btn"
+              }
+            },
+            {
+              "strategy": "TEXT",
+              "selector": "text=Back",
+              "confidence": 0.7,
+              "evidence": "visible text content",
+              "params": {
+                "text": "Back"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "#back-btn",
+              "confidence": 0.55,
+              "evidence": "structural path (survives text changes, breaks on re-layout)",
+              "params": {
+                "css": "#back-btn"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(958,669)",
+              "confidence": 0.25,
+              "evidence": "last resort: geometry only, invalidated by any layout change",
+              "params": {
+                "x": 957.6999999999999,
+                "y": 669.35
+              }
+            }
+          ],
+          "confidence": 0.9,
+          "source": "dom+ax",
+          "snapshot_ref": "r15",
+          "in_dialog": false,
+          "in_form": "wizard-form",
+          "section": "Community Grant Program"
+        }
+      ],
+      "forms": [
+        {
+          "form_id": "wizard-form",
+          "name": "",
+          "action_hint": "",
+          "fields": [
+            {
+              "element_id": "e_467c1a6649b7",
+              "name": "fullName",
+              "label": "Full name",
+              "role": "TEXT_FIELD",
+              "required": true,
+              "value": "",
+              "checked": null,
+              "options": []
+            },
+            {
+              "element_id": "e_5a362a950807",
+              "name": "email",
+              "label": "Email",
+              "role": "TEXT_FIELD",
+              "required": true,
+              "value": "",
+              "checked": null,
+              "options": []
+            },
+            {
+              "element_id": "e_fcdf340aa3fc",
+              "name": "phone",
+              "label": "Phone (optional)",
+              "role": "TEXT_FIELD",
+              "required": false,
+              "value": "",
+              "checked": null,
+              "options": []
+            },
+            {
+              "element_id": "e_d59c4469afd0",
+              "name": "employmentStatus",
+              "label": "Employment status",
+              "role": "SELECT",
+              "required": false,
+              "value": "Select a status",
+              "checked": null,
+              "options": [
+                "Select a status",
+                "Employed",
+                "Self-employed",
+                "Student",
+                "Unemployed"
+              ]
+            },
+            {
+              "element_id": "e_7b14667153ba",
+              "name": "annualIncome",
+              "label": "Annual income",
+              "role": "TEXT_FIELD",
+              "required": false,
+              "value": "",
+              "checked": null,
+              "options": []
+            },
+            {
+              "element_id": "e_cd34c5b5281f",
+              "name": "employerName",
+              "label": "Employer name (optional)",
+              "role": "TEXT_FIELD",
+              "required": false,
+              "value": "",
+              "checked": null,
+              "options": []
+            },
+            {
+              "element_id": "e_19c32d34fb74",
+              "name": "confirmGenuine",
+              "label": "I confirm the documents are genuine",
+              "role": "CHECKBOX",
+              "required": true,
+              "value": "",
+              "checked": false,
+              "options": []
+            },
+            {
+              "element_id": "e_b49ad9db5200",
+              "name": "referenceCode",
+              "label": "Reference code (optional)",
+              "role": "TEXT_FIELD",
+              "required": false,
+              "value": "",
+              "checked": null,
+              "options": []
+            },
+            {
+              "element_id": "e_3f5068a07b18",
+              "name": "agreeTerms",
+              "label": "I agree to the terms",
+              "role": "CHECKBOX",
+              "required": true,
+              "value": "",
+              "checked": false,
+              "options": []
+            }
+          ],
+          "submit_element_ids": [
+            "e_f66d069f0ef5",
+            "e_69b05445c96d",
+            "e_418b0726e619",
+            "e_175a4b4354c8"
+          ],
+          "in_dialog": false
+        }
+      ],
+      "dialogs": [],
+      "pagination": {
+        "page_label": "",
+        "page_index": null,
+        "page_count": null,
+        "has_next": true,
+        "has_previous": false
+      },
+      "session": {
+        "authenticated": false,
+        "user_hint": null,
+        "cookie_names": [],
+        "notes": []
+      },
+      "semantic_summary": "Application Form | 1 form(s) | controls: CANCEL, CREATE, FILTER, PAGINATE, UPLOAD | 19 interactive elements",
+      "confidence": 0.7,
+      "status": "CURRENT",
+      "observation_id": "o_0b011fe7ef86",
+      "screenshot_ref": "artifacts\\screenshots\\obs-73648c2b99472bce.png",
+      "first_seen": "2026-10-08T18:46:29.457180+00:00",
+      "last_seen": "2026-10-08T18:51:46.864006+00:00",
+      "visit_count": 132
+    }
+  ],
+  "transitions": [
+    {
+      "transition_id": "t_2557e026a90c",
+      "source_state": "s_6481a1d32d51",
+      "action": {
+        "action_id": "a_dc343d195aa8",
+        "type": "CLICK",
+        "target": {
+          "element_id": "e_48a2f908bbcb",
+          "role": "BUTTON",
+          "name": "1. Applicant",
+          "tag": "button",
+          "locators": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=button[name=1. Applicant]",
+              "confidence": 0.95,
+              "params": {
+                "role": "button",
+                "name": "1. Applicant"
+              }
+            },
+            {
+              "strategy": "TEXT",
+              "selector": "text=1. Applicant",
+              "confidence": 0.7,
+              "params": {
+                "text": "1. Applicant"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "#step-list > li:nth-of-type(1) > button",
+              "confidence": 0.55,
+              "params": {
+                "css": "#step-list > li:nth-of-type(1) > button"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(422,201)",
+              "confidence": 0.25,
+              "params": {
+                "x": 422.45,
+                "y": 201.04999999999998
+              }
+            }
+          ]
+        },
+        "parameters": {},
+        "expected_effect": [
+          "DIALOG_OPENED",
+          "NAVIGATION",
+          "ELEMENTS_ADDED",
+          "SUCCESS_MESSAGE",
+          "VALIDATION_MESSAGE",
+          "TEXT_CHANGED"
+        ],
+        "risk": "LOW",
+        "confidence": 0.95,
+        "origin": "generator",
+        "rationale": "click 1. Applicant"
+      },
+      "target_state": "s_6481a1d32d51",
+      "observed_effects": [
+        {
+          "kind": "NO_EFFECT",
+          "detail": "no observable change",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "preconditions": [],
+      "postconditions": [],
+      "confidence": 0.4400000000000001,
+      "status": "VERIFIED",
+      "execution_count": 8,
+      "success_count": 4,
+      "failure_count": 4,
+      "evidence_ids": [
+        "ev_efb2fcad2964",
+        "ev_4d347321956c",
+        "ev_d8f61f4b7383",
+        "ev_667d7c974163"
+      ],
+      "created_at": "2026-10-08T18:46:30.220821+00:00",
+      "updated_at": "2026-10-08T18:51:32.440908+00:00"
+    },
+    {
+      "transition_id": "t_eb981ba9b814",
+      "source_state": "s_6481a1d32d51",
+      "action": {
+        "action_id": "a_90188ee78152",
+        "type": "CLICK",
+        "target": {
+          "element_id": "e_c2c8520f6b76",
+          "role": "BUTTON",
+          "name": "2. Employment",
+          "tag": "button",
+          "locators": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=button[name=2. Employment]",
+              "confidence": 0.95,
+              "params": {
+                "role": "button",
+                "name": "2. Employment"
+              }
+            },
+            {
+              "strategy": "TEXT",
+              "selector": "text=2. Employment",
+              "confidence": 0.7,
+              "params": {
+                "text": "2. Employment"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "#step-list > li:nth-of-type(2) > button",
+              "confidence": 0.55,
+              "params": {
+                "css": "#step-list > li:nth-of-type(2) > button"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(540,201)",
+              "confidence": 0.25,
+              "params": {
+                "x": 539.85,
+                "y": 201.04999999999998
+              }
+            }
+          ]
+        },
+        "parameters": {},
+        "expected_effect": [
+          "DIALOG_OPENED",
+          "NAVIGATION",
+          "ELEMENTS_ADDED",
+          "SUCCESS_MESSAGE",
+          "VALIDATION_MESSAGE",
+          "TEXT_CHANGED"
+        ],
+        "risk": "LOW",
+        "confidence": 0.95,
+        "origin": "generator",
+        "rationale": "click 2. Employment"
+      },
+      "target_state": "s_6481a1d32d51",
+      "observed_effects": [
+        {
+          "kind": "TEXT_CHANGED",
+          "detail": "Complete the current step before moving to step 2.",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "preconditions": [],
+      "postconditions": [],
+      "confidence": 0.9400000000000002,
+      "status": "VERIFIED",
+      "execution_count": 9,
+      "success_count": 9,
+      "failure_count": 0,
+      "evidence_ids": [
+        "ev_4bfc2130cfba",
+        "ev_ac160355d5e6",
+        "ev_8f0819a16f19",
+        "ev_21580f6cfbb5"
+      ],
+      "created_at": "2026-10-08T18:46:31.672621+00:00",
+      "updated_at": "2026-10-08T18:51:16.708817+00:00"
+    },
+    {
+      "transition_id": "t_5fa776879d6a",
+      "source_state": "s_6481a1d32d51",
+      "action": {
+        "action_id": "a_3576d866c012",
+        "type": "CLICK",
+        "target": {
+          "element_id": "e_792d9cfd6729",
+          "role": "BUTTON",
+          "name": "3. Documents",
+          "tag": "button",
+          "locators": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=button[name=3. Documents]",
+              "confidence": 0.95,
+              "params": {
+                "role": "button",
+                "name": "3. Documents"
+              }
+            },
+            {
+              "strategy": "TEXT",
+              "selector": "text=3. Documents",
+              "confidence": 0.7,
+              "params": {
+                "text": "3. Documents"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "#step-list > li:nth-of-type(3) > button",
+              "confidence": 0.55,
+              "params": {
+                "css": "#step-list > li:nth-of-type(3) > button"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(664,201)",
+              "confidence": 0.25,
+              "params": {
+                "x": 663.8499999999999,
+                "y": 201.04999999999998
+              }
+            }
+          ]
+        },
+        "parameters": {},
+        "expected_effect": [
+          "DIALOG_OPENED",
+          "NAVIGATION",
+          "ELEMENTS_ADDED",
+          "SUCCESS_MESSAGE",
+          "VALIDATION_MESSAGE",
+          "TEXT_CHANGED"
+        ],
+        "risk": "LOW",
+        "confidence": 0.95,
+        "origin": "generator",
+        "rationale": "click 3. Documents"
+      },
+      "target_state": "s_6481a1d32d51",
+      "observed_effects": [
+        {
+          "kind": "TEXT_CHANGED",
+          "detail": "Complete the current step before moving to step 3.",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "preconditions": [],
+      "postconditions": [],
+      "confidence": 0.9400000000000002,
+      "status": "VERIFIED",
+      "execution_count": 9,
+      "success_count": 9,
+      "failure_count": 0,
+      "evidence_ids": [
+        "ev_eaf184f2d5b0",
+        "ev_03d877eee3d1",
+        "ev_550ed1fa5a6e",
+        "ev_9edc0ce38f1e"
+      ],
+      "created_at": "2026-10-08T18:46:33.120645+00:00",
+      "updated_at": "2026-10-08T18:51:18.165313+00:00"
+    },
+    {
+      "transition_id": "t_ba3bb03e440f",
+      "source_state": "s_6481a1d32d51",
+      "action": {
+        "action_id": "a_05df2e4e1383",
+        "type": "CLICK",
+        "target": {
+          "element_id": "e_6267edf0dc78",
+          "role": "BUTTON",
+          "name": "4. Review",
+          "tag": "button",
+          "locators": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=button[name=4. Review]",
+              "confidence": 0.95,
+              "params": {
+                "role": "button",
+                "name": "4. Review"
+              }
+            },
+            {
+              "strategy": "TEXT",
+              "selector": "text=4. Review",
+              "confidence": 0.7,
+              "params": {
+                "text": "4. Review"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "#step-list > li:nth-of-type(4) > button",
+              "confidence": 0.55,
+              "params": {
+                "css": "#step-list > li:nth-of-type(4) > button"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(771,201)",
+              "confidence": 0.25,
+              "params": {
+                "x": 770.85,
+                "y": 201.04999999999998
+              }
+            }
+          ]
+        },
+        "parameters": {},
+        "expected_effect": [
+          "DIALOG_OPENED",
+          "NAVIGATION",
+          "ELEMENTS_ADDED",
+          "SUCCESS_MESSAGE",
+          "VALIDATION_MESSAGE",
+          "TEXT_CHANGED"
+        ],
+        "risk": "LOW",
+        "confidence": 0.95,
+        "origin": "generator",
+        "rationale": "click 4. Review"
+      },
+      "target_state": "s_6481a1d32d51",
+      "observed_effects": [
+        {
+          "kind": "TEXT_CHANGED",
+          "detail": "Complete the current step before moving to step 4.",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "preconditions": [],
+      "postconditions": [],
+      "confidence": 0.9400000000000002,
+      "status": "VERIFIED",
+      "execution_count": 9,
+      "success_count": 9,
+      "failure_count": 0,
+      "evidence_ids": [
+        "ev_1b65ad5a03ec",
+        "ev_ff80fe6aff4d",
+        "ev_33489decf75d",
+        "ev_759d81280835"
+      ],
+      "created_at": "2026-10-08T18:46:34.502429+00:00",
+      "updated_at": "2026-10-08T18:51:19.701207+00:00"
+    },
+    {
+      "transition_id": "t_39f91fbb3371",
+      "source_state": "s_6481a1d32d51",
+      "action": {
+        "action_id": "a_12056f08a27e",
+        "type": "CLICK",
+        "target": {
+          "element_id": "e_418b0726e619",
+          "role": "BUTTON",
+          "name": "Next",
+          "tag": "button",
+          "locators": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=button[name=Next]",
+              "confidence": 0.95,
+              "params": {
+                "role": "button",
+                "name": "Next"
+              }
+            },
+            {
+              "strategy": "ELEMENT_ID",
+              "selector": "#next-btn",
+              "confidence": 0.88,
+              "params": {
+                "css": "#next-btn"
+              }
+            },
+            {
+              "strategy": "TEXT",
+              "selector": "text=Next",
+              "confidence": 0.7,
+              "params": {
+                "text": "Next"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "#next-btn",
+              "confidence": 0.55,
+              "params": {
+                "css": "#next-btn"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(1034,728)",
+              "confidence": 0.25,
+              "params": {
+                "x": 1033.8,
+                "y": 728.25
+              }
+            }
+          ]
+        },
+        "parameters": {},
+        "expected_effect": [
+          "DIALOG_OPENED",
+          "NAVIGATION",
+          "ELEMENTS_CHANGED"
+        ],
+        "risk": "LOW",
+        "confidence": 0.95,
+        "origin": "generator",
+        "rationale": "click Next"
+      },
+      "target_state": "s_6481a1d32d51",
+      "observed_effects": [
+        {
+          "kind": "VALIDATION_MESSAGE",
+          "detail": "Full name is required. Email is required.",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": "Full name is required. Email is required."
+        },
+        {
+          "kind": "PRECONDITION_BLOCKED",
+          "detail": "Full name is required. Email is required.",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": "Full name is required. Email is required."
+        },
+        {
+          "kind": "TEXT_CHANGED",
+          "detail": "removed: the before moving complete current",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        },
+        {
+          "kind": "ELEMENTS_CHANGED",
+          "detail": "TEXT_FIELD:Phone (optional)",
+          "before": null,
+          "after": null,
+          "element_id": "e_418b0726e619",
+          "message": null
+        },
+        {
+          "kind": "VALIDATION_MESSAGE",
+          "detail": "Phone must be exactly 10 digits.",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": "Phone must be exactly 10 digits."
+        },
+        {
+          "kind": "PRECONDITION_BLOCKED",
+          "detail": "Phone must be exactly 10 digits.",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": "Phone must be exactly 10 digits."
+        },
+        {
+          "kind": "TEXT_CHANGED",
+          "detail": "added: be digits.; removed: the before moving complete current",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        },
+        {
+          "kind": "TEXT_CHANGED",
+          "detail": "removed: complete before current moving the",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        },
+        {
+          "kind": "TEXT_CHANGED",
+          "detail": "added: digits. be; removed: complete before current moving the",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "preconditions": [],
+      "postconditions": [
+        "validation:Full name is required. Email is required.",
+        "validation:Phone must be exactly 10 digits."
+      ],
+      "confidence": 0.4400000000000001,
+      "status": "VERIFIED",
+      "execution_count": 8,
+      "success_count": 4,
+      "failure_count": 4,
+      "evidence_ids": [
+        "ev_cb44c2001ee0",
+        "ev_894b08546456",
+        "ev_ce3661f90a81",
+        "ev_a4b1aa031a1b"
+      ],
+      "created_at": "2026-10-08T18:46:35.962215+00:00",
+      "updated_at": "2026-10-08T18:51:21.342774+00:00"
+    },
+    {
+      "transition_id": "t_f319d0de4d11",
+      "source_state": "s_6481a1d32d51",
+      "action": {
+        "action_id": "a_4d6497c329eb",
+        "type": "CLICK",
+        "target": {
+          "element_id": "e_1408cd2dc54b",
+          "role": "LINK",
+          "name": "Skip to main content",
+          "tag": "a",
+          "locators": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=a[name=Skip to main content]",
+              "confidence": 0.95,
+              "params": {
+                "role": "a",
+                "name": "Skip to main content"
+              }
+            },
+            {
+              "strategy": "SEMANTIC_ATTR",
+              "selector": "a[href=\"#main\"]",
+              "confidence": 0.78,
+              "params": {
+                "css": "a[href=\"#main\"]"
+              }
+            },
+            {
+              "strategy": "TEXT",
+              "selector": "text=Skip to main content",
+              "confidence": 0.7,
+              "params": {
+                "text": "Skip to main content"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "html > body > a",
+              "confidence": 0.55,
+              "params": {
+                "css": "html > body > a"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(-9916,22)",
+              "confidence": 0.25,
+              "params": {
+                "x": -9916.25,
+                "y": 21.65
+              }
+            }
+          ]
+        },
+        "parameters": {},
+        "expected_effect": [
+          "NAVIGATION",
+          "URL_CHANGE"
+        ],
+        "risk": "LOW",
+        "confidence": 0.95,
+        "origin": "generator",
+        "rationale": "click Skip to main content"
+      },
+      "target_state": "s_6481a1d32d51",
+      "observed_effects": [
+        {
+          "kind": "NO_EFFECT",
+          "detail": "no observable change",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "preconditions": [],
+      "postconditions": [],
+      "confidence": 0.05,
+      "status": "REFUTED",
+      "execution_count": 8,
+      "success_count": 0,
+      "failure_count": 8,
+      "evidence_ids": [
+        "ev_9c15649bed3f",
+        "ev_cea873096184",
+        "ev_a7a01a096795",
+        "ev_9e2a5c75241d"
+      ],
+      "created_at": "2026-10-08T18:46:37.421739+00:00",
+      "updated_at": "2026-10-08T18:51:33.921925+00:00"
+    },
+    {
+      "transition_id": "t_a6a1637053db",
+      "source_state": "s_6481a1d32d51",
+      "action": {
+        "action_id": "a_e88687fa0680",
+        "type": "TYPE",
+        "target": {
+          "element_id": "e_5a362a950807",
+          "role": "TEXT_FIELD",
+          "name": "Email",
+          "tag": "input",
+          "locators": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=input[name=Email]",
+              "confidence": 0.95,
+              "params": {
+                "role": "input",
+                "name": "Email"
+              }
+            },
+            {
+              "strategy": "LABEL",
+              "selector": "label=Email",
+              "confidence": 0.89,
+              "params": {
+                "label": "Email"
+              }
+            },
+            {
+              "strategy": "ELEMENT_ID",
+              "selector": "#email",
+              "confidence": 0.88,
+              "params": {
+                "css": "#email"
+              }
+            },
+            {
+              "strategy": "NAME_ATTR",
+              "selector": "input[name=\"email\"]",
+              "confidence": 0.82,
+              "params": {
+                "css": "input[name=\"email\"]"
+              }
+            },
+            {
+              "strategy": "SEMANTIC_ATTR",
+              "selector": "input[type=\"text\"]",
+              "confidence": 0.68,
+              "params": {
+                "css": "input[type=\"text\"]"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "#email",
+              "confidence": 0.55,
+              "params": {
+                "css": "#email"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(563,495)",
+              "confidence": 0.25,
+              "params": {
+                "x": 563.0,
+                "y": 495.15
+              }
+            }
+          ]
+        },
+        "parameters": {
+          "value": "blackbox.sample1@example.com"
+        },
+        "expected_effect": [
+          "VALUE_CHANGED",
+          "FORM_CHANGED"
+        ],
+        "risk": "LOW",
+        "confidence": 0.95,
+        "origin": "generator",
+        "rationale": "fill Email with a synthesized value"
+      },
+      "target_state": "s_6481a1d32d51",
+      "observed_effects": [
+        {
+          "kind": "VALUE_CHANGED",
+          "detail": "TEXT_FIELD:Email",
+          "before": null,
+          "after": null,
+          "element_id": "e_5a362a950807",
+          "message": null
+        },
+        {
+          "kind": "FORM_CHANGED",
+          "detail": "form wizard-form: value changed for email",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "preconditions": [],
+      "postconditions": [
+        "value_changed:TEXT_FIELD:Email"
+      ],
+      "confidence": 0.9400000000000002,
+      "status": "VERIFIED",
+      "execution_count": 9,
+      "success_count": 9,
+      "failure_count": 0,
+      "evidence_ids": [
+        "ev_7972182d57c1",
+        "ev_7762c5ea0ab9",
+        "ev_e035ee111ca5",
+        "ev_ef730336fca4"
+      ],
+      "created_at": "2026-10-08T18:46:39.111274+00:00",
+      "updated_at": "2026-10-08T18:51:23.557665+00:00"
+    },
+    {
+      "transition_id": "t_7cc5abef2c5c",
+      "source_state": "s_6481a1d32d51",
+      "action": {
+        "action_id": "a_a22822ee2769",
+        "type": "CLEAR",
+        "target": {
+          "element_id": "e_5a362a950807",
+          "role": "TEXT_FIELD",
+          "name": "Email",
+          "tag": "input",
+          "locators": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=input[name=Email]",
+              "confidence": 0.95,
+              "params": {
+                "role": "input",
+                "name": "Email"
+              }
+            },
+            {
+              "strategy": "LABEL",
+              "selector": "label=Email",
+              "confidence": 0.89,
+              "params": {
+                "label": "Email"
+              }
+            },
+            {
+              "strategy": "ELEMENT_ID",
+              "selector": "#email",
+              "confidence": 0.88,
+              "params": {
+                "css": "#email"
+              }
+            },
+            {
+              "strategy": "NAME_ATTR",
+              "selector": "input[name=\"email\"]",
+              "confidence": 0.82,
+              "params": {
+                "css": "input[name=\"email\"]"
+              }
+            },
+            {
+              "strategy": "SEMANTIC_ATTR",
+              "selector": "input[type=\"text\"]",
+              "confidence": 0.68,
+              "params": {
+                "css": "input[type=\"text\"]"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "#email",
+              "confidence": 0.55,
+              "params": {
+                "css": "#email"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(563,495)",
+              "confidence": 0.25,
+              "params": {
+                "x": 563.0,
+                "y": 495.15
+              }
+            }
+          ]
+        },
+        "parameters": {},
+        "expected_effect": [
+          "VALUE_CHANGED"
+        ],
+        "risk": "LOW",
+        "confidence": 0.95,
+        "origin": "generator",
+        "rationale": ""
+      },
+      "target_state": "s_6481a1d32d51",
+      "observed_effects": [
+        {
+          "kind": "NO_EFFECT",
+          "detail": "no observable change",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "preconditions": [],
+      "postconditions": [],
+      "confidence": 0.05,
+      "status": "REFUTED",
+      "execution_count": 36,
+      "success_count": 0,
+      "failure_count": 36,
+      "evidence_ids": [
+        "ev_37a392fe3343",
+        "ev_b64b0a0b4761",
+        "ev_bbd37e50fd17",
+        "ev_b57ad9359d86",
+        "ev_e72ff951e346",
+        "ev_810a5224cb58",
+        "ev_ff253502c6a5",
+        "ev_1bd8663a3bee",
+        "ev_1b5cf24763b1",
+        "ev_0f7f1b73607a",
+        "ev_cafcfd0aecbf",
+        "ev_e86b483041de",
+        "ev_ef32fdcbd5be",
+        "ev_bac5accf7fc0",
+        "ev_f22b3246dd34",
+        "ev_725546e23263",
+        "ev_c90768ca09f0",
+        "ev_d356a13ea7a5"
+      ],
+      "created_at": "2026-10-08T18:46:40.585710+00:00",
+      "updated_at": "2026-10-08T18:51:46.864006+00:00"
+    },
+    {
+      "transition_id": "t_45d38ae6147a",
+      "source_state": "s_6481a1d32d51",
+      "action": {
+        "action_id": "a_528a66219ed9",
+        "type": "TYPE",
+        "target": {
+          "element_id": "e_467c1a6649b7",
+          "role": "TEXT_FIELD",
+          "name": "Full name",
+          "tag": "input",
+          "locators": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=input[name=Full name]",
+              "confidence": 0.95,
+              "params": {
+                "role": "input",
+                "name": "Full name"
+              }
+            },
+            {
+              "strategy": "LABEL",
+              "selector": "label=Full name",
+              "confidence": 0.89,
+              "params": {
+                "label": "Full name"
+              }
+            },
+            {
+              "strategy": "ELEMENT_ID",
+              "selector": "#full-name",
+              "confidence": 0.88,
+              "params": {
+                "css": "#full-name"
+              }
+            },
+            {
+              "strategy": "NAME_ATTR",
+              "selector": "input[name=\"fullName\"]",
+              "confidence": 0.82,
+              "params": {
+                "css": "input[name=\"fullName\"]"
+              }
+            },
+            {
+              "strategy": "SEMANTIC_ATTR",
+              "selector": "input[type=\"text\"]",
+              "confidence": 0.68,
+              "params": {
+                "css": "input[type=\"text\"]"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "#full-name",
+              "confidence": 0.55,
+              "params": {
+                "css": "#full-name"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(563,412)",
+              "confidence": 0.25,
+              "params": {
+                "x": 563.0,
+                "y": 411.95
+              }
+            }
+          ]
+        },
+        "parameters": {
+          "value": "BlackBox Sample"
+        },
+        "expected_effect": [
+          "VALUE_CHANGED",
+          "FORM_CHANGED"
+        ],
+        "risk": "LOW",
+        "confidence": 0.95,
+        "origin": "generator",
+        "rationale": "fill Full name with a synthesized value"
+      },
+      "target_state": "s_6481a1d32d51",
+      "observed_effects": [
+        {
+          "kind": "VALUE_CHANGED",
+          "detail": "TEXT_FIELD:Full name",
+          "before": null,
+          "after": null,
+          "element_id": "e_467c1a6649b7",
+          "message": null
+        },
+        {
+          "kind": "FORM_CHANGED",
+          "detail": "form wizard-form: value changed for full name",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "preconditions": [],
+      "postconditions": [
+        "value_changed:TEXT_FIELD:Full name"
+      ],
+      "confidence": 0.8600000000000001,
+      "status": "VERIFIED",
+      "execution_count": 5,
+      "success_count": 5,
+      "failure_count": 0,
+      "evidence_ids": [
+        "ev_1ac8c54f9ab1",
+        "ev_069f1f81fb5f"
+      ],
+      "created_at": "2026-10-08T18:46:42.169173+00:00",
+      "updated_at": "2026-10-08T18:51:08.027260+00:00"
+    },
+    {
+      "transition_id": "t_4dcd6d4c90c9",
+      "source_state": "s_6481a1d32d51",
+      "action": {
+        "action_id": "a_255f5284a41b",
+        "type": "CLEAR",
+        "target": {
+          "element_id": "e_467c1a6649b7",
+          "role": "TEXT_FIELD",
+          "name": "Full name",
+          "tag": "input",
+          "locators": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=input[name=Full name]",
+              "confidence": 0.95,
+              "params": {
+                "role": "input",
+                "name": "Full name"
+              }
+            },
+            {
+              "strategy": "LABEL",
+              "selector": "label=Full name",
+              "confidence": 0.89,
+              "params": {
+                "label": "Full name"
+              }
+            },
+            {
+              "strategy": "ELEMENT_ID",
+              "selector": "#full-name",
+              "confidence": 0.88,
+              "params": {
+                "css": "#full-name"
+              }
+            },
+            {
+              "strategy": "NAME_ATTR",
+              "selector": "input[name=\"fullName\"]",
+              "confidence": 0.82,
+              "params": {
+                "css": "input[name=\"fullName\"]"
+              }
+            },
+            {
+              "strategy": "SEMANTIC_ATTR",
+              "selector": "input[type=\"text\"]",
+              "confidence": 0.68,
+              "params": {
+                "css": "input[type=\"text\"]"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "#full-name",
+              "confidence": 0.55,
+              "params": {
+                "css": "#full-name"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(563,412)",
+              "confidence": 0.25,
+              "params": {
+                "x": 563.0,
+                "y": 411.95
+              }
+            }
+          ]
+        },
+        "parameters": {},
+        "expected_effect": [
+          "VALUE_CHANGED"
+        ],
+        "risk": "LOW",
+        "confidence": 0.95,
+        "origin": "generator",
+        "rationale": ""
+      },
+      "target_state": "s_6481a1d32d51",
+      "observed_effects": [
+        {
+          "kind": "NO_EFFECT",
+          "detail": "no observable change",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "preconditions": [],
+      "postconditions": [],
+      "confidence": 0.05,
+      "status": "REFUTED",
+      "execution_count": 8,
+      "success_count": 0,
+      "failure_count": 8,
+      "evidence_ids": [
+        "ev_39941b4991cf",
+        "ev_41ac6d0ae6a6",
+        "ev_4e28aee888e2",
+        "ev_337fbae95dcb"
+      ],
+      "created_at": "2026-10-08T18:46:43.632342+00:00",
+      "updated_at": "2026-10-08T18:51:29.594725+00:00"
+    },
+    {
+      "transition_id": "t_395797cfe8ab",
+      "source_state": "s_6481a1d32d51",
+      "action": {
+        "action_id": "a_935fe93aafa8",
+        "type": "TYPE",
+        "target": {
+          "element_id": "e_467c1a6649b7",
+          "role": "TEXT_FIELD",
+          "name": "Full name",
+          "tag": "input",
+          "locators": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=input[name=Full name]",
+              "confidence": 0.95,
+              "params": {
+                "role": "input",
+                "name": "Full name"
+              }
+            },
+            {
+              "strategy": "LABEL",
+              "selector": "label=Full name",
+              "confidence": 0.89,
+              "params": {
+                "label": "Full name"
+              }
+            },
+            {
+              "strategy": "ELEMENT_ID",
+              "selector": "#full-name",
+              "confidence": 0.88,
+              "params": {
+                "css": "#full-name"
+              }
+            },
+            {
+              "strategy": "NAME_ATTR",
+              "selector": "input[name=\"fullName\"]",
+              "confidence": 0.82,
+              "params": {
+                "css": "input[name=\"fullName\"]"
+              }
+            },
+            {
+              "strategy": "SEMANTIC_ATTR",
+              "selector": "input[type=\"text\"]",
+              "confidence": 0.68,
+              "params": {
+                "css": "input[type=\"text\"]"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "#full-name",
+              "confidence": 0.55,
+              "params": {
+                "css": "#full-name"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(563,412)",
+              "confidence": 0.25,
+              "params": {
+                "x": 563.0,
+                "y": 411.95
+              }
+            }
+          ]
+        },
+        "parameters": {
+          "value": "BlackBox Sample 2"
+        },
+        "expected_effect": [
+          "VALUE_CHANGED",
+          "FORM_CHANGED"
+        ],
+        "risk": "LOW",
+        "confidence": 0.95,
+        "origin": "generator",
+        "rationale": "fill Full name with a synthesized value"
+      },
+      "target_state": "s_6481a1d32d51",
+      "observed_effects": [
+        {
+          "kind": "VALUE_CHANGED",
+          "detail": "TEXT_FIELD:Full name",
+          "before": null,
+          "after": null,
+          "element_id": "e_467c1a6649b7",
+          "message": null
+        },
+        {
+          "kind": "FORM_CHANGED",
+          "detail": "form wizard-form: value changed for full name",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "preconditions": [],
+      "postconditions": [
+        "value_changed:TEXT_FIELD:Full name"
+      ],
+      "confidence": 0.9400000000000002,
+      "status": "VERIFIED",
+      "execution_count": 9,
+      "success_count": 9,
+      "failure_count": 0,
+      "evidence_ids": [
+        "ev_7a9d644b25bd",
+        "ev_68450eae19b4",
+        "ev_3fc00be4abf1",
+        "ev_5fdf710becdb"
+      ],
+      "created_at": "2026-10-08T18:46:45.200001+00:00",
+      "updated_at": "2026-10-08T18:51:25.135677+00:00"
+    },
+    {
+      "transition_id": "t_36cfd21de9f5",
+      "source_state": "s_6481a1d32d51",
+      "action": {
+        "action_id": "a_d5ec41f95762",
+        "type": "TYPE",
+        "target": {
+          "element_id": "e_fcdf340aa3fc",
+          "role": "TEXT_FIELD",
+          "name": "Phone (optional)",
+          "tag": "input",
+          "locators": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=input[name=Phone (optional)]",
+              "confidence": 0.95,
+              "params": {
+                "role": "input",
+                "name": "Phone (optional)"
+              }
+            },
+            {
+              "strategy": "LABEL",
+              "selector": "label=Phone (optional)",
+              "confidence": 0.89,
+              "params": {
+                "label": "Phone (optional)"
+              }
+            },
+            {
+              "strategy": "ELEMENT_ID",
+              "selector": "#phone",
+              "confidence": 0.88,
+              "params": {
+                "css": "#phone"
+              }
+            },
+            {
+              "strategy": "NAME_ATTR",
+              "selector": "input[name=\"phone\"]",
+              "confidence": 0.82,
+              "params": {
+                "css": "input[name=\"phone\"]"
+              }
+            },
+            {
+              "strategy": "SEMANTIC_ATTR",
+              "selector": "input[type=\"text\"]",
+              "confidence": 0.68,
+              "params": {
+                "css": "input[type=\"text\"]"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "#phone",
+              "confidence": 0.55,
+              "params": {
+                "css": "#phone"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(563,603)",
+              "confidence": 0.25,
+              "params": {
+                "x": 563.0,
+                "y": 602.65
+              }
+            }
+          ]
+        },
+        "parameters": {
+          "value": "42"
+        },
+        "expected_effect": [
+          "VALUE_CHANGED",
+          "FORM_CHANGED"
+        ],
+        "risk": "LOW",
+        "confidence": 0.95,
+        "origin": "generator",
+        "rationale": "fill Phone (optional) with a synthesized value"
+      },
+      "target_state": "s_6481a1d32d51",
+      "observed_effects": [
+        {
+          "kind": "VALUE_CHANGED",
+          "detail": "TEXT_FIELD:Phone (optional)",
+          "before": null,
+          "after": null,
+          "element_id": "e_fcdf340aa3fc",
+          "message": null
+        },
+        {
+          "kind": "FORM_CHANGED",
+          "detail": "form wizard-form: value changed for phone (optional)",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "preconditions": [],
+      "postconditions": [
+        "value_changed:TEXT_FIELD:Phone (optional)"
+      ],
+      "confidence": 0.8200000000000001,
+      "status": "VERIFIED",
+      "execution_count": 3,
+      "success_count": 3,
+      "failure_count": 0,
+      "evidence_ids": [
+        "ev_ff0789cfd6e1"
+      ],
+      "created_at": "2026-10-08T18:46:46.683021+00:00",
+      "updated_at": "2026-10-08T18:46:46.683021+00:00"
+    },
+    {
+      "transition_id": "t_6e0fa46c859d",
+      "source_state": "s_6481a1d32d51",
+      "action": {
+        "action_id": "a_c461fb3ec1cc",
+        "type": "CLEAR",
+        "target": {
+          "element_id": "e_fcdf340aa3fc",
+          "role": "TEXT_FIELD",
+          "name": "Phone (optional)",
+          "tag": "input",
+          "locators": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=input[name=Phone (optional)]",
+              "confidence": 0.95,
+              "params": {
+                "role": "input",
+                "name": "Phone (optional)"
+              }
+            },
+            {
+              "strategy": "LABEL",
+              "selector": "label=Phone (optional)",
+              "confidence": 0.89,
+              "params": {
+                "label": "Phone (optional)"
+              }
+            },
+            {
+              "strategy": "ELEMENT_ID",
+              "selector": "#phone",
+              "confidence": 0.88,
+              "params": {
+                "css": "#phone"
+              }
+            },
+            {
+              "strategy": "NAME_ATTR",
+              "selector": "input[name=\"phone\"]",
+              "confidence": 0.82,
+              "params": {
+                "css": "input[name=\"phone\"]"
+              }
+            },
+            {
+              "strategy": "SEMANTIC_ATTR",
+              "selector": "input[type=\"text\"]",
+              "confidence": 0.68,
+              "params": {
+                "css": "input[type=\"text\"]"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "#phone",
+              "confidence": 0.55,
+              "params": {
+                "css": "#phone"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(563,603)",
+              "confidence": 0.25,
+              "params": {
+                "x": 563.0,
+                "y": 602.65
+              }
+            }
+          ]
+        },
+        "parameters": {},
+        "expected_effect": [
+          "VALUE_CHANGED"
+        ],
+        "risk": "LOW",
+        "confidence": 0.95,
+        "origin": "generator",
+        "rationale": ""
+      },
+      "target_state": "s_6481a1d32d51",
+      "observed_effects": [
+        {
+          "kind": "NO_EFFECT",
+          "detail": "no observable change",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "preconditions": [],
+      "postconditions": [],
+      "confidence": 0.05,
+      "status": "REFUTED",
+      "execution_count": 8,
+      "success_count": 0,
+      "failure_count": 8,
+      "evidence_ids": [
+        "ev_4cc3b25f98de",
+        "ev_48904c20bd79",
+        "ev_7e402dc294ee",
+        "ev_9d1e35594d1b"
+      ],
+      "created_at": "2026-10-08T18:46:48.112719+00:00",
+      "updated_at": "2026-10-08T18:51:31.008823+00:00"
+    },
+    {
+      "transition_id": "t_5b5632cc4188",
+      "source_state": "s_6481a1d32d51",
+      "action": {
+        "action_id": "a_1ba6cfcb9ef5",
+        "type": "TYPE",
+        "target": {
+          "element_id": "e_fcdf340aa3fc",
+          "role": "TEXT_FIELD",
+          "name": "Phone (optional)",
+          "tag": "input",
+          "locators": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=input[name=Phone (optional)]",
+              "confidence": 0.95,
+              "params": {
+                "role": "input",
+                "name": "Phone (optional)"
+              }
+            },
+            {
+              "strategy": "LABEL",
+              "selector": "label=Phone (optional)",
+              "confidence": 0.89,
+              "params": {
+                "label": "Phone (optional)"
+              }
+            },
+            {
+              "strategy": "ELEMENT_ID",
+              "selector": "#phone",
+              "confidence": 0.88,
+              "params": {
+                "css": "#phone"
+              }
+            },
+            {
+              "strategy": "NAME_ATTR",
+              "selector": "input[name=\"phone\"]",
+              "confidence": 0.82,
+              "params": {
+                "css": "input[name=\"phone\"]"
+              }
+            },
+            {
+              "strategy": "SEMANTIC_ATTR",
+              "selector": "input[type=\"text\"]",
+              "confidence": 0.68,
+              "params": {
+                "css": "input[type=\"text\"]"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "#phone",
+              "confidence": 0.55,
+              "params": {
+                "css": "#phone"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(563,603)",
+              "confidence": 0.25,
+              "params": {
+                "x": 563.0,
+                "y": 602.65
+              }
+            }
+          ]
+        },
+        "parameters": {
+          "value": "43"
+        },
+        "expected_effect": [
+          "VALUE_CHANGED",
+          "FORM_CHANGED"
+        ],
+        "risk": "LOW",
+        "confidence": 0.95,
+        "origin": "generator",
+        "rationale": "fill Phone (optional) with a synthesized value"
+      },
+      "target_state": "s_6481a1d32d51",
+      "observed_effects": [
+        {
+          "kind": "VALUE_CHANGED",
+          "detail": "TEXT_FIELD:Phone (optional)",
+          "before": null,
+          "after": null,
+          "element_id": "e_fcdf340aa3fc",
+          "message": null
+        },
+        {
+          "kind": "FORM_CHANGED",
+          "detail": "form wizard-form: value changed for phone (optional)",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "preconditions": [],
+      "postconditions": [
+        "value_changed:TEXT_FIELD:Phone (optional)"
+      ],
+      "confidence": 0.8600000000000001,
+      "status": "VERIFIED",
+      "execution_count": 5,
+      "success_count": 5,
+      "failure_count": 0,
+      "evidence_ids": [
+        "ev_165bd4a844f4",
+        "ev_2668f8f897a6"
+      ],
+      "created_at": "2026-10-08T18:46:49.579967+00:00",
+      "updated_at": "2026-10-08T18:46:59.791929+00:00"
+    },
+    {
+      "transition_id": "t_ac3f6079d604",
+      "source_state": "s_6481a1d32d51",
+      "action": {
+        "action_id": "a_4586749a3207",
+        "type": "TYPE",
+        "target": {
+          "element_id": "e_fcdf340aa3fc",
+          "role": "TEXT_FIELD",
+          "name": "Phone (optional)",
+          "tag": "input",
+          "locators": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=input[name=Phone (optional)]",
+              "confidence": 0.95,
+              "params": {
+                "role": "input",
+                "name": "Phone (optional)"
+              }
+            },
+            {
+              "strategy": "LABEL",
+              "selector": "label=Phone (optional)",
+              "confidence": 0.89,
+              "params": {
+                "label": "Phone (optional)"
+              }
+            },
+            {
+              "strategy": "ELEMENT_ID",
+              "selector": "#phone",
+              "confidence": 0.88,
+              "params": {
+                "css": "#phone"
+              }
+            },
+            {
+              "strategy": "NAME_ATTR",
+              "selector": "input[name=\"phone\"]",
+              "confidence": 0.82,
+              "params": {
+                "css": "input[name=\"phone\"]"
+              }
+            },
+            {
+              "strategy": "SEMANTIC_ATTR",
+              "selector": "input[type=\"text\"]",
+              "confidence": 0.68,
+              "params": {
+                "css": "input[type=\"text\"]"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "#phone",
+              "confidence": 0.55,
+              "params": {
+                "css": "#phone"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(563,603)",
+              "confidence": 0.25,
+              "params": {
+                "x": 563.0,
+                "y": 602.65
+              }
+            }
+          ]
+        },
+        "parameters": {
+          "value": "5551234567"
+        },
+        "expected_effect": [
+          "VALUE_CHANGED",
+          "FORM_CHANGED"
+        ],
+        "risk": "LOW",
+        "confidence": 0.95,
+        "origin": "generator",
+        "rationale": "fill Phone (optional) with a synthesized value"
+      },
+      "target_state": "s_6481a1d32d51",
+      "observed_effects": [
+        {
+          "kind": "VALUE_CHANGED",
+          "detail": "TEXT_FIELD:Phone (optional)",
+          "before": null,
+          "after": null,
+          "element_id": "e_fcdf340aa3fc",
+          "message": null
+        },
+        {
+          "kind": "FORM_CHANGED",
+          "detail": "form wizard-form: value changed for phone (optional)",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "preconditions": [],
+      "postconditions": [
+        "value_changed:TEXT_FIELD:Phone (optional)"
+      ],
+      "confidence": 0.8200000000000001,
+      "status": "VERIFIED",
+      "execution_count": 3,
+      "success_count": 3,
+      "failure_count": 0,
+      "evidence_ids": [
+        "ev_56a7878cad26"
+      ],
+      "created_at": "2026-10-08T18:51:12.453577+00:00",
+      "updated_at": "2026-10-08T18:51:12.453577+00:00"
+    },
+    {
+      "transition_id": "t_7604f2c455b7",
+      "source_state": "s_6481a1d32d51",
+      "action": {
+        "action_id": "a_cf393d354394",
+        "type": "TYPE",
+        "target": {
+          "element_id": "e_fcdf340aa3fc",
+          "role": "TEXT_FIELD",
+          "name": "Phone (optional)",
+          "tag": "input",
+          "locators": [
+            {
+              "strategy": "ROLE_NAME",
+              "selector": "role=input[name=Phone (optional)]",
+              "confidence": 0.95,
+              "params": {
+                "role": "input",
+                "name": "Phone (optional)"
+              }
+            },
+            {
+              "strategy": "LABEL",
+              "selector": "label=Phone (optional)",
+              "confidence": 0.89,
+              "params": {
+                "label": "Phone (optional)"
+              }
+            },
+            {
+              "strategy": "ELEMENT_ID",
+              "selector": "#phone",
+              "confidence": 0.88,
+              "params": {
+                "css": "#phone"
+              }
+            },
+            {
+              "strategy": "NAME_ATTR",
+              "selector": "input[name=\"phone\"]",
+              "confidence": 0.82,
+              "params": {
+                "css": "input[name=\"phone\"]"
+              }
+            },
+            {
+              "strategy": "SEMANTIC_ATTR",
+              "selector": "input[type=\"text\"]",
+              "confidence": 0.68,
+              "params": {
+                "css": "input[type=\"text\"]"
+              }
+            },
+            {
+              "strategy": "CSS_PATH",
+              "selector": "#phone",
+              "confidence": 0.55,
+              "params": {
+                "css": "#phone"
+              }
+            },
+            {
+              "strategy": "COORDINATES",
+              "selector": "point(563,603)",
+              "confidence": 0.25,
+              "params": {
+                "x": 563.0,
+                "y": 602.65
+              }
+            }
+          ]
+        },
+        "parameters": {
+          "value": "5559876543"
+        },
+        "expected_effect": [
+          "VALUE_CHANGED",
+          "FORM_CHANGED"
+        ],
+        "risk": "LOW",
+        "confidence": 0.95,
+        "origin": "generator",
+        "rationale": "fill Phone (optional) with a synthesized value"
+      },
+      "target_state": "s_6481a1d32d51",
+      "observed_effects": [
+        {
+          "kind": "VALUE_CHANGED",
+          "detail": "TEXT_FIELD:Phone (optional)",
+          "before": null,
+          "after": null,
+          "element_id": "e_fcdf340aa3fc",
+          "message": null
+        },
+        {
+          "kind": "FORM_CHANGED",
+          "detail": "form wizard-form: value changed for phone (optional)",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "preconditions": [],
+      "postconditions": [
+        "value_changed:TEXT_FIELD:Phone (optional)"
+      ],
+      "confidence": 0.8600000000000001,
+      "status": "VERIFIED",
+      "execution_count": 5,
+      "success_count": 5,
+      "failure_count": 0,
+      "evidence_ids": [
+        "ev_f751ee694584",
+        "ev_91e33b195405"
+      ],
+      "created_at": "2026-10-08T18:51:15.301122+00:00",
+      "updated_at": "2026-10-08T18:51:26.733798+00:00"
+    }
+  ],
+  "workflows": [],
+  "constraints": [
+    {
+      "constraint_id": "c_124d4f25eb89",
+      "kind": "PRECONDITION",
+      "scope": "ACTION",
+      "subject": "click next",
+      "expression": "full_name != empty",
+      "condition": {
+        "field": "Full name",
+        "op": "!=",
+        "value": "",
+        "field_ids": [
+          "e_467c1a6649b7",
+          "e_cd34c5b5281f"
+        ],
+        "state_id": "s_6481a1d32d51"
+      },
+      "message": "Full name is required. Email is required.",
+      "status": "SUPPORTED",
+      "confidence": 0.99,
+      "supporting_evidence": [
+        "ev_cb44c2001ee0",
+        "ev_ce3661f90a81"
+      ],
+      "contradicting_evidence": [],
+      "created_at": "2026-10-08T18:46:35.963722+00:00",
+      "updated_at": "2026-10-08T18:51:02.040505+00:00"
+    },
+    {
+      "constraint_id": "c_41c44478c057",
+      "kind": "PRECONDITION",
+      "scope": "ACTION",
+      "subject": "click next",
+      "expression": "format(next) matches phone",
+      "condition": {
+        "format": "Phone",
+        "op": "matches",
+        "value": "Phone",
+        "state_id": "s_6481a1d32d51"
+      },
+      "message": "Phone must be exactly 10 digits.",
+      "status": "SUPPORTED",
+      "confidence": 0.99,
+      "supporting_evidence": [
+        "ev_894b08546456",
+        "ev_a4b1aa031a1b"
+      ],
+      "contradicting_evidence": [],
+      "created_at": "2026-10-08T18:46:55.183556+00:00",
+      "updated_at": "2026-10-08T18:51:21.355811+00:00"
+    }
+  ],
+  "hypotheses": [
+    {
+      "hypothesis_id": "h_963f35019cf2",
+      "statement": "CLICK 3. Documents requires additional input: Complete the current step before moving to step 3.",
+      "status": "SUPPORTED",
+      "confidence": 0.6900000000000001,
+      "supporting_experiments": [
+        "observed-message"
+      ],
+      "contradicting_experiments": [],
+      "evidence": [
+        "ev_ce3661f90a81",
+        "ev_a4b1aa031a1b"
+      ],
+      "created_at": "2026-10-08T18:50:59.131588+00:00",
+      "updated_at": "2026-10-08T18:51:21.369758+00:00",
+      "details": {
+        "observation_id": "o_0476ee47a6ee",
+        "url": "http://127.0.0.1:3004/#/step-1",
+        "kind": "VALIDATION"
+      }
+    },
+    {
+      "hypothesis_id": "h_993d901ba466",
+      "statement": "CLICK Next requires full name: Full name is required. Email is required.",
+      "status": "SUPPORTED",
+      "confidence": 0.6900000000000001,
+      "supporting_experiments": [
+        "observed-message"
+      ],
+      "contradicting_experiments": [],
+      "evidence": [
+        "ev_ce3661f90a81",
+        "ev_a4b1aa031a1b"
+      ],
+      "created_at": "2026-10-08T18:51:02.043634+00:00",
+      "updated_at": "2026-10-08T18:51:21.369758+00:00",
+      "details": {
+        "observation_id": "o_baac20b61953",
+        "url": "http://127.0.0.1:3004/#/step-1",
+        "kind": "VALIDATION"
+      }
+    },
+    {
+      "hypothesis_id": "h_b862c55c8731",
+      "statement": "CLICK 2. Employment requires additional input: Complete the current step before moving to step 2.",
+      "status": "SUPPORTED",
+      "confidence": 0.6900000000000001,
+      "supporting_experiments": [
+        "observed-message"
+      ],
+      "contradicting_experiments": [],
+      "evidence": [
+        "ev_ce3661f90a81",
+        "ev_a4b1aa031a1b"
+      ],
+      "created_at": "2026-10-08T18:50:57.556815+00:00",
+      "updated_at": "2026-10-08T18:51:21.369758+00:00",
+      "details": {
+        "observation_id": "o_e71df7cc5dae",
+        "url": "http://127.0.0.1:3004/#/step-1",
+        "kind": "VALIDATION"
+      }
+    },
+    {
+      "hypothesis_id": "h_fe7bd51d9861",
+      "statement": "CLICK 4. Review requires additional input: Complete the current step before moving to step 4.",
+      "status": "SUPPORTED",
+      "confidence": 0.6900000000000001,
+      "supporting_experiments": [
+        "observed-message"
+      ],
+      "contradicting_experiments": [],
+      "evidence": [
+        "ev_ce3661f90a81",
+        "ev_a4b1aa031a1b"
+      ],
+      "created_at": "2026-10-08T18:51:00.584597+00:00",
+      "updated_at": "2026-10-08T18:51:21.369758+00:00",
+      "details": {
+        "observation_id": "o_1ac563e4caf3",
+        "url": "http://127.0.0.1:3004/#/step-1",
+        "kind": "VALIDATION"
+      }
+    },
+    {
+      "hypothesis_id": "h_1be8b130551f",
+      "statement": "TYPE Full name = 'BlackBox Sample 2' requires full name: Full name is required. Email is required.",
+      "status": "SUPPORTED",
+      "confidence": 0.5700000000000001,
+      "supporting_experiments": [
+        "observed-message"
+      ],
+      "contradicting_experiments": [],
+      "evidence": [
+        "ev_a4b1aa031a1b"
+      ],
+      "created_at": "2026-10-08T18:51:10.953417+00:00",
+      "updated_at": "2026-10-08T18:51:21.369758+00:00",
+      "details": {
+        "observation_id": "o_bfbcebec8e70",
+        "url": "http://127.0.0.1:3004/#/step-1",
+        "kind": "VALIDATION"
+      }
+    },
+    {
+      "hypothesis_id": "h_1efd109f39f2",
+      "statement": "CLEAR Email requires full name: Full name is required. Email is required.",
+      "status": "SUPPORTED",
+      "confidence": 0.5700000000000001,
+      "supporting_experiments": [
+        "observed-message"
+      ],
+      "contradicting_experiments": [],
+      "evidence": [
+        "ev_a4b1aa031a1b"
+      ],
+      "created_at": "2026-10-08T18:51:06.462930+00:00",
+      "updated_at": "2026-10-08T18:51:21.369758+00:00",
+      "details": {
+        "observation_id": "o_e3b805be34d7",
+        "url": "http://127.0.0.1:3004/#/step-1",
+        "kind": "VALIDATION"
+      }
+    },
+    {
+      "hypothesis_id": "h_37e32f5a9858",
+      "statement": "CLEAR Full name requires full name: Full name is required. Email is required.",
+      "status": "SUPPORTED",
+      "confidence": 0.5700000000000001,
+      "supporting_experiments": [
+        "observed-message"
+      ],
+      "contradicting_experiments": [],
+      "evidence": [
+        "ev_a4b1aa031a1b"
+      ],
+      "created_at": "2026-10-08T18:51:09.456374+00:00",
+      "updated_at": "2026-10-08T18:51:21.369758+00:00",
+      "details": {
+        "observation_id": "o_873439c34e3d",
+        "url": "http://127.0.0.1:3004/#/step-1",
+        "kind": "VALIDATION"
+      }
+    },
+    {
+      "hypothesis_id": "h_3b73d5bf9484",
+      "statement": "CLICK Skip to main content requires full name: Full name is required. Email is required.",
+      "status": "SUPPORTED",
+      "confidence": 0.5700000000000001,
+      "supporting_experiments": [
+        "observed-message"
+      ],
+      "contradicting_experiments": [],
+      "evidence": [
+        "ev_a4b1aa031a1b"
+      ],
+      "created_at": "2026-10-08T18:51:03.511320+00:00",
+      "updated_at": "2026-10-08T18:51:21.369758+00:00",
+      "details": {
+        "observation_id": "o_877784229d10",
+        "url": "http://127.0.0.1:3004/#/step-1",
+        "kind": "VALIDATION"
+      }
+    },
+    {
+      "hypothesis_id": "h_6da5a1978651",
+      "statement": "CLICK Next requires phone: Phone must be exactly 10 digits.",
+      "status": "SUPPORTED",
+      "confidence": 0.5700000000000001,
+      "supporting_experiments": [
+        "observed-message"
+      ],
+      "contradicting_experiments": [],
+      "evidence": [
+        "ev_a4b1aa031a1b"
+      ],
+      "created_at": "2026-10-08T18:51:21.363851+00:00",
+      "updated_at": "2026-10-08T18:51:21.369758+00:00",
+      "details": {
+        "observation_id": "o_23600c3f5869",
+        "url": "http://127.0.0.1:3004/#/step-1",
+        "kind": "VALIDATION"
+      }
+    },
+    {
+      "hypothesis_id": "h_a48d50f1b6a4",
+      "statement": "TYPE Phone (optional) = '42' requires full name: Full name is required. Email is required.",
+      "status": "SUPPORTED",
+      "confidence": 0.5700000000000001,
+      "supporting_experiments": [
+        "observed-message"
+      ],
+      "contradicting_experiments": [],
+      "evidence": [
+        "ev_894b08546456"
+      ],
+      "created_at": "2026-10-08T18:46:46.684525+00:00",
+      "updated_at": "2026-10-08T18:46:55.216214+00:00",
+      "details": {
+        "observation_id": "o_9e50f9bed816",
+        "url": "http://127.0.0.1:3004/#/step-1",
+        "kind": "VALIDATION"
+      }
+    },
+    {
+      "hypothesis_id": "h_a9464598b65a",
+      "statement": "TYPE Email = 'blackbox.sample1@example.com' requires full name: Full name is required. Email is required.",
+      "status": "SUPPORTED",
+      "confidence": 0.5700000000000001,
+      "supporting_experiments": [
+        "observed-message"
+      ],
+      "contradicting_experiments": [],
+      "evidence": [
+        "ev_a4b1aa031a1b"
+      ],
+      "created_at": "2026-10-08T18:51:05.099990+00:00",
+      "updated_at": "2026-10-08T18:51:21.369758+00:00",
+      "details": {
+        "observation_id": "o_ea3bfde6a74c",
+        "url": "http://127.0.0.1:3004/#/step-1",
+        "kind": "VALIDATION"
+      }
+    },
+    {
+      "hypothesis_id": "h_be79648190c3",
+      "statement": "TYPE Phone (optional) = '43' requires full name: Full name is required. Email is required.",
+      "status": "SUPPORTED",
+      "confidence": 0.5700000000000001,
+      "supporting_experiments": [
+        "observed-message"
+      ],
+      "contradicting_experiments": [],
+      "evidence": [
+        "ev_894b08546456"
+      ],
+      "created_at": "2026-10-08T18:46:49.579967+00:00",
+      "updated_at": "2026-10-08T18:46:55.216214+00:00",
+      "details": {
+        "observation_id": "o_e95ce9dcb85a",
+        "url": "http://127.0.0.1:3004/#/step-1",
+        "kind": "VALIDATION"
+      }
+    },
+    {
+      "hypothesis_id": "h_bf038f306928",
+      "statement": "CLEAR Phone (optional) requires full name: Full name is required. Email is required.",
+      "status": "SUPPORTED",
+      "confidence": 0.5700000000000001,
+      "supporting_experiments": [
+        "observed-message"
+      ],
+      "contradicting_experiments": [],
+      "evidence": [
+        "ev_a4b1aa031a1b"
+      ],
+      "created_at": "2026-10-08T18:51:13.831290+00:00",
+      "updated_at": "2026-10-08T18:51:21.369758+00:00",
+      "details": {
+        "observation_id": "o_eb0a7713efe9",
+        "url": "http://127.0.0.1:3004/#/step-1",
+        "kind": "VALIDATION"
+      }
+    },
+    {
+      "hypothesis_id": "h_c80b04888b87",
+      "statement": "TYPE Full name = 'BlackBox Sample' requires full name: Full name is required. Email is required.",
+      "status": "SUPPORTED",
+      "confidence": 0.5700000000000001,
+      "supporting_experiments": [
+        "observed-message"
+      ],
+      "contradicting_experiments": [],
+      "evidence": [
+        "ev_a4b1aa031a1b"
+      ],
+      "created_at": "2026-10-08T18:51:08.027260+00:00",
+      "updated_at": "2026-10-08T18:51:21.369758+00:00",
+      "details": {
+        "observation_id": "o_2ce895be0784",
+        "url": "http://127.0.0.1:3004/#/step-1",
+        "kind": "VALIDATION"
+      }
+    },
+    {
+      "hypothesis_id": "h_28c0d299aa6b",
+      "statement": "CLICK 1. Applicant requires phone: Phone must be exactly 10 digits.",
+      "status": "PROPOSED",
+      "confidence": 0.45,
+      "supporting_experiments": [],
+      "contradicting_experiments": [],
+      "evidence": [],
+      "created_at": "2026-10-08T18:51:32.440908+00:00",
+      "updated_at": "2026-10-08T18:51:32.440908+00:00",
+      "details": {
+        "observation_id": "o_3e8efbd5d167",
+        "url": "http://127.0.0.1:3004/#/step-1",
+        "kind": "VALIDATION"
+      }
+    },
+    {
+      "hypothesis_id": "h_3f6c4b9f1ac1",
+      "statement": "CLEAR Email requires phone: Phone must be exactly 10 digits.",
+      "status": "PROPOSED",
+      "confidence": 0.45,
+      "supporting_experiments": [],
+      "contradicting_experiments": [],
+      "evidence": [],
+      "created_at": "2026-10-08T18:51:28.163707+00:00",
+      "updated_at": "2026-10-08T18:51:28.163707+00:00",
+      "details": {
+        "observation_id": "o_b9d58842cd8b",
+        "url": "http://127.0.0.1:3004/#/step-1",
+        "kind": "VALIDATION"
+      }
+    },
+    {
+      "hypothesis_id": "h_51537f25c89e",
+      "statement": "TYPE Email = 'blackbox.sample1@example.com' requires phone: Phone must be exactly 10 digits.",
+      "status": "PROPOSED",
+      "confidence": 0.45,
+      "supporting_experiments": [],
+      "contradicting_experiments": [],
+      "evidence": [],
+      "created_at": "2026-10-08T18:51:23.557665+00:00",
+      "updated_at": "2026-10-08T18:51:23.557665+00:00",
+      "details": {
+        "observation_id": "o_deb145fe7f6f",
+        "url": "http://127.0.0.1:3004/#/step-1",
+        "kind": "VALIDATION"
+      }
+    },
+    {
+      "hypothesis_id": "h_76533239c8f7",
+      "statement": "CLEAR Phone (optional) requires phone: Phone must be exactly 10 digits.",
+      "status": "PROPOSED",
+      "confidence": 0.45,
+      "supporting_experiments": [],
+      "contradicting_experiments": [],
+      "evidence": [],
+      "created_at": "2026-10-08T18:51:31.008823+00:00",
+      "updated_at": "2026-10-08T18:51:31.008823+00:00",
+      "details": {
+        "observation_id": "o_b43a414d9b46",
+        "url": "http://127.0.0.1:3004/#/step-1",
+        "kind": "VALIDATION"
+      }
+    },
+    {
+      "hypothesis_id": "h_8e3cfc0c4756",
+      "statement": "TYPE Full name = 'BlackBox Sample 2' requires phone: Phone must be exactly 10 digits.",
+      "status": "PROPOSED",
+      "confidence": 0.45,
+      "supporting_experiments": [],
+      "contradicting_experiments": [],
+      "evidence": [],
+      "created_at": "2026-10-08T18:51:25.135677+00:00",
+      "updated_at": "2026-10-08T18:51:25.135677+00:00",
+      "details": {
+        "observation_id": "o_0cea33b0c68f",
+        "url": "http://127.0.0.1:3004/#/step-1",
+        "kind": "VALIDATION"
+      }
+    },
+    {
+      "hypothesis_id": "h_9a53810d5920",
+      "statement": "TYPE Phone (optional) = '43' requires phone: Phone must be exactly 10 digits.",
+      "status": "PROPOSED",
+      "confidence": 0.45,
+      "supporting_experiments": [],
+      "contradicting_experiments": [],
+      "evidence": [],
+      "created_at": "2026-10-08T18:46:59.792614+00:00",
+      "updated_at": "2026-10-08T18:46:59.792614+00:00",
+      "details": {
+        "observation_id": "o_52c9352830ce",
+        "url": "http://127.0.0.1:3004/#/step-1",
+        "kind": "VALIDATION"
+      }
+    },
+    {
+      "hypothesis_id": "h_b3d30b9c8baf",
+      "statement": "CLICK Skip to main content requires phone: Phone must be exactly 10 digits.",
+      "status": "PROPOSED",
+      "confidence": 0.45,
+      "supporting_experiments": [],
+      "contradicting_experiments": [],
+      "evidence": [],
+      "created_at": "2026-10-08T18:51:33.921925+00:00",
+      "updated_at": "2026-10-08T18:51:33.921925+00:00",
+      "details": {
+        "observation_id": "o_adaa67f4ddbc",
+        "url": "http://127.0.0.1:3004/#/step-1",
+        "kind": "VALIDATION"
+      }
+    },
+    {
+      "hypothesis_id": "h_e790d11e8025",
+      "statement": "CLEAR Full name requires phone: Phone must be exactly 10 digits.",
+      "status": "PROPOSED",
+      "confidence": 0.45,
+      "supporting_experiments": [],
+      "contradicting_experiments": [],
+      "evidence": [],
+      "created_at": "2026-10-08T18:51:29.594725+00:00",
+      "updated_at": "2026-10-08T18:51:29.594725+00:00",
+      "details": {
+        "observation_id": "o_b2b92919ca81",
+        "url": "http://127.0.0.1:3004/#/step-1",
+        "kind": "VALIDATION"
+      }
+    },
+    {
+      "hypothesis_id": "h_057fcc9a48d8",
+      "statement": "Back may require Email to be filled before it becomes available",
+      "status": "REFUTED",
+      "confidence": 0.19999999999999998,
+      "supporting_experiments": [],
+      "contradicting_experiments": [
+        "field-fill"
+      ],
+      "evidence": [
+        "ev_7972182d57c1"
+      ],
+      "created_at": "2026-10-08T18:46:29.460693+00:00",
+      "updated_at": "2026-10-08T18:46:39.113077+00:00",
+      "details": {
+        "state": "http://127.0.0.1:3004/#/step-1",
+        "observation_id": "o_e1761b474305",
+        "kind": "REQUIREMENT"
+      }
+    },
+    {
+      "hypothesis_id": "h_3bdb2928d6a9",
+      "statement": "Back may require Phone (optional) to be filled before it becomes available",
+      "status": "REFUTED",
+      "confidence": 0.19999999999999998,
+      "supporting_experiments": [],
+      "contradicting_experiments": [
+        "field-fill"
+      ],
+      "evidence": [
+        "ev_ff0789cfd6e1"
+      ],
+      "created_at": "2026-10-08T18:46:29.461706+00:00",
+      "updated_at": "2026-10-08T18:46:46.699525+00:00",
+      "details": {
+        "state": "http://127.0.0.1:3004/#/step-1",
+        "observation_id": "o_e1761b474305",
+        "kind": "REQUIREMENT"
+      }
+    },
+    {
+      "hypothesis_id": "h_c91d4a5f89e4",
+      "statement": "Back may require Full name to be filled before it becomes available",
+      "status": "REFUTED",
+      "confidence": 0.19999999999999998,
+      "supporting_experiments": [],
+      "contradicting_experiments": [
+        "field-fill"
+      ],
+      "evidence": [
+        "ev_1ac8c54f9ab1"
+      ],
+      "created_at": "2026-10-08T18:46:29.460693+00:00",
+      "updated_at": "2026-10-08T18:46:42.186720+00:00",
+      "details": {
+        "state": "http://127.0.0.1:3004/#/step-1",
+        "observation_id": "o_e1761b474305",
+        "kind": "REQUIREMENT"
+      }
+    },
+    {
+      "hypothesis_id": "h_a0e28f1a459c",
+      "statement": "TYPE Phone (optional) = '5559876543' requires full name: Full name is required. Email is required.",
+      "status": "SUPPORTED",
+      "confidence": 0.5700000000000001,
+      "supporting_experiments": [
+        "observed-message"
+      ],
+      "contradicting_experiments": [],
+      "evidence": [
+        "ev_a4b1aa031a1b"
+      ],
+      "created_at": "2026-10-08T18:51:15.301122+00:00",
+      "updated_at": "2026-10-08T18:51:21.369758+00:00",
+      "details": {
+        "observation_id": "o_188525f4b6d2",
+        "url": "http://127.0.0.1:3004/#/step-1",
+        "kind": "VALIDATION"
+      }
+    },
+    {
+      "hypothesis_id": "h_df70258db4f8",
+      "statement": "TYPE Phone (optional) = '5551234567' requires full name: Full name is required. Email is required.",
+      "status": "SUPPORTED",
+      "confidence": 0.5700000000000001,
+      "supporting_experiments": [
+        "observed-message"
+      ],
+      "contradicting_experiments": [],
+      "evidence": [
+        "ev_a4b1aa031a1b"
+      ],
+      "created_at": "2026-10-08T18:51:12.453577+00:00",
+      "updated_at": "2026-10-08T18:51:21.369758+00:00",
+      "details": {
+        "observation_id": "o_a9a2953aab56",
+        "url": "http://127.0.0.1:3004/#/step-1",
+        "kind": "VALIDATION"
+      }
+    },
+    {
+      "hypothesis_id": "h_bddb89cafae7",
+      "statement": "TYPE Phone (optional) = '5559876543' requires phone: Phone must be exactly 10 digits.",
+      "status": "PROPOSED",
+      "confidence": 0.45,
+      "supporting_experiments": [],
+      "contradicting_experiments": [],
+      "evidence": [],
+      "created_at": "2026-10-08T18:51:26.733798+00:00",
+      "updated_at": "2026-10-08T18:51:26.733798+00:00",
+      "details": {
+        "observation_id": "o_45b5118f7e21",
+        "url": "http://127.0.0.1:3004/#/step-1",
+        "kind": "VALIDATION"
+      }
+    }
+  ],
+  "pages": [],
+  "evidence": [
+    {
+      "evidence_id": "ev_efb2fcad2964",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_b796e91f63a5",
+      "session_id": null,
+      "step_index": 0,
+      "action_id": "a_dc343d195aa8",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_2557e026a90c",
+      "effects": [
+        {
+          "kind": "NO_EFFECT",
+          "detail": "no observable change",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_e1761b474305",
+        "o_b6a8387e8b86"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-b55626081dd29254.png",
+        "artifacts\\screenshots\\obs-b55626081dd29254.png"
+      ],
+      "message": "NO_EFFECT: no observable change",
+      "notes": [],
+      "created_at": "2026-10-08T18:46:30.220821+00:00"
+    },
+    {
+      "evidence_id": "ev_4bfc2130cfba",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_b796e91f63a5",
+      "session_id": null,
+      "step_index": 1,
+      "action_id": "a_90188ee78152",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_eb981ba9b814",
+      "effects": [
+        {
+          "kind": "TEXT_CHANGED",
+          "detail": "Complete the current step before moving to step 2.",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_e82fe8227473",
+        "o_f7ec64662f21"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-b55626081dd29254.png",
+        "artifacts\\screenshots\\obs-407d0a73508df14a.png"
+      ],
+      "message": "TEXT_CHANGED: complete the current step before moving to step 2.",
+      "notes": [],
+      "created_at": "2026-10-08T18:46:31.672621+00:00"
+    },
+    {
+      "evidence_id": "ev_eaf184f2d5b0",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_b796e91f63a5",
+      "session_id": null,
+      "step_index": 2,
+      "action_id": "a_3576d866c012",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_5fa776879d6a",
+      "effects": [
+        {
+          "kind": "TEXT_CHANGED",
+          "detail": "Complete the current step before moving to step 3.",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_5ee5e366dcad",
+        "o_45b0df065e65"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-407d0a73508df14a.png",
+        "artifacts\\screenshots\\obs-4b99a39b429eb468.png"
+      ],
+      "message": "TEXT_CHANGED: complete the current step before moving to step 3.",
+      "notes": [],
+      "created_at": "2026-10-08T18:46:33.120645+00:00"
+    },
+    {
+      "evidence_id": "ev_1b65ad5a03ec",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_b796e91f63a5",
+      "session_id": null,
+      "step_index": 3,
+      "action_id": "a_05df2e4e1383",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_ba3bb03e440f",
+      "effects": [
+        {
+          "kind": "TEXT_CHANGED",
+          "detail": "Complete the current step before moving to step 4.",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_9806a73046e9",
+        "o_17b58554ac2f"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-4b99a39b429eb468.png",
+        "artifacts\\screenshots\\obs-4e3f137020f33683.png"
+      ],
+      "message": "TEXT_CHANGED: complete the current step before moving to step 4.",
+      "notes": [],
+      "created_at": "2026-10-08T18:46:34.502429+00:00"
+    },
+    {
+      "evidence_id": "ev_cb44c2001ee0",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_b796e91f63a5",
+      "session_id": null,
+      "step_index": 4,
+      "action_id": "a_12056f08a27e",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_39f91fbb3371",
+      "effects": [
+        {
+          "kind": "VALIDATION_MESSAGE",
+          "detail": "Full name is required. Email is required.",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": "Full name is required. Email is required."
+        },
+        {
+          "kind": "PRECONDITION_BLOCKED",
+          "detail": "Full name is required. Email is required.",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": "Full name is required. Email is required."
+        },
+        {
+          "kind": "TEXT_CHANGED",
+          "detail": "removed: the before moving complete current",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_84cbfd009df1",
+        "o_421d4a544e21"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-4e3f137020f33683.png",
+        "artifacts\\screenshots\\obs-88abef13ff7f510d.png"
+      ],
+      "message": "VALIDATION_MESSAGE: full name is required. email is required.; PRECONDITION_BLOCKED: full name is required. email is required.; TEXT_CHANGED: removed: the before moving complete current",
+      "notes": [],
+      "created_at": "2026-10-08T18:46:35.962215+00:00"
+    },
+    {
+      "evidence_id": "ev_9c15649bed3f",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_b796e91f63a5",
+      "session_id": null,
+      "step_index": 5,
+      "action_id": "a_4d6497c329eb",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_f319d0de4d11",
+      "effects": [
+        {
+          "kind": "NO_EFFECT",
+          "detail": "no observable change",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_5768c6e8bcd8",
+        "o_ff1d4ed0fb07"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-88abef13ff7f510d.png",
+        "artifacts\\screenshots\\obs-c316e65d40baf9cf.png"
+      ],
+      "message": "NO_EFFECT: no observable change",
+      "notes": [],
+      "created_at": "2026-10-08T18:46:37.422739+00:00"
+    },
+    {
+      "evidence_id": "ev_7972182d57c1",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_b796e91f63a5",
+      "session_id": null,
+      "step_index": 6,
+      "action_id": "a_e88687fa0680",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_a6a1637053db",
+      "effects": [
+        {
+          "kind": "VALUE_CHANGED",
+          "detail": "TEXT_FIELD:Email",
+          "before": null,
+          "after": null,
+          "element_id": "e_5a362a950807",
+          "message": null
+        },
+        {
+          "kind": "FORM_CHANGED",
+          "detail": "form wizard-form: value changed for email",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_07fa6204615c",
+        "o_f430d95123b2"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-c316e65d40baf9cf.png",
+        "artifacts\\screenshots\\obs-45812d9cbc2bdf85.png"
+      ],
+      "message": "VALUE_CHANGED: text_field:email; FORM_CHANGED: form wizard-form: value changed for email",
+      "notes": [],
+      "created_at": "2026-10-08T18:46:39.111274+00:00"
+    },
+    {
+      "evidence_id": "ev_37a392fe3343",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_b796e91f63a5",
+      "session_id": null,
+      "step_index": 7,
+      "action_id": "a_a22822ee2769",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_7cc5abef2c5c",
+      "effects": [
+        {
+          "kind": "NO_EFFECT",
+          "detail": "no observable change",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_a12a5ed4ef96",
+        "o_15277d3d54aa"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-d06cf1477c355a8d.png",
+        "artifacts\\screenshots\\obs-45812d9cbc2bdf85.png"
+      ],
+      "message": "NO_EFFECT: no observable change",
+      "notes": [],
+      "created_at": "2026-10-08T18:46:40.586708+00:00"
+    },
+    {
+      "evidence_id": "ev_1ac8c54f9ab1",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_b796e91f63a5",
+      "session_id": null,
+      "step_index": 8,
+      "action_id": "a_528a66219ed9",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_45d38ae6147a",
+      "effects": [
+        {
+          "kind": "VALUE_CHANGED",
+          "detail": "TEXT_FIELD:Full name",
+          "before": null,
+          "after": null,
+          "element_id": "e_467c1a6649b7",
+          "message": null
+        },
+        {
+          "kind": "FORM_CHANGED",
+          "detail": "form wizard-form: value changed for full name",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_7169e6ea535a",
+        "o_1aaa23b1dfef"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-45812d9cbc2bdf85.png",
+        "artifacts\\screenshots\\obs-5e9ec3ae3cc981cd.png"
+      ],
+      "message": "VALUE_CHANGED: text_field:full name; FORM_CHANGED: form wizard-form: value changed for full name",
+      "notes": [],
+      "created_at": "2026-10-08T18:46:42.169173+00:00"
+    },
+    {
+      "evidence_id": "ev_39941b4991cf",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_b796e91f63a5",
+      "session_id": null,
+      "step_index": 9,
+      "action_id": "a_255f5284a41b",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_4dcd6d4c90c9",
+      "effects": [
+        {
+          "kind": "NO_EFFECT",
+          "detail": "no observable change",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_5610ce0dfc3c",
+        "o_ab777501ad3e"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-8e1cf341217cb558.png",
+        "artifacts\\screenshots\\obs-7921396b728dedf9.png"
+      ],
+      "message": "NO_EFFECT: no observable change",
+      "notes": [],
+      "created_at": "2026-10-08T18:46:43.632342+00:00"
+    },
+    {
+      "evidence_id": "ev_7a9d644b25bd",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_b796e91f63a5",
+      "session_id": null,
+      "step_index": 10,
+      "action_id": "a_935fe93aafa8",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_395797cfe8ab",
+      "effects": [
+        {
+          "kind": "VALUE_CHANGED",
+          "detail": "TEXT_FIELD:Full name",
+          "before": null,
+          "after": null,
+          "element_id": "e_467c1a6649b7",
+          "message": null
+        },
+        {
+          "kind": "FORM_CHANGED",
+          "detail": "form wizard-form: value changed for full name",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_80622656a4fa",
+        "o_cf3cc9622f5a"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-7921396b728dedf9.png",
+        "artifacts\\screenshots\\obs-a3cd4e71aa34ab54.png"
+      ],
+      "message": "VALUE_CHANGED: text_field:full name; FORM_CHANGED: form wizard-form: value changed for full name",
+      "notes": [],
+      "created_at": "2026-10-08T18:46:45.200001+00:00"
+    },
+    {
+      "evidence_id": "ev_ff0789cfd6e1",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_b796e91f63a5",
+      "session_id": null,
+      "step_index": 11,
+      "action_id": "a_d5ec41f95762",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_36cfd21de9f5",
+      "effects": [
+        {
+          "kind": "VALUE_CHANGED",
+          "detail": "TEXT_FIELD:Phone (optional)",
+          "before": null,
+          "after": null,
+          "element_id": "e_fcdf340aa3fc",
+          "message": null
+        },
+        {
+          "kind": "FORM_CHANGED",
+          "detail": "form wizard-form: value changed for phone (optional)",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_467a43643aa9",
+        "o_9e50f9bed816"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-ef421c4a7f4808ab.png",
+        "artifacts\\screenshots\\obs-f5ae41e428fa6fee.png"
+      ],
+      "message": "VALUE_CHANGED: text_field:phone (optional); FORM_CHANGED: form wizard-form: value changed for phone (optional)",
+      "notes": [],
+      "created_at": "2026-10-08T18:46:46.683021+00:00"
+    },
+    {
+      "evidence_id": "ev_4cc3b25f98de",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_b796e91f63a5",
+      "session_id": null,
+      "step_index": 12,
+      "action_id": "a_c461fb3ec1cc",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_6e0fa46c859d",
+      "effects": [
+        {
+          "kind": "NO_EFFECT",
+          "detail": "no observable change",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_d9ba415bde0d",
+        "o_2cdefefd9620"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-f3dcbc37239b1a01.png",
+        "artifacts\\screenshots\\obs-f5ae41e428fa6fee.png"
+      ],
+      "message": "NO_EFFECT: no observable change",
+      "notes": [],
+      "created_at": "2026-10-08T18:46:48.112719+00:00"
+    },
+    {
+      "evidence_id": "ev_165bd4a844f4",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_b796e91f63a5",
+      "session_id": null,
+      "step_index": 13,
+      "action_id": "a_1ba6cfcb9ef5",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_5b5632cc4188",
+      "effects": [
+        {
+          "kind": "VALUE_CHANGED",
+          "detail": "TEXT_FIELD:Phone (optional)",
+          "before": null,
+          "after": null,
+          "element_id": "e_fcdf340aa3fc",
+          "message": null
+        },
+        {
+          "kind": "FORM_CHANGED",
+          "detail": "form wizard-form: value changed for phone (optional)",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_eda6d83612ef",
+        "o_e95ce9dcb85a"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-f5ae41e428fa6fee.png",
+        "artifacts\\screenshots\\obs-ee25b9c9a5074b8d.png"
+      ],
+      "message": "VALUE_CHANGED: text_field:phone (optional); FORM_CHANGED: form wizard-form: value changed for phone (optional)",
+      "notes": [],
+      "created_at": "2026-10-08T18:46:49.579967+00:00"
+    },
+    {
+      "evidence_id": "ev_ac160355d5e6",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_b796e91f63a5",
+      "session_id": null,
+      "step_index": 14,
+      "action_id": "a_90188ee78152",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_eb981ba9b814",
+      "effects": [
+        {
+          "kind": "TEXT_CHANGED",
+          "detail": "Complete the current step before moving to step 2.",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_c371c0581ae9",
+        "o_9ed37f6aa0f9"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-622989db1e2d40f5.png",
+        "artifacts\\screenshots\\obs-56bfa68bd9592f89.png"
+      ],
+      "message": "TEXT_CHANGED: complete the current step before moving to step 2.",
+      "notes": [],
+      "created_at": "2026-10-08T18:46:50.977879+00:00"
+    },
+    {
+      "evidence_id": "ev_03d877eee3d1",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_b796e91f63a5",
+      "session_id": null,
+      "step_index": 15,
+      "action_id": "a_3576d866c012",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_5fa776879d6a",
+      "effects": [
+        {
+          "kind": "TEXT_CHANGED",
+          "detail": "Complete the current step before moving to step 3.",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_18e61fdbd940",
+        "o_cb027a95aba7"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-56bfa68bd9592f89.png",
+        "artifacts\\screenshots\\obs-3360cecf382efb2f.png"
+      ],
+      "message": "TEXT_CHANGED: complete the current step before moving to step 3.",
+      "notes": [],
+      "created_at": "2026-10-08T18:46:52.359935+00:00"
+    },
+    {
+      "evidence_id": "ev_ff80fe6aff4d",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_b796e91f63a5",
+      "session_id": null,
+      "step_index": 16,
+      "action_id": "a_05df2e4e1383",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_ba3bb03e440f",
+      "effects": [
+        {
+          "kind": "TEXT_CHANGED",
+          "detail": "Complete the current step before moving to step 4.",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_44ee2fe3f1bb",
+        "o_dc07eb49c4d4"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-3360cecf382efb2f.png",
+        "artifacts\\screenshots\\obs-efbd8de3f33de4e0.png"
+      ],
+      "message": "TEXT_CHANGED: complete the current step before moving to step 4.",
+      "notes": [],
+      "created_at": "2026-10-08T18:46:53.782745+00:00"
+    },
+    {
+      "evidence_id": "ev_894b08546456",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_b796e91f63a5",
+      "session_id": null,
+      "step_index": 17,
+      "action_id": "a_12056f08a27e",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_39f91fbb3371",
+      "effects": [
+        {
+          "kind": "ELEMENTS_CHANGED",
+          "detail": "TEXT_FIELD:Phone (optional)",
+          "before": null,
+          "after": null,
+          "element_id": "e_418b0726e619",
+          "message": null
+        },
+        {
+          "kind": "VALIDATION_MESSAGE",
+          "detail": "Phone must be exactly 10 digits.",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": "Phone must be exactly 10 digits."
+        },
+        {
+          "kind": "PRECONDITION_BLOCKED",
+          "detail": "Phone must be exactly 10 digits.",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": "Phone must be exactly 10 digits."
+        },
+        {
+          "kind": "TEXT_CHANGED",
+          "detail": "added: be digits.; removed: the before moving complete current",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_63509549b841",
+        "o_aca410bb363c"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-efbd8de3f33de4e0.png",
+        "artifacts\\screenshots\\obs-9dae43adb24de3fa.png"
+      ],
+      "message": "ELEMENTS_CHANGED: text_field:phone (optional); VALIDATION_MESSAGE: phone must be exactly 10 digits.; PRECONDITION_BLOCKED: phone must be exactly 10 digits.; TEXT_CHANGED: added: be digits.; removed: the before moving complete current",
+      "notes": [],
+      "created_at": "2026-10-08T18:46:55.183556+00:00"
+    },
+    {
+      "evidence_id": "ev_7762c5ea0ab9",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_b796e91f63a5",
+      "session_id": null,
+      "step_index": 18,
+      "action_id": "a_e88687fa0680",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_a6a1637053db",
+      "effects": [
+        {
+          "kind": "VALUE_CHANGED",
+          "detail": "TEXT_FIELD:Email",
+          "before": null,
+          "after": null,
+          "element_id": "e_5a362a950807",
+          "message": null
+        },
+        {
+          "kind": "FORM_CHANGED",
+          "detail": "form wizard-form: value changed for email",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_81a4a6c0c506",
+        "o_370af16d032a"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-9dae43adb24de3fa.png",
+        "artifacts\\screenshots\\obs-1dacee97514a8bb2.png"
+      ],
+      "message": "VALUE_CHANGED: text_field:email; FORM_CHANGED: form wizard-form: value changed for email",
+      "notes": [],
+      "created_at": "2026-10-08T18:46:56.818062+00:00"
+    },
+    {
+      "evidence_id": "ev_68450eae19b4",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_b796e91f63a5",
+      "session_id": null,
+      "step_index": 19,
+      "action_id": "a_935fe93aafa8",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_395797cfe8ab",
+      "effects": [
+        {
+          "kind": "VALUE_CHANGED",
+          "detail": "TEXT_FIELD:Full name",
+          "before": null,
+          "after": null,
+          "element_id": "e_467c1a6649b7",
+          "message": null
+        },
+        {
+          "kind": "FORM_CHANGED",
+          "detail": "form wizard-form: value changed for full name",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_fa6ea5c7198f",
+        "o_6f0391b312f0"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-337ec766e8901233.png",
+        "artifacts\\screenshots\\obs-d960005682e4f935.png"
+      ],
+      "message": "VALUE_CHANGED: text_field:full name; FORM_CHANGED: form wizard-form: value changed for full name",
+      "notes": [],
+      "created_at": "2026-10-08T18:46:58.345350+00:00"
+    },
+    {
+      "evidence_id": "ev_2668f8f897a6",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_b796e91f63a5",
+      "session_id": null,
+      "step_index": 20,
+      "action_id": "a_1ba6cfcb9ef5",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_5b5632cc4188",
+      "effects": [
+        {
+          "kind": "VALUE_CHANGED",
+          "detail": "TEXT_FIELD:Phone (optional)",
+          "before": null,
+          "after": null,
+          "element_id": "e_fcdf340aa3fc",
+          "message": null
+        },
+        {
+          "kind": "FORM_CHANGED",
+          "detail": "form wizard-form: value changed for phone (optional)",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_670ebedac793",
+        "o_52c9352830ce"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-9191d5b06cc25358.png",
+        "artifacts\\screenshots\\obs-ed5ec70583afb798.png"
+      ],
+      "message": "VALUE_CHANGED: text_field:phone (optional); FORM_CHANGED: form wizard-form: value changed for phone (optional)",
+      "notes": [],
+      "created_at": "2026-10-08T18:46:59.791929+00:00"
+    },
+    {
+      "evidence_id": "ev_b64b0a0b4761",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_b796e91f63a5",
+      "session_id": null,
+      "step_index": 21,
+      "action_id": "a_a22822ee2769",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_7cc5abef2c5c",
+      "effects": [
+        {
+          "kind": "NO_EFFECT",
+          "detail": "no observable change",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_f747efffdce7",
+        "o_d644980ca64f"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-5b29051fcca57aca.png",
+        "artifacts\\screenshots\\obs-ed5ec70583afb798.png"
+      ],
+      "message": "NO_EFFECT: no observable change",
+      "notes": [],
+      "created_at": "2026-10-08T18:47:01.228735+00:00"
+    },
+    {
+      "evidence_id": "ev_41ac6d0ae6a6",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_b796e91f63a5",
+      "session_id": null,
+      "step_index": 22,
+      "action_id": "a_255f5284a41b",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_4dcd6d4c90c9",
+      "effects": [
+        {
+          "kind": "NO_EFFECT",
+          "detail": "no observable change",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_e08903300235",
+        "o_a73ea145cd71"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-ed5ec70583afb798.png",
+        "artifacts\\screenshots\\obs-5b29051fcca57aca.png"
+      ],
+      "message": "NO_EFFECT: no observable change",
+      "notes": [],
+      "created_at": "2026-10-08T18:47:02.613827+00:00"
+    },
+    {
+      "evidence_id": "ev_48904c20bd79",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_b796e91f63a5",
+      "session_id": null,
+      "step_index": 23,
+      "action_id": "a_c461fb3ec1cc",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_6e0fa46c859d",
+      "effects": [
+        {
+          "kind": "NO_EFFECT",
+          "detail": "no observable change",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_ed2ef4c55067",
+        "o_88ace2fe5669"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-ed5ec70583afb798.png",
+        "artifacts\\screenshots\\obs-ed5ec70583afb798.png"
+      ],
+      "message": "NO_EFFECT: no observable change",
+      "notes": [],
+      "created_at": "2026-10-08T18:47:03.976144+00:00"
+    },
+    {
+      "evidence_id": "ev_4d347321956c",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_b796e91f63a5",
+      "session_id": null,
+      "step_index": 24,
+      "action_id": "a_dc343d195aa8",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_2557e026a90c",
+      "effects": [
+        {
+          "kind": "NO_EFFECT",
+          "detail": "no observable change",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_bc07b0416926",
+        "o_a6ab520a5684"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-5b29051fcca57aca.png",
+        "artifacts\\screenshots\\obs-7662be7b1e0886a6.png"
+      ],
+      "message": "NO_EFFECT: no observable change",
+      "notes": [],
+      "created_at": "2026-10-08T18:47:05.374486+00:00"
+    },
+    {
+      "evidence_id": "ev_cea873096184",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_b796e91f63a5",
+      "session_id": null,
+      "step_index": 25,
+      "action_id": "a_4d6497c329eb",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_f319d0de4d11",
+      "effects": [
+        {
+          "kind": "NO_EFFECT",
+          "detail": "no observable change",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_a007e47dcf82",
+        "o_5f1775746d3f"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-7662be7b1e0886a6.png",
+        "artifacts\\screenshots\\obs-7662be7b1e0886a6.png"
+      ],
+      "message": "NO_EFFECT: no observable change",
+      "notes": [],
+      "created_at": "2026-10-08T18:47:06.806749+00:00"
+    },
+    {
+      "evidence_id": "ev_bbd37e50fd17",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_b796e91f63a5",
+      "session_id": null,
+      "step_index": 26,
+      "action_id": "a_a22822ee2769",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_7cc5abef2c5c",
+      "effects": [
+        {
+          "kind": "NO_EFFECT",
+          "detail": "no observable change",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_a193efc3e5c5",
+        "o_436e20dbba7c"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-7662be7b1e0886a6.png",
+        "artifacts\\screenshots\\obs-7662be7b1e0886a6.png"
+      ],
+      "message": "NO_EFFECT: no observable change",
+      "notes": [],
+      "created_at": "2026-10-08T18:47:08.178325+00:00"
+    },
+    {
+      "evidence_id": "ev_b57ad9359d86",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_b796e91f63a5",
+      "session_id": null,
+      "step_index": 27,
+      "action_id": "a_a22822ee2769",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_7cc5abef2c5c",
+      "effects": [
+        {
+          "kind": "NO_EFFECT",
+          "detail": "no observable change",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_71b4d5232c58",
+        "o_f497957343d1"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-7662be7b1e0886a6.png",
+        "artifacts\\screenshots\\obs-7662be7b1e0886a6.png"
+      ],
+      "message": "NO_EFFECT: no observable change",
+      "notes": [],
+      "created_at": "2026-10-08T18:47:09.514731+00:00"
+    },
+    {
+      "evidence_id": "ev_e72ff951e346",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_b796e91f63a5",
+      "session_id": null,
+      "step_index": 28,
+      "action_id": "a_a22822ee2769",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_7cc5abef2c5c",
+      "effects": [
+        {
+          "kind": "NO_EFFECT",
+          "detail": "no observable change",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_d5fcbbb8b18a",
+        "o_90b92024dead"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-7662be7b1e0886a6.png",
+        "artifacts\\screenshots\\obs-7662be7b1e0886a6.png"
+      ],
+      "message": "NO_EFFECT: no observable change",
+      "notes": [],
+      "created_at": "2026-10-08T18:47:10.849872+00:00"
+    },
+    {
+      "evidence_id": "ev_810a5224cb58",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_b796e91f63a5",
+      "session_id": null,
+      "step_index": 29,
+      "action_id": "a_a22822ee2769",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_7cc5abef2c5c",
+      "effects": [
+        {
+          "kind": "NO_EFFECT",
+          "detail": "no observable change",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_563023f0a519",
+        "o_d401c6bf8fb3"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-7662be7b1e0886a6.png",
+        "artifacts\\screenshots\\obs-7662be7b1e0886a6.png"
+      ],
+      "message": "NO_EFFECT: no observable change",
+      "notes": [],
+      "created_at": "2026-10-08T18:47:12.291336+00:00"
+    },
+    {
+      "evidence_id": "ev_ff253502c6a5",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_b796e91f63a5",
+      "session_id": null,
+      "step_index": 30,
+      "action_id": "a_a22822ee2769",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_7cc5abef2c5c",
+      "effects": [
+        {
+          "kind": "NO_EFFECT",
+          "detail": "no observable change",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_42b35fe66b81",
+        "o_9a627ea11c18"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-7662be7b1e0886a6.png",
+        "artifacts\\screenshots\\obs-7662be7b1e0886a6.png"
+      ],
+      "message": "NO_EFFECT: no observable change",
+      "notes": [],
+      "created_at": "2026-10-08T18:47:13.690280+00:00"
+    },
+    {
+      "evidence_id": "ev_d8f61f4b7383",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_7bfdd136c800",
+      "session_id": null,
+      "step_index": 0,
+      "action_id": "a_dc343d195aa8",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_2557e026a90c",
+      "effects": [
+        {
+          "kind": "NO_EFFECT",
+          "detail": "no observable change",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_40bb2d2b17da",
+        "o_657d8b562eb3"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-b55626081dd29254.png",
+        "artifacts\\screenshots\\obs-b55626081dd29254.png"
+      ],
+      "message": "NO_EFFECT: no observable change",
+      "notes": [],
+      "created_at": "2026-10-08T18:50:56.014464+00:00"
+    },
+    {
+      "evidence_id": "ev_8f0819a16f19",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_7bfdd136c800",
+      "session_id": null,
+      "step_index": 1,
+      "action_id": "a_90188ee78152",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_eb981ba9b814",
+      "effects": [
+        {
+          "kind": "TEXT_CHANGED",
+          "detail": "Complete the current step before moving to step 2.",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_ccf4744fbc85",
+        "o_e71df7cc5dae"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-b55626081dd29254.png",
+        "artifacts\\screenshots\\obs-407d0a73508df14a.png"
+      ],
+      "message": "TEXT_CHANGED: complete the current step before moving to step 2.",
+      "notes": [],
+      "created_at": "2026-10-08T18:50:57.554302+00:00"
+    },
+    {
+      "evidence_id": "ev_550ed1fa5a6e",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_7bfdd136c800",
+      "session_id": null,
+      "step_index": 2,
+      "action_id": "a_3576d866c012",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_5fa776879d6a",
+      "effects": [
+        {
+          "kind": "TEXT_CHANGED",
+          "detail": "Complete the current step before moving to step 3.",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_fcd5a484052c",
+        "o_0476ee47a6ee"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-407d0a73508df14a.png",
+        "artifacts\\screenshots\\obs-4b99a39b429eb468.png"
+      ],
+      "message": "TEXT_CHANGED: complete the current step before moving to step 3.",
+      "notes": [],
+      "created_at": "2026-10-08T18:50:59.131588+00:00"
+    },
+    {
+      "evidence_id": "ev_33489decf75d",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_7bfdd136c800",
+      "session_id": null,
+      "step_index": 3,
+      "action_id": "a_05df2e4e1383",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_ba3bb03e440f",
+      "effects": [
+        {
+          "kind": "TEXT_CHANGED",
+          "detail": "Complete the current step before moving to step 4.",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_4a397e9d83a0",
+        "o_1ac563e4caf3"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-4b99a39b429eb468.png",
+        "artifacts\\screenshots\\obs-4e3f137020f33683.png"
+      ],
+      "message": "TEXT_CHANGED: complete the current step before moving to step 4.",
+      "notes": [],
+      "created_at": "2026-10-08T18:51:00.583591+00:00"
+    },
+    {
+      "evidence_id": "ev_ce3661f90a81",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_7bfdd136c800",
+      "session_id": null,
+      "step_index": 4,
+      "action_id": "a_12056f08a27e",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_39f91fbb3371",
+      "effects": [
+        {
+          "kind": "VALIDATION_MESSAGE",
+          "detail": "Full name is required. Email is required.",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": "Full name is required. Email is required."
+        },
+        {
+          "kind": "PRECONDITION_BLOCKED",
+          "detail": "Full name is required. Email is required.",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": "Full name is required. Email is required."
+        },
+        {
+          "kind": "TEXT_CHANGED",
+          "detail": "removed: complete before current moving the",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_98d02ebc5021",
+        "o_baac20b61953"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-4e3f137020f33683.png",
+        "artifacts\\screenshots\\obs-88abef13ff7f510d.png"
+      ],
+      "message": "VALIDATION_MESSAGE: full name is required. email is required.; PRECONDITION_BLOCKED: full name is required. email is required.; TEXT_CHANGED: removed: complete before current moving the",
+      "notes": [],
+      "created_at": "2026-10-08T18:51:02.035975+00:00"
+    },
+    {
+      "evidence_id": "ev_a7a01a096795",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_7bfdd136c800",
+      "session_id": null,
+      "step_index": 5,
+      "action_id": "a_4d6497c329eb",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_f319d0de4d11",
+      "effects": [
+        {
+          "kind": "NO_EFFECT",
+          "detail": "no observable change",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_1251caffc221",
+        "o_877784229d10"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-88abef13ff7f510d.png",
+        "artifacts\\screenshots\\obs-c316e65d40baf9cf.png"
+      ],
+      "message": "NO_EFFECT: no observable change",
+      "notes": [],
+      "created_at": "2026-10-08T18:51:03.511320+00:00"
+    },
+    {
+      "evidence_id": "ev_e035ee111ca5",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_7bfdd136c800",
+      "session_id": null,
+      "step_index": 6,
+      "action_id": "a_e88687fa0680",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_a6a1637053db",
+      "effects": [
+        {
+          "kind": "VALUE_CHANGED",
+          "detail": "TEXT_FIELD:Email",
+          "before": null,
+          "after": null,
+          "element_id": "e_5a362a950807",
+          "message": null
+        },
+        {
+          "kind": "FORM_CHANGED",
+          "detail": "form wizard-form: value changed for email",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_147f5f2fd2f7",
+        "o_ea3bfde6a74c"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-c316e65d40baf9cf.png",
+        "artifacts\\screenshots\\obs-45812d9cbc2bdf85.png"
+      ],
+      "message": "VALUE_CHANGED: text_field:email; FORM_CHANGED: form wizard-form: value changed for email",
+      "notes": [],
+      "created_at": "2026-10-08T18:51:05.099990+00:00"
+    },
+    {
+      "evidence_id": "ev_1bd8663a3bee",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_7bfdd136c800",
+      "session_id": null,
+      "step_index": 7,
+      "action_id": "a_a22822ee2769",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_7cc5abef2c5c",
+      "effects": [
+        {
+          "kind": "NO_EFFECT",
+          "detail": "no observable change",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_743d77e90663",
+        "o_e3b805be34d7"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-d06cf1477c355a8d.png",
+        "artifacts\\screenshots\\obs-45812d9cbc2bdf85.png"
+      ],
+      "message": "NO_EFFECT: no observable change",
+      "notes": [],
+      "created_at": "2026-10-08T18:51:06.462930+00:00"
+    },
+    {
+      "evidence_id": "ev_069f1f81fb5f",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_7bfdd136c800",
+      "session_id": null,
+      "step_index": 8,
+      "action_id": "a_528a66219ed9",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_45d38ae6147a",
+      "effects": [
+        {
+          "kind": "VALUE_CHANGED",
+          "detail": "TEXT_FIELD:Full name",
+          "before": null,
+          "after": null,
+          "element_id": "e_467c1a6649b7",
+          "message": null
+        },
+        {
+          "kind": "FORM_CHANGED",
+          "detail": "form wizard-form: value changed for full name",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_38023e6eb563",
+        "o_2ce895be0784"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-d06cf1477c355a8d.png",
+        "artifacts\\screenshots\\obs-5e9ec3ae3cc981cd.png"
+      ],
+      "message": "VALUE_CHANGED: text_field:full name; FORM_CHANGED: form wizard-form: value changed for full name",
+      "notes": [],
+      "created_at": "2026-10-08T18:51:08.027260+00:00"
+    },
+    {
+      "evidence_id": "ev_4e28aee888e2",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_7bfdd136c800",
+      "session_id": null,
+      "step_index": 9,
+      "action_id": "a_255f5284a41b",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_4dcd6d4c90c9",
+      "effects": [
+        {
+          "kind": "NO_EFFECT",
+          "detail": "no observable change",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_bd29683ba98f",
+        "o_873439c34e3d"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-8e1cf341217cb558.png",
+        "artifacts\\screenshots\\obs-7921396b728dedf9.png"
+      ],
+      "message": "NO_EFFECT: no observable change",
+      "notes": [],
+      "created_at": "2026-10-08T18:51:09.456374+00:00"
+    },
+    {
+      "evidence_id": "ev_3fc00be4abf1",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_7bfdd136c800",
+      "session_id": null,
+      "step_index": 10,
+      "action_id": "a_935fe93aafa8",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_395797cfe8ab",
+      "effects": [
+        {
+          "kind": "VALUE_CHANGED",
+          "detail": "TEXT_FIELD:Full name",
+          "before": null,
+          "after": null,
+          "element_id": "e_467c1a6649b7",
+          "message": null
+        },
+        {
+          "kind": "FORM_CHANGED",
+          "detail": "form wizard-form: value changed for full name",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_4085ab8db31e",
+        "o_bfbcebec8e70"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-7921396b728dedf9.png",
+        "artifacts\\screenshots\\obs-a3cd4e71aa34ab54.png"
+      ],
+      "message": "VALUE_CHANGED: text_field:full name; FORM_CHANGED: form wizard-form: value changed for full name",
+      "notes": [],
+      "created_at": "2026-10-08T18:51:10.953417+00:00"
+    },
+    {
+      "evidence_id": "ev_56a7878cad26",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_7bfdd136c800",
+      "session_id": null,
+      "step_index": 11,
+      "action_id": "a_4586749a3207",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_ac3f6079d604",
+      "effects": [
+        {
+          "kind": "VALUE_CHANGED",
+          "detail": "TEXT_FIELD:Phone (optional)",
+          "before": null,
+          "after": null,
+          "element_id": "e_fcdf340aa3fc",
+          "message": null
+        },
+        {
+          "kind": "FORM_CHANGED",
+          "detail": "form wizard-form: value changed for phone (optional)",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_1d803c48b154",
+        "o_a9a2953aab56"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-ef421c4a7f4808ab.png",
+        "artifacts\\screenshots\\obs-e4b5b166a03a794e.png"
+      ],
+      "message": "VALUE_CHANGED: text_field:phone (optional); FORM_CHANGED: form wizard-form: value changed for phone (optional)",
+      "notes": [],
+      "created_at": "2026-10-08T18:51:12.453577+00:00"
+    },
+    {
+      "evidence_id": "ev_7e402dc294ee",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_7bfdd136c800",
+      "session_id": null,
+      "step_index": 12,
+      "action_id": "a_c461fb3ec1cc",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_6e0fa46c859d",
+      "effects": [
+        {
+          "kind": "NO_EFFECT",
+          "detail": "no observable change",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_e03c1b87a27f",
+        "o_eb0a7713efe9"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-152bdab3ad16a5c6.png",
+        "artifacts\\screenshots\\obs-e4b5b166a03a794e.png"
+      ],
+      "message": "NO_EFFECT: no observable change",
+      "notes": [],
+      "created_at": "2026-10-08T18:51:13.830290+00:00"
+    },
+    {
+      "evidence_id": "ev_f751ee694584",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_7bfdd136c800",
+      "session_id": null,
+      "step_index": 13,
+      "action_id": "a_cf393d354394",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_7604f2c455b7",
+      "effects": [
+        {
+          "kind": "VALUE_CHANGED",
+          "detail": "TEXT_FIELD:Phone (optional)",
+          "before": null,
+          "after": null,
+          "element_id": "e_fcdf340aa3fc",
+          "message": null
+        },
+        {
+          "kind": "FORM_CHANGED",
+          "detail": "form wizard-form: value changed for phone (optional)",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_b7ff88a8800d",
+        "o_188525f4b6d2"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-e4b5b166a03a794e.png",
+        "artifacts\\screenshots\\obs-af78fde864c70d94.png"
+      ],
+      "message": "VALUE_CHANGED: text_field:phone (optional); FORM_CHANGED: form wizard-form: value changed for phone (optional)",
+      "notes": [],
+      "created_at": "2026-10-08T18:51:15.301122+00:00"
+    },
+    {
+      "evidence_id": "ev_21580f6cfbb5",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_7bfdd136c800",
+      "session_id": null,
+      "step_index": 14,
+      "action_id": "a_90188ee78152",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_eb981ba9b814",
+      "effects": [
+        {
+          "kind": "TEXT_CHANGED",
+          "detail": "Complete the current step before moving to step 2.",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_e6b49bb780d7",
+        "o_f4068d2b6b8b"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-969ece019158e3e7.png",
+        "artifacts\\screenshots\\obs-1829ba0890a1c661.png"
+      ],
+      "message": "TEXT_CHANGED: complete the current step before moving to step 2.",
+      "notes": [],
+      "created_at": "2026-10-08T18:51:16.708817+00:00"
+    },
+    {
+      "evidence_id": "ev_9edc0ce38f1e",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_7bfdd136c800",
+      "session_id": null,
+      "step_index": 15,
+      "action_id": "a_3576d866c012",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_5fa776879d6a",
+      "effects": [
+        {
+          "kind": "TEXT_CHANGED",
+          "detail": "Complete the current step before moving to step 3.",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_243f3cf716c5",
+        "o_0bd08b5e0fb2"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-1829ba0890a1c661.png",
+        "artifacts\\screenshots\\obs-c9912c47047fa3df.png"
+      ],
+      "message": "TEXT_CHANGED: complete the current step before moving to step 3.",
+      "notes": [],
+      "created_at": "2026-10-08T18:51:18.165313+00:00"
+    },
+    {
+      "evidence_id": "ev_759d81280835",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_7bfdd136c800",
+      "session_id": null,
+      "step_index": 16,
+      "action_id": "a_05df2e4e1383",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_ba3bb03e440f",
+      "effects": [
+        {
+          "kind": "TEXT_CHANGED",
+          "detail": "Complete the current step before moving to step 4.",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_65df12b1c7ac",
+        "o_9ef86c6be45f"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-c9912c47047fa3df.png",
+        "artifacts\\screenshots\\obs-48e8437d2c6a8ea3.png"
+      ],
+      "message": "TEXT_CHANGED: complete the current step before moving to step 4.",
+      "notes": [],
+      "created_at": "2026-10-08T18:51:19.701207+00:00"
+    },
+    {
+      "evidence_id": "ev_a4b1aa031a1b",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_7bfdd136c800",
+      "session_id": null,
+      "step_index": 17,
+      "action_id": "a_12056f08a27e",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_39f91fbb3371",
+      "effects": [
+        {
+          "kind": "ELEMENTS_CHANGED",
+          "detail": "TEXT_FIELD:Phone (optional)",
+          "before": null,
+          "after": null,
+          "element_id": "e_418b0726e619",
+          "message": null
+        },
+        {
+          "kind": "VALIDATION_MESSAGE",
+          "detail": "Phone must be exactly 10 digits.",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": "Phone must be exactly 10 digits."
+        },
+        {
+          "kind": "PRECONDITION_BLOCKED",
+          "detail": "Phone must be exactly 10 digits.",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": "Phone must be exactly 10 digits."
+        },
+        {
+          "kind": "TEXT_CHANGED",
+          "detail": "added: digits. be; removed: complete before current moving the",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_4bb7ecbaea9b",
+        "o_23600c3f5869"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-48e8437d2c6a8ea3.png",
+        "artifacts\\screenshots\\obs-518556203de6db53.png"
+      ],
+      "message": "ELEMENTS_CHANGED: text_field:phone (optional); VALIDATION_MESSAGE: phone must be exactly 10 digits.; PRECONDITION_BLOCKED: phone must be exactly 10 digits.; TEXT_CHANGED: added: digits. be; removed: complete before current moving the",
+      "notes": [],
+      "created_at": "2026-10-08T18:51:21.342774+00:00"
+    },
+    {
+      "evidence_id": "ev_ef730336fca4",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_7bfdd136c800",
+      "session_id": null,
+      "step_index": 18,
+      "action_id": "a_e88687fa0680",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_a6a1637053db",
+      "effects": [
+        {
+          "kind": "VALUE_CHANGED",
+          "detail": "TEXT_FIELD:Email",
+          "before": null,
+          "after": null,
+          "element_id": "e_5a362a950807",
+          "message": null
+        },
+        {
+          "kind": "FORM_CHANGED",
+          "detail": "form wizard-form: value changed for email",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_907c6c380729",
+        "o_deb145fe7f6f"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-518556203de6db53.png",
+        "artifacts\\screenshots\\obs-ddf500c740e0afc9.png"
+      ],
+      "message": "VALUE_CHANGED: text_field:email; FORM_CHANGED: form wizard-form: value changed for email",
+      "notes": [],
+      "created_at": "2026-10-08T18:51:23.557665+00:00"
+    },
+    {
+      "evidence_id": "ev_5fdf710becdb",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_7bfdd136c800",
+      "session_id": null,
+      "step_index": 19,
+      "action_id": "a_935fe93aafa8",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_395797cfe8ab",
+      "effects": [
+        {
+          "kind": "VALUE_CHANGED",
+          "detail": "TEXT_FIELD:Full name",
+          "before": null,
+          "after": null,
+          "element_id": "e_467c1a6649b7",
+          "message": null
+        },
+        {
+          "kind": "FORM_CHANGED",
+          "detail": "form wizard-form: value changed for full name",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_9484e213730c",
+        "o_0cea33b0c68f"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-34cbac8a30ce3196.png",
+        "artifacts\\screenshots\\obs-261417ba700f6c62.png"
+      ],
+      "message": "VALUE_CHANGED: text_field:full name; FORM_CHANGED: form wizard-form: value changed for full name",
+      "notes": [],
+      "created_at": "2026-10-08T18:51:25.135677+00:00"
+    },
+    {
+      "evidence_id": "ev_91e33b195405",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_7bfdd136c800",
+      "session_id": null,
+      "step_index": 20,
+      "action_id": "a_cf393d354394",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_7604f2c455b7",
+      "effects": [
+        {
+          "kind": "VALUE_CHANGED",
+          "detail": "TEXT_FIELD:Phone (optional)",
+          "before": null,
+          "after": null,
+          "element_id": "e_fcdf340aa3fc",
+          "message": null
+        },
+        {
+          "kind": "FORM_CHANGED",
+          "detail": "form wizard-form: value changed for phone (optional)",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_c5572c8ddf39",
+        "o_45b5118f7e21"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-e5eb95b67b7a3578.png",
+        "artifacts\\screenshots\\obs-32ad946ff1ff8f4c.png"
+      ],
+      "message": "VALUE_CHANGED: text_field:phone (optional); FORM_CHANGED: form wizard-form: value changed for phone (optional)",
+      "notes": [],
+      "created_at": "2026-10-08T18:51:26.733798+00:00"
+    },
+    {
+      "evidence_id": "ev_1b5cf24763b1",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_7bfdd136c800",
+      "session_id": null,
+      "step_index": 21,
+      "action_id": "a_a22822ee2769",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_7cc5abef2c5c",
+      "effects": [
+        {
+          "kind": "NO_EFFECT",
+          "detail": "no observable change",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_7d6e1094ccc7",
+        "o_b9d58842cd8b"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-dab55f3f11e26202.png",
+        "artifacts\\screenshots\\obs-32ad946ff1ff8f4c.png"
+      ],
+      "message": "NO_EFFECT: no observable change",
+      "notes": [],
+      "created_at": "2026-10-08T18:51:28.163707+00:00"
+    },
+    {
+      "evidence_id": "ev_337fbae95dcb",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_7bfdd136c800",
+      "session_id": null,
+      "step_index": 22,
+      "action_id": "a_255f5284a41b",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_4dcd6d4c90c9",
+      "effects": [
+        {
+          "kind": "NO_EFFECT",
+          "detail": "no observable change",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_4552626594d4",
+        "o_b2b92919ca81"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-32ad946ff1ff8f4c.png",
+        "artifacts\\screenshots\\obs-dab55f3f11e26202.png"
+      ],
+      "message": "NO_EFFECT: no observable change",
+      "notes": [],
+      "created_at": "2026-10-08T18:51:29.594725+00:00"
+    },
+    {
+      "evidence_id": "ev_9d1e35594d1b",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_7bfdd136c800",
+      "session_id": null,
+      "step_index": 23,
+      "action_id": "a_c461fb3ec1cc",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_6e0fa46c859d",
+      "effects": [
+        {
+          "kind": "NO_EFFECT",
+          "detail": "no observable change",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_7cf57367c488",
+        "o_b43a414d9b46"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-32ad946ff1ff8f4c.png",
+        "artifacts\\screenshots\\obs-32ad946ff1ff8f4c.png"
+      ],
+      "message": "NO_EFFECT: no observable change",
+      "notes": [],
+      "created_at": "2026-10-08T18:51:31.008823+00:00"
+    },
+    {
+      "evidence_id": "ev_667d7c974163",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_7bfdd136c800",
+      "session_id": null,
+      "step_index": 24,
+      "action_id": "a_dc343d195aa8",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_2557e026a90c",
+      "effects": [
+        {
+          "kind": "NO_EFFECT",
+          "detail": "no observable change",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_fa1248226246",
+        "o_3e8efbd5d167"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-dab55f3f11e26202.png",
+        "artifacts\\screenshots\\obs-73648c2b99472bce.png"
+      ],
+      "message": "NO_EFFECT: no observable change",
+      "notes": [],
+      "created_at": "2026-10-08T18:51:32.440908+00:00"
+    },
+    {
+      "evidence_id": "ev_9e2a5c75241d",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_7bfdd136c800",
+      "session_id": null,
+      "step_index": 25,
+      "action_id": "a_4d6497c329eb",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_f319d0de4d11",
+      "effects": [
+        {
+          "kind": "NO_EFFECT",
+          "detail": "no observable change",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_82715f71b093",
+        "o_adaa67f4ddbc"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-73648c2b99472bce.png",
+        "artifacts\\screenshots\\obs-73648c2b99472bce.png"
+      ],
+      "message": "NO_EFFECT: no observable change",
+      "notes": [],
+      "created_at": "2026-10-08T18:51:33.921925+00:00"
+    },
+    {
+      "evidence_id": "ev_0f7f1b73607a",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_7bfdd136c800",
+      "session_id": null,
+      "step_index": 26,
+      "action_id": "a_a22822ee2769",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_7cc5abef2c5c",
+      "effects": [
+        {
+          "kind": "NO_EFFECT",
+          "detail": "no observable change",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_7f10aa1e2418",
+        "o_be86cfbb1561"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-73648c2b99472bce.png",
+        "artifacts\\screenshots\\obs-73648c2b99472bce.png"
+      ],
+      "message": "NO_EFFECT: no observable change",
+      "notes": [],
+      "created_at": "2026-10-08T18:51:35.367549+00:00"
+    },
+    {
+      "evidence_id": "ev_cafcfd0aecbf",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_7bfdd136c800",
+      "session_id": null,
+      "step_index": 27,
+      "action_id": "a_a22822ee2769",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_7cc5abef2c5c",
+      "effects": [
+        {
+          "kind": "NO_EFFECT",
+          "detail": "no observable change",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_3d817d40f3b8",
+        "o_1d49321661c5"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-73648c2b99472bce.png",
+        "artifacts\\screenshots\\obs-73648c2b99472bce.png"
+      ],
+      "message": "NO_EFFECT: no observable change",
+      "notes": [],
+      "created_at": "2026-10-08T18:51:36.803548+00:00"
+    },
+    {
+      "evidence_id": "ev_e86b483041de",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_7bfdd136c800",
+      "session_id": null,
+      "step_index": 28,
+      "action_id": "a_a22822ee2769",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_7cc5abef2c5c",
+      "effects": [
+        {
+          "kind": "NO_EFFECT",
+          "detail": "no observable change",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_a9e914a12f2a",
+        "o_c8af84a206d0"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-73648c2b99472bce.png",
+        "artifacts\\screenshots\\obs-73648c2b99472bce.png"
+      ],
+      "message": "NO_EFFECT: no observable change",
+      "notes": [],
+      "created_at": "2026-10-08T18:51:38.227932+00:00"
+    },
+    {
+      "evidence_id": "ev_ef32fdcbd5be",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_7bfdd136c800",
+      "session_id": null,
+      "step_index": 29,
+      "action_id": "a_a22822ee2769",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_7cc5abef2c5c",
+      "effects": [
+        {
+          "kind": "NO_EFFECT",
+          "detail": "no observable change",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_5a109fd02ed4",
+        "o_abf8b2181165"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-73648c2b99472bce.png",
+        "artifacts\\screenshots\\obs-73648c2b99472bce.png"
+      ],
+      "message": "NO_EFFECT: no observable change",
+      "notes": [],
+      "created_at": "2026-10-08T18:51:39.640854+00:00"
+    },
+    {
+      "evidence_id": "ev_bac5accf7fc0",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_7bfdd136c800",
+      "session_id": null,
+      "step_index": 30,
+      "action_id": "a_a22822ee2769",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_7cc5abef2c5c",
+      "effects": [
+        {
+          "kind": "NO_EFFECT",
+          "detail": "no observable change",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_533adceda737",
+        "o_44b381cd2c16"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-73648c2b99472bce.png",
+        "artifacts\\screenshots\\obs-73648c2b99472bce.png"
+      ],
+      "message": "NO_EFFECT: no observable change",
+      "notes": [],
+      "created_at": "2026-10-08T18:51:41.058829+00:00"
+    },
+    {
+      "evidence_id": "ev_f22b3246dd34",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_7bfdd136c800",
+      "session_id": null,
+      "step_index": 31,
+      "action_id": "a_a22822ee2769",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_7cc5abef2c5c",
+      "effects": [
+        {
+          "kind": "NO_EFFECT",
+          "detail": "no observable change",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_0ef5afeb386f",
+        "o_d2b51f5e6c9c"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-73648c2b99472bce.png",
+        "artifacts\\screenshots\\obs-73648c2b99472bce.png"
+      ],
+      "message": "NO_EFFECT: no observable change",
+      "notes": [],
+      "created_at": "2026-10-08T18:51:42.627090+00:00"
+    },
+    {
+      "evidence_id": "ev_725546e23263",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_7bfdd136c800",
+      "session_id": null,
+      "step_index": 32,
+      "action_id": "a_a22822ee2769",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_7cc5abef2c5c",
+      "effects": [
+        {
+          "kind": "NO_EFFECT",
+          "detail": "no observable change",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_62b4309f97d9",
+        "o_6a52e492e3e3"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-73648c2b99472bce.png",
+        "artifacts\\screenshots\\obs-73648c2b99472bce.png"
+      ],
+      "message": "NO_EFFECT: no observable change",
+      "notes": [],
+      "created_at": "2026-10-08T18:51:44.069068+00:00"
+    },
+    {
+      "evidence_id": "ev_c90768ca09f0",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_7bfdd136c800",
+      "session_id": null,
+      "step_index": 33,
+      "action_id": "a_a22822ee2769",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_7cc5abef2c5c",
+      "effects": [
+        {
+          "kind": "NO_EFFECT",
+          "detail": "no observable change",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_43fb93e84852",
+        "o_692e0e5fb517"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-73648c2b99472bce.png",
+        "artifacts\\screenshots\\obs-73648c2b99472bce.png"
+      ],
+      "message": "NO_EFFECT: no observable change",
+      "notes": [],
+      "created_at": "2026-10-08T18:51:45.473750+00:00"
+    },
+    {
+      "evidence_id": "ev_d356a13ea7a5",
+      "kind": "ACTION_RESULT",
+      "experiment_id": "exp_7bfdd136c800",
+      "session_id": null,
+      "step_index": 34,
+      "action_id": "a_a22822ee2769",
+      "source_state": "s_6481a1d32d51",
+      "target_state": "s_6481a1d32d51",
+      "transition_id": "t_7cc5abef2c5c",
+      "effects": [
+        {
+          "kind": "NO_EFFECT",
+          "detail": "no observable change",
+          "before": null,
+          "after": null,
+          "element_id": null,
+          "message": null
+        }
+      ],
+      "observations": [
+        "o_0b011fe7ef86",
+        "o_05966dd7989d"
+      ],
+      "screenshot_refs": [
+        "artifacts\\screenshots\\obs-73648c2b99472bce.png",
+        "artifacts\\screenshots\\obs-73648c2b99472bce.png"
+      ],
+      "message": "NO_EFFECT: no observable change",
+      "notes": [],
+      "created_at": "2026-10-08T18:51:46.864006+00:00"
+    }
+  ],
+  "experiments": [
+    {
+      "experiment_id": "exp_7bfdd136c800",
+      "target_id": "demo_forms",
+      "kind": "exploration",
+      "seed": 7,
+      "browser_version": "Chrome/153.0.8010.12",
+      "model_version": 1,
+      "prompt_version": "v1",
+      "budget": {
+        "max_actions": 120,
+        "max_duration_seconds": 600.0,
+        "max_states": 80,
+        "max_transitions": 200,
+        "max_repeated_action": 2,
+        "max_same_state_visits": 10,
+        "max_browser_restarts": 1
+      },
+      "configuration": {
+        "budget": {
+          "max_actions": 120,
+          "max_duration_seconds": 600.0,
+          "max_states": 80,
+          "max_transitions": 200,
+          "max_repeated_action": 2,
+          "max_same_state_visits": 10,
+          "max_browser_restarts": 1
+        },
+        "mode": "AUTONOMOUS",
+        "seed": 7,
+        "capture_screenshots": true,
+        "settle_quiet_ms": 250,
+        "max_actions_without_new_state": 40,
+        "weights": {
+          "url": 0.2,
+          "title": 0.06,
+          "text": 0.22,
+          "elements": 0.24,
+          "accessibility": 0.08,
+          "forms": 0.05,
+          "controls": 0.05,
+          "dialogs": 0.06,
+          "screenshot": 0.04
+        },
+        "thresholds": {
+          "same_state": 0.9,
+          "same_page": 0.68
+        },
+        "configuration_label": "default"
+      },
+      "started_at": "2026-10-08T18:50:54.105475+00:00",
+      "finished_at": "2026-10-08T18:51:46.884036+00:00",
+      "status": "completed",
+      "steps": [],
+      "metrics": {
+        "experiment_id": "exp_7bfdd136c800",
+        "target_id": "demo_forms",
+        "stop_reason": "exploration loop detected (repeating known states and actions)",
+        "actions_executed": 35,
+        "actions_blocked": 0,
+        "actions_failed": 0,
+        "approvals_requested": 0,
+        "approvals_granted": 0,
+        "new_states": 0,
+        "new_transitions": 2,
+        "verified_transitions": 16,
+        "recoveries": 0,
+        "hypotheses_proposed": 22,
+        "hypotheses_verified": 0,
+        "duration_seconds": 52.77,
+        "mean_action_ms": 68.65,
+        "mean_observation_ms": 697.54,
+        "metrics": {
+          "novelty": {
+            "distinct_states": 17,
+            "total_state_visits": 35,
+            "distinct_actions_tried": 14,
+            "productive_actions": 9,
+            "transitions_seen": 14,
+            "unvisited_ratio": 0.588
+          },
+          "hypotheses": {
+            "total": 22,
+            "by_status": {
+              "SUPPORTED": 14,
+              "PROPOSED": 8
+            },
+            "verified": []
+          },
+          "causal": {
+            "actions_observed": 14,
+            "conditional_actions": []
+          },
+          "budget": {
+            "actions_used": 35,
+            "states_seen": 1,
+            "transitions_seen": 16,
+            "elapsed_seconds": 52.77,
+            "remaining": {
+              "actions": 85,
+              "seconds": 547.2,
+              "states": 79,
+              "transitions": 184
+            },
+            "exhausted": null
+          },
+          "sandbox": {
+            "allowed_origins": [
+              "http://127.0.0.1:3004"
+            ],
+            "blocked_count": 0,
+            "blocked": []
+          },
+          "network_guard": {
+            "observed_requests": 0,
+            "observed_by_type": {},
+            "blocked_agent_requests": 0,
+            "blocked_commands": 0,
+            "external_origins_seen": [],
+            "blocked_recent": [],
+            "policy": "the browser is the interaction boundary; APIs are never called directly"
+          }
+        }
+      },
+      "notes": []
+    },
+    {
+      "experiment_id": "exp_b796e91f63a5",
+      "target_id": "demo_forms",
+      "kind": "exploration",
+      "seed": 7,
+      "browser_version": "Chrome/153.0.8010.12",
+      "model_version": 1,
+      "prompt_version": "v1",
+      "budget": {
+        "max_actions": 110,
+        "max_duration_seconds": 600.0,
+        "max_states": 80,
+        "max_transitions": 200,
+        "max_repeated_action": 2,
+        "max_same_state_visits": 10,
+        "max_browser_restarts": 1
+      },
+      "configuration": {
+        "budget": {
+          "max_actions": 110,
+          "max_duration_seconds": 600.0,
+          "max_states": 80,
+          "max_transitions": 200,
+          "max_repeated_action": 2,
+          "max_same_state_visits": 10,
+          "max_browser_restarts": 1
+        },
+        "mode": "AUTONOMOUS",
+        "seed": 7,
+        "capture_screenshots": true,
+        "settle_quiet_ms": 250,
+        "max_actions_without_new_state": 40,
+        "weights": {
+          "url": 0.2,
+          "title": 0.06,
+          "text": 0.22,
+          "elements": 0.24,
+          "accessibility": 0.08,
+          "forms": 0.05,
+          "controls": 0.05,
+          "dialogs": 0.06,
+          "screenshot": 0.04
+        },
+        "thresholds": {
+          "same_state": 0.9,
+          "same_page": 0.68
+        },
+        "configuration_label": "default"
+      },
+      "started_at": "2026-10-08T18:46:28.177926+00:00",
+      "finished_at": "2026-10-08T18:47:13.708609+00:00",
+      "status": "completed",
+      "steps": [],
+      "metrics": {
+        "experiment_id": "exp_b796e91f63a5",
+        "target_id": "demo_forms",
+        "stop_reason": "exploration loop detected (repeating known states and actions)",
+        "actions_executed": 31,
+        "actions_blocked": 0,
+        "actions_failed": 0,
+        "approvals_requested": 0,
+        "approvals_granted": 0,
+        "new_states": 1,
+        "new_transitions": 14,
+        "verified_transitions": 16,
+        "recoveries": 0,
+        "hypotheses_proposed": 25,
+        "hypotheses_verified": 0,
+        "duration_seconds": 45.53,
+        "mean_action_ms": 59.21,
+        "mean_observation_ms": 681.67,
+        "metrics": {
+          "novelty": {
+            "distinct_states": 16,
+            "total_state_visits": 31,
+            "distinct_actions_tried": 14,
+            "productive_actions": 9,
+            "transitions_seen": 14,
+            "unvisited_ratio": 0.562
+          },
+          "hypotheses": {
+            "total": 25,
+            "by_status": {
+              "REFUTED": 3,
+              "SUPPORTED": 14,
+              "PROPOSED": 8
+            },
+            "verified": []
+          },
+          "causal": {
+            "actions_observed": 14,
+            "conditional_actions": []
+          },
+          "budget": {
+            "actions_used": 31,
+            "states_seen": 1,
+            "transitions_seen": 14,
+            "elapsed_seconds": 45.53,
+            "remaining": {
+              "actions": 79,
+              "seconds": 554.5,
+              "states": 79,
+              "transitions": 186
+            },
+            "exhausted": null
+          },
+          "sandbox": {
+            "allowed_origins": [
+              "http://127.0.0.1:3004"
+            ],
+            "blocked_count": 0,
+            "blocked": []
+          },
+          "network_guard": {
+            "observed_requests": 0,
+            "observed_by_type": {},
+            "blocked_agent_requests": 0,
+            "blocked_commands": 0,
+            "external_origins_seen": [],
+            "blocked_recent": [],
+            "policy": "the browser is the interaction boundary; APIs are never called directly"
+          }
+        }
+      },
+      "notes": []
+    }
+  ],
+  "stats": {
+    "target_id": "demo_forms",
+    "model_version": 1,
+    "states": 1,
+    "transitions": 16,
+    "verified_transitions": 12,
+    "workflows": 0,
+    "constraints": 2,
+    "hypotheses": 28,
+    "evidence": 66,
+    "experiments": 2,
+    "pages": 0
+  }
+}

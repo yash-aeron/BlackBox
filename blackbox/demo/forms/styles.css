@@ -1,0 +1,205 @@
+:root {
+  --bg: #eef1f6;
+  --surface: #ffffff;
+  --ink: #1b2331;
+  --muted: #5b6879;
+  --line: #d5dce6;
+  --brand: #2a5db0;
+  --brand-dark: #1f4788;
+  --danger: #b3261e;
+  --ok: #17603a;
+  --radius: 10px;
+  --shadow: 0 1px 2px rgba(20, 30, 45, .08), 0 8px 22px rgba(20, 30, 45, .07);
+}
+
+* { box-sizing: border-box; }
+
+html, body { margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font: 15px/1.55 "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+}
+
+.skip-link {
+  position: absolute; left: -9999px; top: 0;
+  background: var(--brand); color: #fff; padding: 10px 14px; z-index: 50;
+}
+.skip-link:focus { left: 8px; top: 8px; }
+
+/* ---------- Header ---------- */
+
+.app-header {
+  display: flex; align-items: baseline; gap: 14px;
+  padding: 16px 24px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+}
+.app-header h1 { font-size: 20px; margin: 0; }
+.app-sub { margin: 0; color: var(--muted); font-size: 13px; }
+
+/* ---------- Panel ---------- */
+
+main {
+  max-width: 780px;
+  margin: 26px auto 60px;
+  padding: 0 16px;
+}
+main:focus { outline: none; }
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 24px 26px 26px;
+}
+.panel[hidden] { display: none; }
+.panel h2 { font-size: 19px; margin: 0 0 4px; }
+
+.step-counter {
+  margin: 0 0 14px;
+  font-size: 13px; font-weight: 700; letter-spacing: .5px;
+  text-transform: uppercase; color: var(--brand);
+}
+
+/* ---------- Step indicator ---------- */
+
+.step-list {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  list-style: none; margin: 0 0 18px; padding: 0;
+}
+.step-btn {
+  font: inherit; font-size: 13.5px; font-weight: 600;
+  padding: 7px 13px; cursor: pointer;
+  color: var(--muted); background: #f2f5fa;
+  border: 1px solid var(--line); border-radius: 999px;
+}
+.step-btn:hover { background: #e7edf7; color: var(--ink); }
+.step-btn.done { background: #e4f1e9; border-color: #b7dcc6; color: var(--ok); }
+.step-btn[aria-current="step"] {
+  background: var(--brand); border-color: var(--brand); color: #fff;
+}
+.step-btn:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+
+/* ---------- Fields ---------- */
+
+fieldset.step { border: 0; margin: 0; padding: 0; min-width: 0; }
+fieldset.step[hidden] { display: none; }
+fieldset.step:focus { outline: 2px solid var(--brand); outline-offset: 6px; border-radius: 6px; }
+
+fieldset.step legend {
+  padding: 0; margin: 0 0 4px;
+  font-size: 16px; font-weight: 700;
+}
+
+.field { margin-bottom: 16px; display: flex; flex-direction: column; gap: 5px; }
+.field label { font-weight: 600; font-size: 13.5px; }
+.field .opt { font-weight: 500; color: var(--muted); }
+
+input[type="text"], input[type="number"], input[type="email"], select {
+  font: inherit; color: var(--ink);
+  padding: 8px 10px;
+  border: 1px solid #b6c1d0; border-radius: 6px;
+  background: #fff; max-width: 380px;
+}
+input[type="file"] {
+  font: inherit; color: var(--ink);
+  padding: 7px 9px; background: #fff;
+  border: 1px dashed #b6c1d0; border-radius: 6px; max-width: 380px;
+}
+input:focus, select:focus {
+  outline: 2px solid var(--brand); outline-offset: 1px; border-color: var(--brand);
+}
+input.invalid, select.invalid { border-color: var(--danger); background: #fff8f7; }
+
+.field.checkbox {
+  flex-direction: row; align-items: center; gap: 9px;
+}
+.field.checkbox label { font-weight: 500; }
+.field.checkbox input[type="checkbox"] {
+  width: 17px; height: 17px; accent-color: var(--brand);
+}
+.field.checkbox input[type="checkbox"]:focus-visible {
+  outline: 2px solid var(--brand); outline-offset: 2px;
+}
+
+.hint { color: var(--muted); font-size: 13px; margin: 4px 0 16px; }
+.hint-inline { color: var(--muted); font-size: 12.5px; margin: 0; }
+
+.file-status {
+  margin: -8px 0 16px; font-size: 13px; font-weight: 600; color: var(--ok);
+}
+.file-status:empty { display: none; }
+
+/* ---------- Buttons ---------- */
+
+.btn {
+  font: inherit; font-weight: 600;
+  padding: 9px 16px;
+  border: 1px solid #b6c1d0; border-radius: 6px;
+  background: #fff; color: var(--ink); cursor: pointer;
+}
+.btn:hover:not(:disabled) { background: #eef2f8; }
+.btn.primary { background: var(--brand); border-color: var(--brand); color: #fff; }
+.btn.primary:hover:not(:disabled) { background: var(--brand-dark); border-color: var(--brand-dark); }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+.btn:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+
+.wizard-actions {
+  display: flex; gap: 10px; justify-content: flex-end;
+  margin-top: 24px; padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+
+/* ---------- Messages ---------- */
+
+.error {
+  margin: 0 0 16px; padding: 10px 13px;
+  background: #fdf1f0; border: 1px solid #e0b4b0; border-left: 4px solid var(--danger);
+  border-radius: 6px; color: #7d1a15; font-weight: 600; font-size: 13.5px;
+}
+.error[hidden] { display: none; }
+
+.success {
+  margin: 8px 0 18px; padding: 11px 14px;
+  background: #e9f6ee; border: 1px solid #b7dcc6; border-left: 4px solid var(--ok);
+  border-radius: 6px; color: #14522f; font-weight: 600;
+}
+
+.toast {
+  position: fixed; right: 20px; bottom: 20px; z-index: 40;
+  max-width: 320px; padding: 11px 16px;
+  background: #12324f; color: #fff; font-weight: 600; font-size: 14px;
+  border-radius: 8px; box-shadow: 0 8px 22px rgba(15, 30, 50, .28);
+}
+.toast:empty { display: none; }
+
+/* ---------- Review summary ---------- */
+
+.summary {
+  display: grid;
+  grid-template-columns: minmax(150px, 210px) minmax(0, 1fr);
+  gap: 0;
+  margin: 6px 0 20px;
+  border: 1px solid var(--line); border-radius: 8px; overflow: hidden;
+}
+.summary dt {
+  padding: 9px 13px; margin: 0;
+  background: #f4f7fb; font-weight: 600; font-size: 13px;
+  border-bottom: 1px solid var(--line);
+}
+.summary dd {
+  padding: 9px 13px; margin: 0;
+  border-bottom: 1px solid var(--line);
+  background: #fff;
+}
+.summary dt:last-of-type, .summary dd:last-of-type { border-bottom: 0; }
+
+@media (max-width: 560px) {
+  .panel { padding: 18px 16px 20px; }
+  .summary { grid-template-columns: 1fr; }
+  .summary dt { border-bottom: 0; padding-bottom: 2px; }
+  input[type="text"], input[type="number"], select, input[type="file"] { max-width: 100%; }
+}

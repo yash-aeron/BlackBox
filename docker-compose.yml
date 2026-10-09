@@ -1,0 +1,46 @@
+# Local infrastructure for BlackBox.
+#
+# BlackBox runs with *no* infrastructure (SQLite + an in-process job registry),
+# so this file is optional.  It provides the deployment-shaped dependencies:
+#
+#   docker compose up -d
+#   BLACKBOX_DB=postgresql://blackbox:blackbox@127.0.0.1:5432/blackbox \
+#     python -m uvicorn blackbox.api.main:app --port 8099
+#
+# Redis is used only for optional task/job state; the system never requires it.
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: blackbox-postgres
+    environment:
+      POSTGRES_USER: blackbox
+      POSTGRES_PASSWORD: blackbox
+      POSTGRES_DB: blackbox
+    ports:
+      - "5432:5432"
+    volumes:
+      - blackbox-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U blackbox -d blackbox"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: blackbox-redis
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "6379:6379"
+    volumes:
+      - blackbox-redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  blackbox-pgdata:
+  blackbox-redisdata:
