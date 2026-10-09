@@ -13,6 +13,28 @@ it *guessed*. The API is the boundary it never crosses.
 
 ---
 
+## About BlackBox
+
+**BlackBox** is an autonomous web agent and behavioral learning engine that constructs persistent, verifiable state-transition models of unfamiliar web applications through black-box interaction alone.
+
+### Why BlackBox?
+Traditional web agents rely on a continuous "screenshot/HTML &rarr; LLM prompt &rarr; click" loop. This pattern is:
+1. **Stateless and forgetful**: The agent starts from zero context on every session, relearning the interface at full token cost.
+2. **Prone to thrashing**: Without causal memory, agents repeatedly click inert elements or trigger validation failures without understanding why.
+3. **Slow and expensive**: Sending entire page contexts to an LLM for routine clicks introduces multi-second latency and high API costs.
+4. **Vulnerable**: Relying on unconstrained LLM interpretation creates prompt-injection and runaway action risks.
+
+### How BlackBox Solves This
+BlackBox separates **knowledge acquisition** from **task planning**:
+* **Autonomous Active Exploration**: The agent navigates applications using deterministic information-gain heuristics, testing hypotheses about required fields, button states, and multi-step workflows.
+* **Persistent Behavioral Graph**: Every observed screen is fingerprinted across multiple independent channels (DOM structure, accessibility tree, form state, and visual hashes). Every click or keystroke that produces an observable effect becomes a verified transition edge.
+* **Outcome-Driven Constraint Learning**: When a submission fails, the agent inspects the validation message, extracts precise precondition rules (e.g., `min_length: 8`, `prefix: "SAVE"`), and synthesizes compliant inputs.
+* **Mined Parameterized Workflows**: When a sequence leads to a confirmation message or database change, BlackBox extracts it into a parameterized procedure (e.g. `create_customer(name, email, revenue)`), lifting literal values into typed parameters.
+* **Sub-Millisecond Deterministic Execution**: Tasks are resolved via graph search and workflow reuse, achieving **90%+ fewer wasted actions** and **50&times; faster planning latency** without needing an LLM in the loop.
+* **Zero Trust & Safety by Design**: Enforces strict origin allowlists, blocks arbitrary network extraction, gates destructive actions (MEDIUM/HIGH/CRITICAL) behind approval policies, and never stores passwords or secrets.
+
+---
+
 ## 1. Results at a glance
 
 All numbers below were produced by this repository on this machine. Raw reports
