@@ -404,6 +404,10 @@ class BlackBoxAgent:
         started = time.monotonic()
         if not self.running:
             await self.start()
+        if self.manager.page:
+            current_url = await self.manager.page.url()
+            if not current_url or current_url.startswith("about:"):
+                await self.manager.page.navigate(self.registration.base_url)
         parser = TaskParser()
         task = parser.parse(task_text)
         if predicates:
