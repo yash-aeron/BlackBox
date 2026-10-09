@@ -50,7 +50,7 @@ from ..perception.state_fingerprint import (
     match_state,
 )
 from .action_generator import ActionGenerator
-from .action_ranker import ActionRanker
+from .action_ranker import ActionRanker, RankedAction
 from .experiment import BudgetState, ExperimentLedger, ExperimentRecord, ExplorationBudget
 from .novelty import NoveltyTracker
 from .safety import ApprovalBroker, ApprovalRequest, ExecutionMode, SafetyClassifier, SafetyPolicy
@@ -58,6 +58,40 @@ from .safety import ApprovalBroker, ApprovalRequest, ExecutionMode, SafetyClassi
 log = logging.getLogger(__name__)
 
 EventSink = Callable[[dict[str, Any]], Awaitable[None] | None]
+
+
+def find_frontier_state(
+    graph: ApplicationGraph,
+    novelty: NoveltyTracker,
+    current_state_id: str,
+    candidate_actions_per_state: dict[str, list[Action]] | None = None,
+) -> str | None:
+    """Find the best reachable state in the graph that has unexplored candidate actions."""
+    candidate_actions_per_state = candidate_actions_per_state or {}
+    candidates_scores: list[tuple[float, str]] = []
+
+    for state_id in graph.states:
+        if state_id == current_state_id:
+            continue
+        actions = candidate_actions_per_state.get(state_id, [])
+        novel_count = 0
+        if actions:
+            novel_count = sum(1 for a in actions if not novelty.is_repeat(state_id, a))
+        else:
+            visits = novelty.state_action_counts.get(state_id, 0)
+            if visits < novelty.max_same_state_visits:
+                novel_count = max(1, novelty.max_same_state_visits - visits)
+
+        if novel_count > 0:
+            path = graph.find_path(current_state_id, lambda s, sid=state_id: s.state_id == sid)
+            if path.found:
+                priority = novel_count / (path.cost + 1.0)
+                candidates_scores.append((priority, state_id))
+
+    if not candidates_scores:
+        return None
+    candidates_scores.sort(key=lambda x: -x[0])
+    return candidates_scores[0][1]
 
 
 @dataclass
@@ -287,6 +321,19 @@ class Explorer:
                 hypothesis_actions = {
                     action.action_id for action in candidates if action.origin == "hypothesis"
                 }
+                active_form_element_ids = {
+                    e.element_id
+                    for e in observation.interactive_elements
+                    if e.in_dialog
+                    or (
+                        e.editable
+                        and any(
+                            not btn.enabled
+                            for btn in observation.interactive_elements
+                            if btn.semantic_role.value in ("BUTTON", "LINK")
+                        )
+                    )
+                }
                 ranked = self.ranker.rank(
                     candidates,
                     state=state,
@@ -294,6 +341,7 @@ class Explorer:
                     risks=risks,
                     hypothesis_action_ids=hypothesis_actions,
                     element_lookup={e.element_id: e for e in observation.interactive_elements},
+                    active_form_element_ids=active_form_element_ids,
                 )
                 await self._emit(
                     "ranking",
@@ -305,10 +353,21 @@ class Explorer:
 
                 chosen = await self._select_action(ranked, observation, risks, result)
                 if chosen is None:
-                    if all(self.novelty.is_repeat(state.state_id, item.action) for item in ranked):
-                        result.stop_reason = "all candidate actions exhausted in reachable states"
-                        break
-                    continue
+                    frontier_id = find_frontier_state(self.graph, self.novelty, state.state_id)
+                    if frontier_id:
+                        path = self.graph.find_path(state.state_id, lambda s, fid=frontier_id: s.state_id == fid)
+                        if path.found and path.transition_ids:
+                            first_trans = self.graph.transitions.get(path.transition_ids[0])
+                            if first_trans:
+                                act = first_trans.action
+                                act.origin = "frontier_navigation"
+                                act.rationale = f"navigating to frontier state {frontier_id}"
+                                chosen = RankedAction(action=act, score=0.5, reasons=["frontier navigation"])
+                    if chosen is None:
+                        if all(self.novelty.is_repeat(state.state_id, item.action) for item in ranked):
+                            result.stop_reason = "all candidate actions exhausted in reachable states"
+                            break
+                        continue
 
                 outcome = await self._execute_and_learn(page, state, observation, chosen, budget, result, risks)
                 budget.actions += 1
@@ -470,7 +529,12 @@ class Explorer:
         for hypothesis in self.hypotheses.all():
             if hypothesis.status in (HypothesisStatus.REFUTED, HypothesisStatus.STALE):
                 continue
-            if (hypothesis.details or {}).get("observation_id") not in (None, observation.observation_id):
+            field_id = (hypothesis.prediction or {}).get("field_id")
+            if field_id:
+                matching_element = next((e for e in observation.interactive_elements if e.element_id == field_id), None)
+                if matching_element is None or (matching_element.value_state.value or "").strip():
+                    continue
+            elif (hypothesis.details or {}).get("observation_id") not in (None, observation.observation_id):
                 continue
             for action in self.generator.for_hypothesis(hypothesis, observation, observation.interactive_elements):
                 if all(existing.signature() != action.signature() for existing in actions):

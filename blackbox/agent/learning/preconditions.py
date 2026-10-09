@@ -20,6 +20,11 @@ from ..observation.observation import Observation
 from .causal import Attribution
 
 REQUIRED = re.compile(r"([A-Za-z][A-Za-z ]{1,40}?)\s+(?:is|are)\s+required", re.IGNORECASE)
+MIN_LENGTH = re.compile(r"([A-Za-z][A-Za-z0-9 _-]{1,40}?)\s+must\s+(?:be\s+at\s+least|have\s+at\s+least|contain\s+at\s+least)\s+(\d+)\s+characters?", re.IGNORECASE)
+MAX_LENGTH = re.compile(r"([A-Za-z][A-Za-z0-9 _-]{1,40}?)\s+must\s+(?:be\s+at\s+most|have\s+at\s+most|not\s+exceed|be\s+no\s+more\s+than)\s+(\d+)\s+characters?", re.IGNORECASE)
+PREFIX = re.compile(r"([A-Za-z][A-Za-z0-9 _-]{1,40}?)\s+must\s+start\s+with\s+([A-Za-z0-9_-]+)", re.IGNORECASE)
+RANGE = re.compile(r"([A-Za-z][A-Za-z0-9 _-]{1,40}?)\s+must\s+be\s+between\s+(\d+)\s+and\s+(\d+)", re.IGNORECASE)
+CONTAINS = re.compile(r"([A-Za-z][A-Za-z0-9 _-]{1,40}?)\s+must\s+contain\s+([A-Za-z0-9@._-]+)", re.IGNORECASE)
 MUST_BE = re.compile(r"([A-Za-z][A-Za-z ]{1,40}?)\s+must\s+([a-z ]{2,40})", re.IGNORECASE)
 SELECT_FIRST = re.compile(r"select\s+(?:a|an|the)?\s*([A-Za-z][A-Za-z ]{1,40}?)\s+(?:before|first|to)", re.IGNORECASE)
 BEFORE_VERB = re.compile(r"([a-z ]{3,40}?)\s+before\s+(?:you\s+)?([a-z ]{3,30})", re.IGNORECASE)
@@ -114,6 +119,113 @@ class PreconditionLearner:
                     condition={"dependency": blocked.group(1), "op": "==", "value": "complete"},
                     message=text,
                     confidence=0.65,
+                )
+            )
+            return conditions
+
+        min_len = MIN_LENGTH.search(text)
+        if min_len:
+            field_name = min_len.group(1).strip()
+            n = int(min_len.group(2))
+            fields = self._field_candidates(observation, field_name)
+            conditions.append(
+                LearnedCondition(
+                    expression=f"len({normalize_text(field_name).replace(' ', '_')}) >= {n}",
+                    condition={
+                        "field": field_name,
+                        "op": ">=",
+                        "min_length": n,
+                        "field_ids": [f.element_id for f in fields],
+                    },
+                    message=text,
+                    confidence=0.7 if fields else 0.55,
+                    field_ids=[f.element_id for f in fields],
+                )
+            )
+            return conditions
+
+        max_len = MAX_LENGTH.search(text)
+        if max_len:
+            field_name = max_len.group(1).strip()
+            n = int(max_len.group(2))
+            fields = self._field_candidates(observation, field_name)
+            conditions.append(
+                LearnedCondition(
+                    expression=f"len({normalize_text(field_name).replace(' ', '_')}) <= {n}",
+                    condition={
+                        "field": field_name,
+                        "op": "<=",
+                        "max_length": n,
+                        "field_ids": [f.element_id for f in fields],
+                    },
+                    message=text,
+                    confidence=0.7 if fields else 0.55,
+                    field_ids=[f.element_id for f in fields],
+                )
+            )
+            return conditions
+
+        prefix_match = PREFIX.search(text)
+        if prefix_match:
+            field_name = prefix_match.group(1).strip()
+            prefix_val = prefix_match.group(2).strip()
+            fields = self._field_candidates(observation, field_name)
+            conditions.append(
+                LearnedCondition(
+                    expression=f"{normalize_text(field_name).replace(' ', '_')}.startswith({prefix_val})",
+                    condition={
+                        "field": field_name,
+                        "op": "startswith",
+                        "prefix": prefix_val,
+                        "field_ids": [f.element_id for f in fields],
+                    },
+                    message=text,
+                    confidence=0.7 if fields else 0.55,
+                    field_ids=[f.element_id for f in fields],
+                )
+            )
+            return conditions
+
+        range_match = RANGE.search(text)
+        if range_match:
+            field_name = range_match.group(1).strip()
+            min_val = int(range_match.group(2))
+            max_val = int(range_match.group(3))
+            fields = self._field_candidates(observation, field_name)
+            conditions.append(
+                LearnedCondition(
+                    expression=f"{min_val} <= {normalize_text(field_name).replace(' ', '_')} <= {max_val}",
+                    condition={
+                        "field": field_name,
+                        "op": "between",
+                        "min": min_val,
+                        "max": max_val,
+                        "field_ids": [f.element_id for f in fields],
+                    },
+                    message=text,
+                    confidence=0.7 if fields else 0.55,
+                    field_ids=[f.element_id for f in fields],
+                )
+            )
+            return conditions
+
+        contains_match = CONTAINS.search(text)
+        if contains_match:
+            field_name = contains_match.group(1).strip()
+            substr = contains_match.group(2).strip()
+            fields = self._field_candidates(observation, field_name)
+            conditions.append(
+                LearnedCondition(
+                    expression=f"{substr} in {normalize_text(field_name).replace(' ', '_')}",
+                    condition={
+                        "field": field_name,
+                        "op": "contains",
+                        "contains": substr,
+                        "field_ids": [f.element_id for f in fields],
+                    },
+                    message=text,
+                    confidence=0.7 if fields else 0.55,
+                    field_ids=[f.element_id for f in fields],
                 )
             )
             return conditions

@@ -29,6 +29,7 @@ class RankWeights:
     no_effect_penalty: float = 0.95
     disabled_penalty: float = 0.70
     low_confidence_penalty: float = 0.35
+    active_form_bonus: float = 0.85
     action_cost: float = 0.06
 
 
@@ -62,10 +63,12 @@ class ActionRanker:
         hypothesis_action_ids: set[str] | None = None,
         known_transition_count: int = 0,
         element_lookup: dict[str, Any] | None = None,
+        active_form_element_ids: set[str] | None = None,
     ) -> list[RankedAction]:
         risks = risks or {}
         hypothesis_action_ids = hypothesis_action_ids or set()
         element_lookup = element_lookup or {}
+        active_form_element_ids = active_form_element_ids or set()
         ranked: list[RankedAction] = []
 
         for action in candidates:
@@ -73,6 +76,10 @@ class ActionRanker:
             reasons: list[str] = []
             assessment = risks.get(action.action_id)
             risk = assessment.risk if assessment else RiskLevel.LOW
+
+            if action.target and action.target.element_id in active_form_element_ids:
+                score += self.weights.active_form_bonus
+                reasons.append("part of active form/dialog")
 
             novelty_score = novelty.action_novelty(state.state_id, action)
             if novelty_score > 0:
