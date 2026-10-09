@@ -253,3 +253,315 @@ class ValueSynthesizer:
                     return None
                 char_class = pattern[index + 1 : end]
                 count = 1
+                repeat = re.match(r"\{(\d+)(?:,(\d+))?\}", pattern[end + 1 :])
+                if repeat:
+                    count = int(repeat.group(1))
+                    index = end + 1 + repeat.end()
+                else:
+                    index = end + 1
+                sample = self._sample_class(char_class, count, variant)
+                if sample is None:
+                    return None
+                out.append(sample)
+                continue
+            if char == "{":
+                return None
+            out.append(char)
+            index += 1
+        candidate = "".join(out)
+        try:
+            if re.fullmatch(pattern, candidate):
+                return candidate
+        except re.error:
+            return None
+        return candidate
+
+    @staticmethod
+    def _digits(count: int, variant: int) -> str:
+        """`count` digits, deterministic per variant."""
+        return "".join(str((variant + 1 + offset) % 10) for offset in range(max(1, count)))
+
+    def _sample_class(self, char_class: str, count: int, variant: int) -> str | None:
+        letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        digits = "0123456789"
+        negated = char_class.startswith("^")
+        content = char_class[1:] if negated else char_class
+        ranges: list[tuple[str, str]] = []
+        literals: list[str] = []
+        i = 0
+        while i < len(content):
+            if i + 2 < len(content) and content[i + 1] == "-":
+                ranges.append((content[i], content[i + 2]))
+                i += 3
+                continue
+            literals.append(content[i])
+            i += 1
+        if negated:
+            return "A" * count if "A" not in content else "1" * count
+        alphabet = ""
+        for start, end in ranges:
+            if start.isalpha() and end.isalpha():
+                lo, hi = ord(start), ord(end)
+                alphabet += "".join(chr(c) for c in range(min(lo, hi), max(lo, hi) + 1))
+            elif start.isdigit() and end.isdigit():
+                alphabet += digits
+        alphabet += "".join(literals)
+        if "A-Za-z" in content:
+            alphabet += letters + letters.lower()
+        if not alphabet:
+            return None
+        if alphabet.isdigit():
+            return "".join(digits[(variant + i) % 10] for i in range(count))
+        if any(c.isdigit() for c in alphabet) and not any(c.isalpha() for c in alphabet):
+            return "".join(digits[(variant + i) % 10] for i in range(count))
+        return "".join(letters[(variant + i) % 26] for i in range(count))
+
+
+@dataclass
+class GenerationConfig:
+    max_actions_per_state: int = 48
+    max_select_options: int = 4
+    max_text_variants: int = 2
+    include_scroll: bool = True
+    include_back: bool = True
+
+
+@dataclass
+class ScoredCandidate:
+    action: Action
+    element_id: str = ""
+    expected: list[EffectKind] = field(default_factory=list)
+
+
+class ActionGenerator:
+    """Proposes the actions a user could take on the observed page."""
+
+    def __init__(self, config: GenerationConfig | None = None, synthesizer: ValueSynthesizer | None = None) -> None:
+        self.config = config or GenerationConfig()
+        self.synthesizer = synthesizer or ValueSynthesizer()
+        self.labeler = SemanticLabeler()
+
+    def generate(
+        self,
+        observation: Observation,
+        *,
+        elements: list[Element] | None = None,
+        state_id: str = "",
+    ) -> list[Action]:
+        elements = elements if elements is not None else observation.interactive_elements
+        actions: list[Action] = []
+        seen: set[str] = set()
+
+        for element in elements:
+            if not element.visible:
+                continue
+            for action in self._for_element(element, observation):
+                if action.signature() in seen:
+                    continue
+                seen.add(action.signature())
+                actions.append(action)
+                if len(actions) >= self.config.max_actions_per_state:
+                    return actions
+
+        if self.config.include_scroll and observation.counts.get("document_height", 0) and (
+            observation.browser_state.document_height > observation.viewport.height * 1.5
+        ):
+            actions.append(self._page_action(ActionType.SCROLL, {"delta_y": 600}, [EffectKind.TEXT_CHANGED]))
+        if self.config.include_back and observation.browser_state.can_go_back:
+            actions.append(self._page_action(ActionType.NAVIGATE_BACK, {}, [EffectKind.NAVIGATION]))
+        return actions
+
+    # -- per element -------------------------------------------------------
+    def _for_element(self, element: Element, observation: Observation) -> list[Action]:
+        role = element.semantic_role
+        label = element.label()
+        intent = self.labeler.label_element(element).intent
+        actions: list[Action] = []
+
+        if role in (ElementRole.TEXT_FIELD, ElementRole.SEARCH, ElementRole.PASSWORD_FIELD):
+            for variant in range(self.config.max_text_variants):
+                value = self.synthesizer.synthesize(element, variant=variant)
+                if value is None:
+                    continue
+                if variant == 0 and (element.value_state.value or "").strip():
+                    continue  # already filled with a synthesized value
+                actions.append(
+                    self._make(
+                        ActionType.TYPE,
+                        element,
+                        {"value": value},
+                        [EffectKind.VALUE_CHANGED, EffectKind.FORM_CHANGED],
+                        rationale=f"fill {label or role.value} with a synthesized value",
+                    )
+                )
+            if (element.value_state.value or "").strip():
+                actions.append(self._make(ActionType.CLEAR, element, {}, [EffectKind.VALUE_CHANGED]))
+            return actions
+
+        if role is ElementRole.SELECT:
+            options = [option for option in element.attributes.get("__options", "").split(",") if option]
+            for option in options[: self.config.max_select_options]:
+                if normalize_text(option) == normalize_text(element.value_state.value or ""):
+                    continue
+                actions.append(
+                    self._make(
+                        ActionType.SELECT,
+                        element,
+                        {"option": option},
+                        [EffectKind.VALUE_CHANGED, EffectKind.ELEMENTS_CHANGED],
+                        rationale=f"select {option!r} in {label}",
+                    )
+                )
+            return actions
+
+        if role is ElementRole.CHECKBOX:
+            desired = not bool(element.value_state.checked)
+            actions.append(
+                self._make(
+                    ActionType.CHECK if desired else ActionType.UNCHECK,
+                    element,
+                    {},
+                    [EffectKind.VALUE_CHANGED, EffectKind.ELEMENTS_CHANGED],
+                    rationale=f"{'check' if desired else 'uncheck'} {label}",
+                )
+            )
+            return actions
+
+        if role is ElementRole.RADIO:
+            if element.value_state.checked:
+                return actions
+            actions.append(
+                self._make(ActionType.CHECK, element, {}, [EffectKind.VALUE_CHANGED], rationale=f"select radio {label}")
+            )
+            return actions
+
+        if role is ElementRole.UPLOAD:
+            actions.append(
+                self._make(
+                    ActionType.UPLOAD,
+                    element,
+                    {},
+                    [EffectKind.VALUE_CHANGED, EffectKind.SUCCESS_MESSAGE],
+                    rationale="upload a generated fixture file",
+                )
+            )
+            return actions
+
+        if role in (ElementRole.BUTTON, ElementRole.LINK, ElementRole.TAB, ElementRole.MENU_ITEM, ElementRole.PAGINATION):
+            if not element.enabled:
+                # A disabled control is still interesting: it tells the explorer a
+                # precondition exists, which the hypothesis engine turns into a test.
+                return actions
+            expected = self._expected_for(element, intent, role)
+            if intent in (SemanticIntent.DOWNLOAD, SemanticIntent.EXPORT):
+                actions.append(
+                    self._make(ActionType.DOWNLOAD, element, {}, expected, rationale=f"trigger download via {label}")
+                )
+            actions.append(self._make(ActionType.CLICK, element, {}, expected, rationale=f"click {label}"))
+            if role is ElementRole.PAGINATION:
+                actions[-1].parameters["pagination"] = True
+            return actions
+
+        if role is ElementRole.OPTION:
+            if element.value_state.checked:
+                return actions
+            actions.append(self._make(ActionType.CLICK, element, {}, [EffectKind.VALUE_CHANGED]))
+            return actions
+
+        if element.tag in ("div", "span", "li") and element.attributes.get("onclick"):
+            actions.append(self._make(ActionType.CLICK, element, {}, [EffectKind.ELEMENTS_CHANGED]))
+        return actions
+
+    def _expected_for(self, element: Element, intent: SemanticIntent, role: ElementRole) -> list[EffectKind]:
+        if role is ElementRole.LINK:
+            return [EffectKind.NAVIGATION, EffectKind.URL_CHANGE]
+        if intent in (SemanticIntent.CREATE, SemanticIntent.UPDATE, SemanticIntent.SUBMIT):
+            return [EffectKind.SUCCESS_MESSAGE, EffectKind.ELEMENTS_ADDED, EffectKind.DIALOG_CLOSED, EffectKind.VALIDATION_MESSAGE]
+        if intent is SemanticIntent.DELETE:
+            return [EffectKind.ELEMENTS_REMOVED, EffectKind.DIALOG_OPENED, EffectKind.SUCCESS_MESSAGE]
+        if intent in (SemanticIntent.SEARCH, SemanticIntent.FILTER, SemanticIntent.SORT):
+            return [EffectKind.ELEMENTS_CHANGED, EffectKind.TEXT_CHANGED]
+        if intent is SemanticIntent.EXPORT or intent is SemanticIntent.DOWNLOAD:
+            return [EffectKind.SUCCESS_MESSAGE, EffectKind.ELEMENTS_CHANGED]
+        if intent in (SemanticIntent.OPEN, SemanticIntent.NAVIGATE, SemanticIntent.PAGINATE):
+            return [EffectKind.DIALOG_OPENED, EffectKind.NAVIGATION, EffectKind.ELEMENTS_CHANGED]
+        if intent is SemanticIntent.CANCEL or intent is SemanticIntent.CLOSE:
+            return [EffectKind.DIALOG_CLOSED, EffectKind.ELEMENTS_REMOVED]
+        return [
+            EffectKind.DIALOG_OPENED,
+            EffectKind.NAVIGATION,
+            EffectKind.ELEMENTS_ADDED,
+            EffectKind.SUCCESS_MESSAGE,
+            EffectKind.VALIDATION_MESSAGE,
+            EffectKind.TEXT_CHANGED,
+        ]
+
+    def _make(
+        self,
+        action_type: ActionType,
+        element: Element,
+        parameters: dict[str, Any],
+        expected: list[EffectKind],
+        *,
+        rationale: str = "",
+    ) -> Action:
+        target = TargetSpec(
+            element_id=element.element_id,
+            role=element.semantic_role.value,
+            name=element.label()[:160],
+            tag=element.tag,
+            locators=[
+                {
+                    "strategy": candidate.strategy.value,
+                    "selector": candidate.selector,
+                    "confidence": candidate.confidence,
+                    "params": candidate.params,
+                }
+                for candidate in element.locator_candidates
+            ],
+        )
+        action = Action(
+            type=action_type,
+            target=target,
+            parameters=parameters,
+            expected_effect=expected,
+            confidence=element.confidence,
+            origin="generator",
+            rationale=rationale,
+        )
+        return action.finalize()
+
+    def _page_action(self, action_type: ActionType, parameters: dict[str, Any], expected: list[EffectKind]) -> Action:
+        action = Action(
+            type=action_type,
+            target=None,
+            parameters=parameters,
+            expected_effect=expected,
+            confidence=0.4,
+            origin="generator",
+            rationale="page-level action",
+        )
+        return action.finalize()
+
+    # -- hypothesis-driven candidates --------------------------------------
+    def for_hypothesis(self, hypothesis, observation: Observation, elements: list[Element]) -> list[Action]:
+        """Turn a requirement hypothesis into the experiment that would test it."""
+        prediction = hypothesis.prediction or {}
+        field_id = prediction.get("field_id")
+        if not field_id:
+            return []
+        element = next((e for e in elements if e.element_id == field_id), None)
+        if element is None:
+            return []
+        value = self.synthesizer.synthesize(element)
+        if value is None:
+            return []
+        action = self._make(
+            ActionType.TYPE,
+            element,
+            {"value": value},
+            [EffectKind.VALUE_CHANGED],
+            rationale=f"test hypothesis {hypothesis.hypothesis_id}: {hypothesis.statement[:80]}",
+        )
+        action.origin = "hypothesis"
+        return [action]
