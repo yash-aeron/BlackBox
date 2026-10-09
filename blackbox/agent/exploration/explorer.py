@@ -267,3 +267,291 @@ class Explorer:
             seed=config.seed,
             browser_version=self.manager.browser_version,
             model_version=1,
+            budget=config.budget,
+            configuration=config.to_dict(),
+        )
+        self.ledger.add(record)
+        result = ExplorationResult(experiment_id=record.experiment_id, target_id=self.target_id)
+        started = time.monotonic()
+
+        page = self.manager.page
+        start_url = url or self.base_url
+        if page is None or not self.manager.alive():
+            page = await self.manager.start()
+
+        already_there = False
+        if config.resume and self.graph.states:
+            current_url = await page.url()
+            for state in self.graph.states.values():
+                if state.fingerprint.url_key and state.fingerprint.url_key in current_url:
+                    already_there = True
+                    break
+        if not already_there:
+            try:
+                await page.navigate(start_url)
+            except Exception as exc:  # noqa: BLE001 - report and stop cleanly
+                result.stop_reason = f"could not open {start_url}: {exc}"
+                record.finish(status="failed", metrics=result.to_dict())
+                return result
+
+        try:
+            while True:
+                exhausted = budget.exhausted()
+                if exhausted:
+                    result.stop_reason = exhausted
+                    break
+
+                state, observation = await self._observe_and_register(page, budget, result)
+                self.current_state_id = state.state_id
+
+                candidates = self._candidates(state, observation)
+                if not candidates:
+                    result.stop_reason = "no candidate actions remain in the current state"
+                    break
+
+                risks = {
+                    action.action_id: self.safety.classify(
+                        action,
+                        element=self._element_for(action, observation),
+                        observation=observation,
+                        history=[entry[1] for entry in self.recent_actions],
+                    )
+                    for action in candidates
+                }
+                hypothesis_actions = {
+                    action.action_id for action in candidates if action.origin == "hypothesis"
+                }
+                active_form_element_ids = {
+                    e.element_id
+                    for e in observation.interactive_elements
+                    if e.in_dialog
+                    or (
+                        e.editable
+                        and any(
+                            not btn.enabled
+                            for btn in observation.interactive_elements
+                            if btn.semantic_role.value in ("BUTTON", "LINK")
+                        )
+                    )
+                }
+                ranked = self.ranker.rank(
+                    candidates,
+                    state=state,
+                    novelty=self.novelty,
+                    risks=risks,
+                    hypothesis_action_ids=hypothesis_actions,
+                    element_lookup={e.element_id: e for e in observation.interactive_elements},
+                    active_form_element_ids=active_form_element_ids,
+                )
+                await self._emit(
+                    "ranking",
+                    {
+                        "state_id": state.state_id,
+                        "top": [self.ranker.explain(item) for item in ranked[:5]],
+                    },
+                )
+
+                chosen = await self._select_action(ranked, observation, risks, result)
+                if chosen is None:
+                    frontier_id = find_frontier_state(self.graph, self.novelty, state.state_id)
+                    if frontier_id:
+                        path = self.graph.find_path(state.state_id, lambda s, fid=frontier_id: s.state_id == fid)
+                        if path.found and path.transition_ids:
+                            first_trans = self.graph.transitions.get(path.transition_ids[0])
+                            if first_trans:
+                                act = first_trans.action
+                                act.origin = "frontier_navigation"
+                                act.rationale = f"navigating to frontier state {frontier_id}"
+                                chosen = RankedAction(action=act, score=0.5, reasons=["frontier navigation"])
+                    if chosen is None:
+                        if all(self.novelty.is_repeat(state.state_id, item.action) for item in ranked):
+                            result.stop_reason = "all candidate actions exhausted in reachable states"
+                            break
+                        continue
+
+                outcome = await self._execute_and_learn(page, state, observation, chosen, budget, result, risks)
+                budget.actions += 1
+                if config.pause_between_actions_ms:
+                    await asyncio.sleep(config.pause_between_actions_ms / 1000.0)
+                self.recent_actions.append((state.state_id, chosen.action.signature()))
+                self.recent_actions = self.recent_actions[-12:]
+
+                if outcome == "no_progress":
+                    self._actions_without_new_state = getattr(self, "_actions_without_new_state", 0) + 1
+                else:
+                    self._actions_without_new_state = 0
+                if getattr(self, "_actions_without_new_state", 0) >= config.max_actions_without_new_state:
+                    result.stop_reason = (
+                        "no new states or verified transitions in the last "
+                        f"{config.max_actions_without_new_state} actions"
+                    )
+                    break
+                if self.stopped:
+                    result.stop_reason = result.stop_reason or "stopped by operator"
+                    break
+                if self.novelty.stuck(self.recent_actions):
+                    result.stop_reason = "exploration loop detected (repeating known states and actions)"
+                    break
+        except OriginViolation as exc:
+            result.stop_reason = f"origin boundary reached: {exc}"
+            await self._emit("origin_blocked", {"reason": str(exc)})
+        except Exception as exc:  # noqa: BLE001 - never lose the model on a crash
+            log.exception("exploration failed")
+            result.stop_reason = f"error: {exc}"
+        finally:
+            result.duration_seconds = time.monotonic() - started
+            if self.action_latencies:
+                result.mean_action_ms = sum(self.action_latencies) / len(self.action_latencies)
+            if self.observation_latencies:
+                result.mean_observation_ms = sum(self.observation_latencies) / len(self.observation_latencies)
+            result.recoveries = self.recovery.recoveries
+            result.hypotheses_proposed = len(self.hypotheses.hypotheses)
+            result.hypotheses_verified = sum(
+                1 for h in self.hypotheses.hypotheses.values() if h.status is HypothesisStatus.VERIFIED
+            )
+            result.metrics.update(
+                {
+                    "novelty": self.novelty.summary(),
+                    "hypotheses": self.hypotheses.summary(),
+                    "causal": self.causal.summary(),
+                    "budget": budget.snapshot(),
+                    "sandbox": self.manager.sandbox.snapshot(),
+                    "network_guard": self.network_guard.summary() if self.network_guard else None,
+                }
+            )
+            record.finish(
+                status="completed" if not result.stop_reason.startswith("error") else "failed",
+                metrics=result.to_dict(),
+            )
+            if self.storage is not None:
+                try:
+                    self.storage.save_experiment(record)
+                except Exception:  # noqa: BLE001 - persistence failure must not mask results
+                    log.exception("could not persist experiment record")
+            await self._emit("exploration_finished", result.to_dict())
+        return result
+
+    def stop(self) -> None:
+        self.stopped = True
+
+    # -- observation -------------------------------------------------------
+    async def _observe_and_register(
+        self, page, budget: BudgetState, result: ExplorationResult
+    ) -> tuple[WebsiteState, Observation]:
+        timer = Timer()
+        observation = await self.observer.observe(page, settle=True)
+        self.observation_latencies.append(timer.elapsed_ms)
+        self.last_observation = observation
+
+        elements = self.detector.detect(observation)
+        observation.interactive_elements = elements
+        self.last_elements = elements
+
+        summary = self.labeler.observation_summary(observation)
+        identity = identity_for(observation)
+        candidate = build_state(
+            observation,
+            page_identity=identity.url_pattern,
+            page_id=identity.page_id,
+            semantic_summary=summary,
+            session=SessionContext(
+                authenticated=any("session" in name.lower() or "auth" in name.lower() for name in observation.browser_state.cookie_names),
+                cookie_names=observation.browser_state.cookie_names[:10],
+            ),
+        )
+        assign_page(candidate, identity)
+
+        known, similarity = match_state(
+            candidate,
+            list(self.graph.states.values()),
+            weights=self.config_weights,
+            thresholds=self.config_thresholds,
+        )
+        if known is None:
+            state, created = self.graph.upsert_state(candidate)
+            if created:
+                result.new_states += 1
+                page_record = to_page(identity, state.state_id, summary=summary)
+                self.graph.upsert_page(page_record)
+                if self.storage is not None:
+                    self.storage.save_state(state, similarity=similarity)
+                await self._emit(
+                    "new_state",
+                    {
+                        "state": {
+                            "state_id": state.state_id,
+                            "label": state.label(),
+                            "url": state.url,
+                            "elements": len(state.visible_elements),
+                            "summary": state.semantic_summary,
+                            "similarity": similarity.total if similarity else None,
+                        }
+                    },
+                )
+                # New page layout: propose hypotheses about disabled controls.
+                for hypothesis in self.hypotheses.propose_requirements(observation, elements):
+                    await self._emit("hypothesis", {"hypothesis": hypothesis.__dict__, "status": hypothesis.status.value})
+        else:
+            state = known
+            state.visit_count += 1
+            state.last_seen = candidate.last_seen
+            state.observation_id = candidate.observation_id
+            if candidate.screenshot_ref:
+                state.screenshot_ref = candidate.screenshot_ref
+
+        if self.storage is not None:
+            self.storage.save_observation_meta(observation, state.state_id)
+
+        budget.states = len(self.graph.states)
+        visits = self.novelty.note_state(candidate.fingerprint)
+        if visits > self.novelty.max_same_state_visits:
+            log.debug("state %s visited %d times", state.state_id, visits)
+        return state, observation
+
+    @property
+    def config_weights(self) -> FingerprintWeights:
+        return getattr(self, "_weights", FingerprintWeights())
+
+    @property
+    def config_thresholds(self) -> SimilarityThresholds:
+        return getattr(self, "_thresholds", SimilarityThresholds())
+
+    def set_similarity_config(self, weights: FingerprintWeights, thresholds: SimilarityThresholds) -> None:
+        self._weights = weights
+        self._thresholds = thresholds
+
+    # -- candidate generation ---------------------------------------------
+    def _candidates(self, state: WebsiteState, observation: Observation) -> list[Action]:
+        actions = self.generator.generate(
+            observation, elements=observation.interactive_elements, state_id=state.state_id
+        )
+        # Hypothesis-driven experiments first: they are the point of the loop.
+        for hypothesis in self.hypotheses.all():
+            if hypothesis.status in (HypothesisStatus.REFUTED, HypothesisStatus.STALE):
+                continue
+            field_id = (hypothesis.prediction or {}).get("field_id")
+            if field_id:
+                matching_element = next((e for e in observation.interactive_elements if e.element_id == field_id), None)
+                if matching_element is None or (matching_element.value_state.value or "").strip():
+                    continue
+            elif (hypothesis.details or {}).get("observation_id") not in (None, observation.observation_id):
+                continue
+            for action in self.generator.for_hypothesis(hypothesis, observation, observation.interactive_elements):
+                if all(existing.signature() != action.signature() for existing in actions):
+                    actions.append(action)
+        return actions
+
+    def _element_for(self, action: Action, observation: Observation):
+        if not action.target:
+            return None
+        return next(
+            (e for e in observation.interactive_elements if e.element_id == action.target.element_id),
+            None,
+        )
+
+    async def _element_provider(self, element_id: str):
+        """Re-observe and return a fresh element (locator regeneration)."""
+        try:
+            page = self.manager.page
+            observation = await self.observer.observe(page, settle=False)
+            elements = self.detector.detect(observation)
