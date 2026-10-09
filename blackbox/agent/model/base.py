@@ -68,12 +68,22 @@ _RANDOM_TOKEN = (
 
 _LONG_NUMBER = re.compile(r"\b\d{6,}\b")
 
+_METRICS_AND_AMOUNTS = (
+    re.compile(r"\b[-+]?\d+(?:\.\d+)?%\b"),
+    re.compile(r"\b[\$€£¥₹]\s*\d+(?:[.,]\d+)?\b"),
+    re.compile(r"\b\d+\s*(?:items|results|records|rows|users|views|visitors|messages|notifications|events|tasks|entries|seconds?|mins?|minutes?|hrs?|hours?|days?|orders|customers|products|tickets)\b", re.IGNORECASE),
+    re.compile(r"\b(?:page|showing)\s+\d+\s+(?:of|/)\s+\d+\b", re.IGNORECASE),
+    re.compile(r"\b\d{1,2}:\d{2}(?::\d{2})?\b"),
+    re.compile(r"\b#(?:[a-f0-9]{4,}|\d{3,})\b", re.IGNORECASE),
+    re.compile(r"\bv?\d+\.\d+\.\d+(?:-[a-z0-9]+)?\b", re.IGNORECASE),
+)
+
 
 def scrub_volatile(text: str) -> str:
     """Remove differences that do not affect behavior.
 
-    Timestamps, generated ids and long opaque tokens change on every render but
-    say nothing about the application's behavior, so they are masked before
+    Timestamps, generated ids, live counters and long opaque tokens change on every
+    render but say nothing about the application's behavior, so they are masked before
     fingerprinting and before state comparison.
     """
     value = text
@@ -81,6 +91,8 @@ def scrub_volatile(text: str) -> str:
         value = pattern.sub("<time>", value)
     for pattern in _RANDOM_TOKEN:
         value = pattern.sub("<token>", value)
+    for pattern in _METRICS_AND_AMOUNTS:
+        value = pattern.sub("<dynamic>", value)
     value = _LONG_NUMBER.sub("<num>", value)
     return value
 

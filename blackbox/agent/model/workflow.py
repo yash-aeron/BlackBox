@@ -98,3 +98,33 @@ class Workflow(BaseModel):
     def describe(self) -> str:
         params = ", ".join(p.describe() for p in self.parameters)
         return f"{self.name or self.goal}({params}) -> {self.expected_end_state} [{len(self.steps)} steps]"
+
+
+class WorkflowTemplate(BaseModel):
+    """Abstract generalized workflow pattern covering multiple entity types.
+
+    Merges structurally similar workflows into reusable parameter templates
+    ('create X' rather than only 'create customer').
+    """
+
+    model_config = ConfigDict(extra="ignore")
+
+    template_id: str = ""
+    name: str = ""
+    intent: str = ""  # create | update | export | search | submit | delete
+    entity_noun: str = "entity"
+    pattern: str = "FORM_SUBMISSION"  # FORM_SUBMISSION | DIRECT_ACTION | NAVIGATION_FLOW
+    parameter_templates: list[str] = Field(default_factory=list)
+    step_count: int = 0
+    concrete_workflow_ids: list[str] = Field(default_factory=list)
+    confidence: float = 0.5
+    created_at: str = Field(default_factory=now_iso)
+
+    def finalize(self) -> "WorkflowTemplate":
+        if not self.template_id:
+            self.template_id = stable_id("tmpl", self.intent, self.pattern, self.step_count)
+        return self
+
+    def describe(self) -> str:
+        return f"{self.name} [{self.pattern}] ({', '.join(self.parameter_templates)})"
+

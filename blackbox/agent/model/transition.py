@@ -80,3 +80,18 @@ class Transition(BaseModel):
 
     def describe(self) -> str:
         return f"{self.source_state} --{self.action.describe()}--> {self.target_state}"
+
+    def apply_decay(self, elapsed_steps: int = 1, decay_rate: float = 0.01) -> float:
+        """Decay confidence over unobserved steps to reflect behavioral staleness risk."""
+        if self.status is TransitionStatus.VERIFIED:
+            self.confidence = round(max(0.40, self.confidence - (elapsed_steps * decay_rate)), 4)
+            if self.confidence < 0.50:
+                self.status = TransitionStatus.STALE
+        return round(self.confidence, 4)
+
+    def needs_reverification(self) -> bool:
+        """Check if this transition is a candidate for change-detection re-verification."""
+        return self.status is TransitionStatus.STALE or (
+            self.status is TransitionStatus.VERIFIED and self.confidence < 0.65
+        )
+

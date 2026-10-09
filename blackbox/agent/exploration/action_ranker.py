@@ -115,11 +115,24 @@ class ActionRanker:
                 score -= self.weights.low_confidence_penalty
                 reasons.append(f"low locator confidence ({action.confidence:.2f})")
 
+            # Cost-aware exploration: price action by predicted latency and risk
+            action_cost_factor = 0.05
+            if action.type in (ActionType.NAVIGATE, ActionType.NAVIGATE_BACK):
+                action_cost_factor = 0.20
+            elif action.type is ActionType.UPLOAD:
+                action_cost_factor = 0.25
+            elif action.type in (ActionType.SCROLL, ActionType.WAIT_FOR_STATE):
+                action_cost_factor = 0.15
+
             if action.type in (ActionType.SCROLL, ActionType.WAIT_FOR_STATE):
                 score -= 0.35
                 reasons.append("low-information browser action")
 
-            score -= self.weights.action_cost * known_transition_count
+            total_cost_penalty = self.weights.action_cost * (known_transition_count + action_cost_factor * 5)
+            score -= total_cost_penalty
+            if action_cost_factor >= 0.20:
+                reasons.append(f"cost penalty ({action.type.value} runtime)")
+
             ranked.append(RankedAction(action=action, score=round(score, 4), risk=risk, reasons=reasons or ["baseline"]))
 
         ranked.sort(key=lambda item: (-item.score, item.action.signature()))

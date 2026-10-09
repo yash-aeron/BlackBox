@@ -29,6 +29,11 @@ VERB_TO_GOAL: tuple[tuple[re.Pattern[str], str], ...] = (
 
 ENTITY_NOUNS = (
     "customer",
+    "lead",
+    "contact",
+    "deal",
+    "record",
+    "entry",
     "product",
     "order",
     "task",

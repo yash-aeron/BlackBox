@@ -24,7 +24,7 @@ from ..model.base import normalize_text, stable_id
 from ..model.element import ElementRole
 from ..model.graph import ApplicationGraph
 from ..model.transition import Transition, TransitionStatus
-from ..model.workflow import ParameterKind, Workflow, WorkflowParameter, WorkflowStep
+from ..model.workflow import ParameterKind, Workflow, WorkflowParameter, WorkflowStep, WorkflowTemplate
 from ..perception.semantic_labeler import SemanticIntent, SemanticLabeler
 
 SUCCESS_VERBS = {
@@ -50,6 +50,11 @@ SUCCESS_VERBS = {
 
 ENTITY_NOUNS = (
     "customer",
+    "lead",
+    "contact",
+    "deal",
+    "record",
+    "entry",
     "product",
     "order",
     "task",
@@ -119,7 +124,48 @@ class WorkflowMiner:
             workflow = self._build(graph, transition)
             if workflow is not None:
                 workflows.append(workflow)
-        return self._deduplicate(workflows)
+        deduped = self._deduplicate(workflows)
+        for template in self.generalize(deduped):
+            graph.upsert_template(template)
+        return deduped
+
+    def generalize(self, workflows: list[Workflow]) -> list[WorkflowTemplate]:
+        """Abstract concrete workflows into reusable parameterized templates across entity types."""
+        templates: dict[str, WorkflowTemplate] = {}
+        for workflow in workflows:
+            parts = workflow.goal.split("_")
+            intent = parts[0] if parts else "action"
+            entity = parts[1] if len(parts) > 1 else "entity"
+
+            has_data_entry = any(step.action.type in DATA_ENTRY_TYPES for step in workflow.steps)
+            has_submit = any(step.action.type is ActionType.CLICK for step in workflow.steps)
+            pattern = "FORM_SUBMISSION" if (has_data_entry and has_submit) else "DIRECT_ACTION"
+
+            param_templates = [f"{p.name}:{p.kind.value}" for p in workflow.parameters]
+            template_key = f"{intent}_{pattern}"
+
+            if template_key not in templates:
+                template_id = stable_id("tmpl", template_key, str(len(workflow.steps)))
+                templates[template_key] = WorkflowTemplate(
+                    template_id=template_id,
+                    name=f"{intent.title()} {entity.title()} Template ({pattern.replace('_', ' ').title()})",
+                    intent=intent,
+                    entity_noun=entity,
+                    pattern=pattern,
+                    parameter_templates=param_templates,
+                    step_count=len(workflow.steps),
+                    concrete_workflow_ids=[workflow.workflow_id],
+                    confidence=workflow.confidence,
+                )
+            else:
+                tmpl = templates[template_key]
+                if workflow.workflow_id not in tmpl.concrete_workflow_ids:
+                    tmpl.concrete_workflow_ids.append(workflow.workflow_id)
+                tmpl.confidence = max(tmpl.confidence, workflow.confidence)
+                for p in param_templates:
+                    if p not in tmpl.parameter_templates:
+                        tmpl.parameter_templates.append(p)
+        return list(templates.values())
 
     # -- goal derivation ---------------------------------------------------
     def goal_for(self, graph: ApplicationGraph, terminal: Transition) -> tuple[str, str]:

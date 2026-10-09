@@ -223,6 +223,23 @@ def compare_fingerprints(
     total_weight = sum(weight_map.values()) or 1.0
     total = sum(signals[name] * weight_map[name] for name in signals) / total_weight
 
+    # Adaptive state matching: absorb rapid live content (counters, tickers, status streams)
+    # when the underlying interactive structure, dialogs and forms are identical.
+    structural_invariant = (
+        url_score == 1.0
+        and element_score >= 0.94
+        and ax_score >= 0.90
+        and form_score == 1.0
+        and dialog_score == 1.0
+        and control_score == 1.0
+    )
+    if structural_invariant and total < thresholds.same_state:
+        adaptive_total = max(total, thresholds.same_state)
+        notes.append(
+            f"adaptive match: structural invariance (elements={element_score:.2f}) absorbed dynamic live text (text={text_score:.2f})"
+        )
+        total = adaptive_total
+
     return StateSimilarity(
         total=round(total, 4),
         same_url=left.url_key == right.url_key,

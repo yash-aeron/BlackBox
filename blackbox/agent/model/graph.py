@@ -19,7 +19,7 @@ from .evidence import Evidence
 from .page import Page
 from .state import WebsiteState
 from .transition import Transition, TransitionStatus
-from .workflow import Workflow
+from .workflow import Workflow, WorkflowTemplate
 
 
 @dataclass
@@ -59,6 +59,7 @@ class ApplicationGraph(BaseModel):
     states: dict[str, WebsiteState] = Field(default_factory=dict)
     transitions: dict[str, Transition] = Field(default_factory=dict)
     workflows: dict[str, Workflow] = Field(default_factory=dict)
+    templates: dict[str, WorkflowTemplate] = Field(default_factory=dict)
     constraints: dict[str, Constraint] = Field(default_factory=dict)
     pages: dict[str, Page] = Field(default_factory=dict)
     evidence: dict[str, Evidence] = Field(default_factory=dict)
@@ -245,6 +246,18 @@ class ApplicationGraph(BaseModel):
             return None
         scored.sort(key=lambda item: item[0], reverse=True)
         return scored[0][1]
+
+    def upsert_template(self, template: WorkflowTemplate) -> WorkflowTemplate:
+        template.finalize()
+        self.templates[template.template_id] = template
+        return template
+
+    def find_template(self, intent: str, entity_noun: str | None = None) -> WorkflowTemplate | None:
+        intent = normalize_text(intent)
+        for tmpl in self.templates.values():
+            if normalize_text(tmpl.intent) == intent:
+                return tmpl
+        return None
 
     def find_prerequisites(self, *, subject: str | None = None, state_id: str | None = None) -> list[Constraint]:
         results: list[Constraint] = []

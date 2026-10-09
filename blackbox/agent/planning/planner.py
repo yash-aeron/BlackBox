@@ -235,7 +235,16 @@ class Planner:
             score += workflow.confidence * 0.2
             if score > 1.0 and (best is None or score > best[0]):
                 best = (score, workflow)
-        return best[1] if best else None
+        if best:
+            return best[1]
+        if task.verb:
+            tmpl = graph.find_template(task.verb)
+            if tmpl and tmpl.concrete_workflow_ids:
+                for wid in tmpl.concrete_workflow_ids:
+                    w = graph.workflows.get(wid)
+                    if w is not None:
+                        return w
+        return None
 
     def _instantiate(self, workflow: Workflow, bound: dict[str, str]) -> list[PlanStep]:
         steps: list[PlanStep] = []

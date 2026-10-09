@@ -43,7 +43,11 @@ def test_hypothesis_stays_active_across_observations_until_filled():
     
     # Obs2 is a newly captured frame with a different observation_id
     name_input_empty = element("Name *", ElementRole.TEXT_FIELD, tag="input", editable=True)
-    obs2 = observation(elements=[name_input_empty, element("Save", ElementRole.BUTTON)], text="Frame 2")
+    obs2 = observation(
+        elements=[name_input_empty, element("Save", ElementRole.BUTTON)],
+        text="Frame 2",
+        screenshot_hash="fedcba9876543210",
+    )
     assert obs2.observation_id != obs1.observation_id
     
     # for_hypothesis should match by element_id / label even across observation frames
@@ -166,3 +170,152 @@ def test_value_synthesizer_adapts_to_learned_constraints():
     # Rejected values avoidance
     val_avoid = synthesizer.synthesize(text_elem, constraints={"rejected_values": ["BlackBox Sample"]})
     assert val_avoid != "BlackBox Sample"
+
+
+# ---------------------------------------------------------------------------
+# Limitation 6: Adaptive State Matching (Dynamic Masking & Invariance)
+# ---------------------------------------------------------------------------
+
+
+def test_adaptive_state_matching_absorbs_rapid_live_content():
+    """Live tickers, counters, and metrics are absorbed under structural invariance
+    so logical application states are not artificially fragmented."""
+    from blackbox.agent.perception.state_fingerprint import (
+        FingerprintWeights,
+        SimilarityThresholds,
+        compare_fingerprints,
+        fingerprint_observation,
+    )
+
+    shared_elements = [
+        element("Dashboard", ElementRole.LINK, tag="a"),
+        element("Export Report", ElementRole.BUTTON),
+        element("Filter Status", ElementRole.SELECT, tag="select"),
+    ]
+    # Obs 1 has specific live metrics
+    obs1 = observation(
+        url="http://127.0.0.1:3001/#/dashboard",
+        title="CRM Dashboard",
+        elements=shared_elements,
+        text="CRM Dashboard 142 items active +12% growth $42,500 revenue elapsed 02:15",
+    )
+    # Obs 2 has updated ticker numbers and counters on the same screen
+    obs2 = observation(
+        url="http://127.0.0.1:3001/#/dashboard",
+        title="CRM Dashboard",
+        elements=shared_elements,
+        text="CRM Dashboard 158 items active +16% growth $46,200 revenue elapsed 03:40",
+    )
+
+    fp1 = fingerprint_observation(obs1)
+    fp2 = fingerprint_observation(obs2)
+    similarity = compare_fingerprints(fp1, fp2)
+
+    assert similarity.verdict == "SAME"
+    assert any("adaptive match" in note for note in similarity.notes)
+
+
+# ---------------------------------------------------------------------------
+# Research Direction 3: Workflow Generalization (Template Discovery)
+# ---------------------------------------------------------------------------
+
+
+def test_workflow_template_generalization_and_fallback():
+    """WorkflowMiner generalizes concrete workflows into abstract entity templates,
+    and Planner can fall back to templates when a novel entity is requested."""
+    from blackbox.agent.learning.workflow_miner import WorkflowMiner
+    from blackbox.agent.model.workflow import Workflow, WorkflowParameter, WorkflowStep
+    from blackbox.agent.planning.planner import Planner
+    from blackbox.agent.planning.task_parser import TaskParser
+
+    # Concrete workflow for 'create_customer'
+    wf = Workflow(
+        name="Create Customer",
+        goal="create_customer",
+        steps=[
+            WorkflowStep(index=0, action=action(ActionType.CLICK, element("Add Customer"))),
+            WorkflowStep(index=1, action=action(ActionType.TYPE, element("Name")), parameter_names=["name"]),
+            WorkflowStep(index=2, action=action(ActionType.CLICK, element("Save Customer"))),
+        ],
+        parameters=[WorkflowParameter(name="name", label="Name")],
+        confidence=0.85,
+    ).finalize()
+
+    miner = WorkflowMiner()
+    templates = miner.generalize([wf])
+    assert len(templates) == 1
+    tmpl = templates[0]
+    assert tmpl.intent == "create"
+    assert tmpl.pattern == "FORM_SUBMISSION"
+    assert wf.workflow_id in tmpl.concrete_workflow_ids
+
+    # Setup graph with this workflow and template
+    graph = ApplicationGraph()
+    graph.workflows[wf.workflow_id] = wf
+    graph.upsert_template(tmpl)
+    s_root = WebsiteState(state_id="s_root", url="http://127.0.0.1:3001/").finalize()
+    graph.upsert_state(s_root)
+
+    # Task requesting a different entity: 'create_lead'
+    parser = TaskParser()
+    task = parser.parse("Create a lead named Alice")
+    assert task.verb == "create"
+    assert task.entity_noun == "lead"
+
+    planner = Planner()
+    plan = planner.plan(task, graph, current_state_id="s_root")
+    assert plan.usable
+    assert plan.source == "workflow"
+    assert plan.workflow_id == wf.workflow_id
+
+
+# ---------------------------------------------------------------------------
+# Research Direction 4: Transition Confidence Decay & Re-verification
+# ---------------------------------------------------------------------------
+
+
+def test_transition_confidence_decay_and_reverification():
+    """Transitions decay confidence over unobserved steps and flag themselves
+    for change-detection re-verification when decayed."""
+    t = Transition(
+        source_state="s1",
+        target_state="s2",
+        action=action(ActionType.CLICK, element("Next")),
+        confidence=0.80,
+        status=TransitionStatus.VERIFIED,
+    ).finalize()
+
+    assert not t.needs_reverification()
+    # Apply decay over 20 steps
+    t.apply_decay(elapsed_steps=20, decay_rate=0.01)
+    assert t.confidence <= 0.60
+    assert t.needs_reverification()
+
+    # Further decay marks transition as STALE
+    t.apply_decay(elapsed_steps=20, decay_rate=0.01)
+    assert t.confidence < 0.50
+    assert t.status is TransitionStatus.STALE
+    assert t.needs_reverification()
+
+
+# ---------------------------------------------------------------------------
+# Research Direction 6: Cost-Aware Exploration (Latency Pricing)
+# ---------------------------------------------------------------------------
+
+
+def test_cost_aware_action_ranking_prices_latency():
+    """High-latency actions (e.g. NAVIGATE) carry cost penalties compared
+    to cheap direct in-page interactions."""
+    ranker = ActionRanker()
+    novelty = NoveltyTracker()
+    st = WebsiteState(state_id="s1", url="http://test/").finalize()
+
+    click_act = action(ActionType.CLICK, element("Button 1"))
+    nav_act = action(ActionType.NAVIGATE, element("External Page"))
+
+    ranked = ranker.rank([click_act, nav_act], state=st, novelty=novelty)
+    # The click action should score higher than the high-latency navigation action
+    assert ranked[0].action.type is ActionType.CLICK
+    nav_ranked = next(r for r in ranked if r.action.type is ActionType.NAVIGATE)
+    assert any("cost penalty" in reason for reason in nav_ranked.reasons)
+
