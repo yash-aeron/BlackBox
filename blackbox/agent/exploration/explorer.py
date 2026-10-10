@@ -555,3 +555,345 @@ class Explorer:
             page = self.manager.page
             observation = await self.observer.observe(page, settle=False)
             elements = self.detector.detect(observation)
+            observation.interactive_elements = elements
+            self.last_elements = elements
+            return next((e for e in elements if e.element_id == element_id), None)
+        except Exception:  # noqa: BLE001
+            return None
+
+    # -- safety gate -------------------------------------------------------
+    async def _select_action(
+        self,
+        ranked: list[Any],
+        observation: Observation,
+        risks: dict[str, Any],
+        result: ExplorationResult,
+    ):
+        for item in ranked:
+            assessment = risks.get(item.action.action_id)
+            risk = assessment.risk if assessment else RiskLevel.LOW
+            if self.policy.permits(risk):
+                return item
+            result.actions_blocked += 1
+            if self.policy.mode is ExecutionMode.SAFE:
+                await self._emit(
+                    "action_blocked",
+                    {
+                        "action": item.action.describe(),
+                        "risk": risk.value,
+                        "reason": "SAFE mode permits LOW risk only",
+                        "reasons": assessment.reasons if assessment else [],
+                    },
+                )
+                continue
+            element = self._element_for(item.action, observation)
+            request = ApprovalRequest(
+                request_id="",
+                action=item.action.describe(),
+                target=item.action.target.label() if item.action.target else "page",
+                reason="; ".join((assessment.reasons if assessment else [])[:3]),
+                expected_effect=", ".join(e.value for e in item.action.expected_effect[:3]),
+                risk=risk.value,
+                evidence=[observation.observation_id],
+            )
+            result.approvals_requested += 1
+            await self._emit(
+                "approval_requested",
+                {
+                    "action": request.action,
+                    "target": request.target,
+                    "risk": request.risk,
+                    "reason": request.reason,
+                    "expected_effect": request.expected_effect,
+                },
+            )
+            granted = await self.approvals.request(request)
+            evidence = Evidence(
+                kind=EvidenceKind.HUMAN_DECISION,
+                message=f"{'approved' if granted else 'rejected'} {request.action} ({request.risk})",
+                notes=[request.request_id],
+            ).finalize()
+            self.graph.add_evidence(evidence)
+            if granted:
+                result.approvals_granted += 1
+                return item
+            await self._emit(
+                "action_denied",
+                {"action": item.action.describe(), "risk": risk.value, "reason": "not approved"},
+            )
+        return None
+
+    # -- execute, compare, learn ------------------------------------------
+    async def _execute_and_learn(
+        self,
+        page,
+        source_state: WebsiteState,
+        before: Observation,
+        ranked_item: Any,
+        budget: BudgetState,
+        result: ExplorationResult,
+        risks: dict[str, Any],
+    ) -> str:
+        action: Action = ranked_item.action
+        element = self._element_for(action, before)
+        await self._emit(
+            "action_proposed",
+            {
+                "action": action.describe(),
+                "action_type": action.type.value,
+                "target": action.target.label() if action.target else "page",
+                "risk": ranked_item.risk.value,
+                "confidence": action.confidence,
+                "rationale": action.rationale,
+                "score": ranked_item.score,
+                "reasons": ranked_item.reasons,
+                "state_id": source_state.state_id,
+            },
+        )
+
+        timer = Timer()
+        action_result: ActionResult = await self.executor.execute(page, action, element=element)
+        self.action_latencies.append(timer.elapsed_ms)
+        result.actions_executed += 1
+
+        if not action_result.ok:
+            failure = self.recovery.classify(action_result, error=action_result.error)
+            decision = self.recovery.decide(
+                failure,
+                attempt=action_result.attempts,
+                replan_available=True,
+                known_state_available=bool(self.graph.states),
+            )
+            self.recovery.record(decision, action_id=action.action_id, detail=str(action_result.error))
+            evidence = Evidence(
+                kind=EvidenceKind.FAILURE,
+                experiment_id=result.experiment_id,
+                action_id=action.action_id,
+                source_state=source_state.state_id,
+                message=f"{action.describe()}: {action_result.error or action_result.blocked_reason}",
+                notes=[decision.strategy.value],
+            ).finalize()
+            self.graph.add_evidence(evidence)
+            result.actions_failed += 1
+            self.novelty.note_action(source_state.state_id, action, effects=0)
+            await self._emit(
+                "action_result",
+                {
+                    "action": action.describe(),
+                    "status": action_result.status,
+                    "error": action_result.error,
+                    "attempts": action_result.attempts,
+                    "recovery": decision.strategy.value,
+                },
+            )
+            if decision.strategy is RecoveryStrategy.RESTART_BROWSER and budget.browser_restarts <= budget.budget.max_browser_restarts:
+                budget.browser_restarts += 1
+                await self.manager.restart(resume_url=source_state.url)
+            return "failed"
+
+        after = await self.observer.observe(page)
+        elements = self.detector.detect(after)
+        after.interactive_elements = elements
+        self.last_elements = elements
+        await self._check_origin(page, source_state, result)
+
+        diff = diff_states(before, after)
+        attribution = self.causal.attribute(action, diff, after, source_state_id=source_state.state_id)
+        effects = self.effects.extract(action, diff, after, attribution)
+        verification = verify_effects(action, action.expected_effect, diff, after)
+
+        target_state, created = self._register_target_state(after, diff, source_state)
+        if created:
+            result.new_states += 1
+
+        transition = Transition(
+            source_state=source_state.state_id,
+            action=action,
+            target_state=target_state.state_id,
+            confidence=0.5,
+        ).finalize()
+        self.effects.apply(transition, effects)
+        evidence = Evidence(
+            kind=EvidenceKind.ACTION_RESULT,
+            experiment_id=result.experiment_id,
+            step_index=budget.actions,
+            action_id=action.action_id,
+            source_state=source_state.state_id,
+            target_state=target_state.state_id,
+            transition_id=transition.transition_id,
+            effects=effects,
+            observations=[before.observation_id, after.observation_id],
+            screenshot_refs=[ref for ref in [before.screenshot_reference, after.screenshot_reference] if ref],
+            message=describe_effects(effects),
+        ).finalize()
+        self.graph.add_evidence(evidence)
+
+        if verification.verified:
+            transition.record_success(evidence.evidence_id)
+            result.verified_transitions += 1
+        else:
+            transition.record_failure(evidence.evidence_id)
+            transition.status = TransitionStatus.PROPOSED if diff.changed else TransitionStatus.REFUTED if not diff.changed else transition.status
+
+        existing = self.graph.transitions.get(transition.transition_id)
+        stored = self.graph.add_transition(transition)
+        if existing is None:
+            result.new_transitions += 1
+            if verification.verified:
+                stored.record_success(evidence.evidence_id)
+        else:
+            if verification.verified:
+                stored.record_success(evidence.evidence_id)
+            else:
+                stored.record_failure(evidence.evidence_id)
+        self.graph.record_execution(
+            stored.transition_id, success=verification.verified, evidence_id=evidence.evidence_id
+        )
+
+        self.novelty.note_action(
+            source_state.state_id, action, target_state=target_state.state_id, effects=len([e for e in effects if e.kind is not EffectKind.NO_EFFECT])
+        )
+        self.novelty.note_transition(source_state.state_id, action, target_state.state_id)
+
+        # Preconditions and hypotheses from what the browser just told us.
+        learned = self.preconditions.from_effects(action, effects, after, source_state.state_id)
+        for constraint in learned:
+            stored_constraint = self.graph.upsert_constraint(constraint)
+            stored_constraint.support(evidence.evidence_id)
+            if self.storage is not None:
+                self.storage.save_constraint(stored_constraint)
+            await self._emit("constraint_learned", {"constraint": stored_constraint.model_dump(mode="json")})
+        for hypothesis in self.hypotheses.propose_validation(after, action_label=action.describe()):
+            await self._emit("hypothesis", {"hypothesis": hypothesis.__dict__, "status": hypothesis.status.value})
+        await self._resolve_hypotheses(action, before, after, effects, evidence.evidence_id)
+
+        if self.storage is not None:
+            self.storage.save_transition(stored)
+            self.storage.save_evidence(evidence)
+
+        budget.transitions = len(self.graph.transitions)
+        await self._emit(
+            "action_result",
+            {
+                "action": action.describe(),
+                "status": "OK",
+                "locator": action_result.locator_used,
+                "duration_ms": round(action_result.duration_ms, 1),
+                "verified": verification.verified,
+                "effects": [effect.model_dump(mode="json") for effect in effects[:6]],
+                "diff": diff.to_dict(),
+                "transition": {
+                    "transition_id": stored.transition_id,
+                    "source": stored.source_state,
+                    "target": stored.target_state,
+                    "status": stored.status.value,
+                    "confidence": stored.confidence,
+                },
+                "similarity": None,
+            },
+        )
+        return "progress" if (created or (existing is None and verification.verified)) else "no_progress"
+
+    def _register_target_state(self, after: Observation, diff, source_state: WebsiteState) -> tuple[WebsiteState, bool]:
+        summary = self.labeler.observation_summary(after)
+        identity = identity_for(after)
+        candidate = build_state(
+            after,
+            page_identity=identity.url_pattern,
+            page_id=identity.page_id,
+            semantic_summary=summary,
+        )
+        assign_page(candidate, identity)
+        known, similarity = match_state(
+            candidate,
+            list(self.graph.states.values()),
+            weights=self.config_weights,
+            thresholds=self.config_thresholds,
+        )
+        if known is not None:
+            known.visit_count += 1
+            known.last_seen = candidate.last_seen
+            return known, False
+        state, created = self.graph.upsert_state(candidate)
+        if created:
+            self.graph.upsert_page(to_page(identity, state.state_id, summary=summary))
+            if self.storage is not None:
+                self.storage.save_state(state, similarity=similarity)
+        return state, created
+
+    async def _resolve_hypotheses(
+        self, action: Action, before: Observation, after: Observation, effects: list[Any], evidence_id: str
+    ) -> None:
+        enabled_change = {
+            change for change in (e.detail for e in effects if e.kind in (EffectKind.ELEMENTS_CHANGED, EffectKind.ELEMENTS_ADDED))
+        }
+        for hypothesis in self.hypotheses.all():
+            if hypothesis.status in (HypothesisStatus.VERIFIED, HypothesisStatus.REFUTED, HypothesisStatus.STALE):
+                continue
+            prediction = hypothesis.prediction or {}
+            if prediction.get("field_id") and action.target and action.target.element_id == prediction["field_id"]:
+                enables = prediction.get("enables_label", "")
+                control = next(
+                    (e for e in after.interactive_elements if enables and enables.lower() in e.label().lower()), None
+                )
+                observed = {"element_id": control.element_id if control else "", "enabled": control.enabled if control else False}
+                outcome = self.hypotheses.resolve_prediction(hypothesis, observed)
+                if outcome is True:
+                    hypothesis.support("field-fill", evidence_id, decisive=True)
+                    self._constraint_from_hypothesis(hypothesis, evidence_id)
+                elif outcome is False:
+                    hypothesis.contradict("field-fill", evidence_id)
+                await self._emit(
+                    "hypothesis",
+                    {
+                        "hypothesis": hypothesis.__dict__,
+                        "status": hypothesis.status.value,
+                        "statement": hypothesis.statement,
+                    },
+                )
+            elif prediction.get("message") and any(
+                e.kind in (EffectKind.VALIDATION_MESSAGE, EffectKind.PRECONDITION_BLOCKED) for e in effects
+            ):
+                hypothesis.support("observed-message", evidence_id)
+
+    def _constraint_from_hypothesis(self, hypothesis, evidence_id: str) -> None:
+        from ..model.constraint import Constraint, ConstraintKind, ConstraintScope
+
+        prediction = hypothesis.prediction or {}
+        constraint = Constraint(
+            kind=ConstraintKind.PRECONDITION,
+            scope=ConstraintScope.ELEMENT,
+            subject=prediction.get("enables_label", hypothesis.subject)[:120],
+            expression=f"{prediction.get('field_label', 'field')} != empty",
+            condition={
+                "field": prediction.get("field_label", ""),
+                "field_ids": [prediction.get("field_id", "")],
+                "enables": prediction.get("enables", ""),
+                "state_id": (hypothesis.details or {}).get("observation_id"),
+            },
+            message=hypothesis.statement[:300],
+            confidence=min(0.9, hypothesis.confidence),
+        ).finalize()
+        self.graph.upsert_constraint(constraint).support(evidence_id, verified=True)
+        if self.storage is not None:
+            self.storage.save_constraint(constraint)
+
+    async def _check_origin(self, page, source_state: WebsiteState, result: ExplorationResult) -> None:
+        url = await page.url()
+        decision = self.manager.sandbox.is_allowed(url)
+        if decision.allowed:
+            return
+        evidence = Evidence(
+            kind=EvidenceKind.BLOCKED_ACTION,
+            source_state=source_state.state_id,
+            message=f"page moved outside authorized origins: {url}",
+            notes=[decision.reason],
+        ).finalize()
+        self.graph.add_evidence(evidence)
+        await self._emit("origin_blocked", {"url": url, "reason": decision.reason})
+        # Return to the last authorized state rather than following the page out.
+        try:
+            await page.navigate(source_state.url)
+        except Exception:  # noqa: BLE001
+            pass
+        raise OriginViolation(url, decision.reason)
