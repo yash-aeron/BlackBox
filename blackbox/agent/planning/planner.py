@@ -231,3 +231,289 @@ class Planner:
             if task.verb and task.verb in haystack:
                 score += 0.5
             if noun and noun in haystack:
+                score += 0.5
+            score += workflow.confidence * 0.2
+            if score > 1.0 and (best is None or score > best[0]):
+                best = (score, workflow)
+        if best:
+            return best[1]
+        if task.verb:
+            tmpl = graph.find_template(task.verb)
+            if tmpl and tmpl.concrete_workflow_ids:
+                for wid in tmpl.concrete_workflow_ids:
+                    w = graph.workflows.get(wid)
+                    if w is not None:
+                        return w
+        return None
+
+    def _instantiate(self, workflow: Workflow, bound: dict[str, str]) -> list[PlanStep]:
+        steps: list[PlanStep] = []
+        for step in workflow.steps:
+            action = step.action.model_copy(deep=True)
+            for name in step.parameter_names:
+                value = bound.get(name)
+                if value is None:
+                    continue
+                if action.type in (ActionType.TYPE,):
+                    action.parameters["value"] = value
+                elif action.type is ActionType.SELECT:
+                    action.parameters["option"] = value
+            action.origin = "planner"
+            action.rationale = f"workflow {workflow.goal} step {step.index}"
+            steps.append(
+                PlanStep(
+                    index=step.index,
+                    action=action,
+                    description=step.description,
+                    transition_id=step.transition_id,
+                    expected_effect=step.expected_effect,
+                    parameter_names=step.parameter_names,
+                )
+            )
+        return steps
+
+    # -- graph search ------------------------------------------------------
+    def _plan_from_graph(self, task: TaskSpec, graph: ApplicationGraph, start_state_id: str) -> Plan:
+        goal_predicate, goal_description = self._goal_predicate(task, graph)
+        allowed_risk = RiskLevel.HIGH.rank if task.verb in ("delete",) else RiskLevel.MEDIUM.rank
+        path = graph.find_path(start_state_id, goal_predicate, cost=self.cost, allowed_risk=allowed_risk)
+        if path.found and len(path.transition_ids) <= self.max_steps:
+            steps = self._steps_from_transitions(graph, path.transition_ids)
+            confidence = self._path_confidence(graph, path.transition_ids)
+            return Plan(
+                task=task,
+                steps=steps,
+                source="graph",
+                start_state_id=start_state_id,
+                expected_end_state=goal_description,
+                confidence=confidence,
+                estimated_cost=path.cost,
+                notes=[f"planned over {len(steps)} learned transitions by graph search"],
+            )
+        hint = self._exploration_hint(task, graph, start_state_id)
+        return Plan(
+            task=task,
+            source="none",
+            start_state_id=start_state_id,
+            expected_end_state=goal_description,
+            notes=[
+                "no learned route matches this task",
+                f"targeted exploration required around: {hint.get('keywords')}",
+            ],
+            exploration_hint=hint,
+        )
+
+    def _steps_from_transitions(self, graph: ApplicationGraph, transition_ids: list[str]) -> list[PlanStep]:
+        steps: list[PlanStep] = []
+        for index, transition_id in enumerate(transition_ids):
+            transition = graph.transitions.get(transition_id)
+            if transition is None:
+                continue
+            steps.append(
+                PlanStep(
+                    index=index,
+                    action=transition.action.model_copy(deep=True),
+                    description=transition.action.describe(),
+                    transition_id=transition.transition_id,
+                    expected_effect=[effect.kind.value for effect in transition.observed_effects][:4],
+                    source_state=transition.source_state,
+                    target_state=transition.target_state,
+                )
+            )
+        return steps
+
+    def _path_confidence(self, graph: ApplicationGraph, transition_ids: list[str]) -> float:
+        confidences = [
+            graph.transitions[tid].confidence for tid in transition_ids if tid in graph.transitions
+        ]
+        verified = [
+            1.0 if graph.transitions[tid].status is TransitionStatus.VERIFIED else 0.6
+            for tid in transition_ids
+            if tid in graph.transitions
+        ]
+        if not confidences:
+            return 0.0
+        base = sum(confidences) / len(confidences)
+        verification = sum(verified) / len(verified)
+        return round(min(0.95, base * 0.6 + verification * 0.4), 3)
+
+    # -- goal state identification ----------------------------------------
+    def _goal_predicate(self, task: TaskSpec, graph: ApplicationGraph) -> tuple[Callable[[WebsiteState], bool], str]:
+        """Prefer the task's own machine-checkable success conditions as the goal."""
+        declared = self._declared_goal(task)
+        if declared is not None:
+            predicate, description = declared
+            if any(predicate(state) for state in graph.states.values()):
+                return predicate, description
+            # No known state satisfies the declared conditions yet: keep them as
+            # the goal (so targeted exploration has a target) rather than
+            # silently falling back to something easier to satisfy.
+            return predicate, description
+
+        noun = task.entity_noun
+        verb = task.verb
+
+        success_states: set[str] = set()
+        for transition in graph.transitions.values():
+            if transition.status is TransitionStatus.REFUTED:
+                continue
+            for effect in transition.observed_effects:
+                if effect.kind.value in ("SUCCESS_MESSAGE", "DATA_CHANGED"):
+                    label = normalize_text(
+                        f"{transition.action.target.label() if transition.action.target else ''} {effect.message or ''}"
+                    )
+                    if noun and noun in label:
+                        success_states.add(transition.target_state)
+                    elif not noun:
+                        success_states.add(transition.target_state)
+        for transition in graph.transitions.values():
+            for effect in transition.observed_effects:
+                if effect.kind.value == "DIALOG_CLOSED" and transition.target_state in graph.states:
+                    label = normalize_text(transition.action.target.label() if transition.action.target else "")
+                    if noun and noun in label:
+                        success_states.add(transition.target_state)
+
+        entity_values = [normalize_text(value) for value in task.entities.values() if value]
+
+        def predicate(state: WebsiteState) -> bool:
+            if state.state_id in success_states:
+                return True
+            haystack = normalize_text(f"{state.title} {state.semantic_summary} {state.visible_text[:1500]}")
+            if noun and noun not in haystack:
+                return False
+            if verb == "search":
+                return any(noun in normalize_text(e.label()) for e in state.visible_elements)
+            if verb in ("view", "filter"):
+                return noun in haystack
+            if entity_values and any(value and value in haystack for value in entity_values):
+                return True
+            return noun in haystack and any(
+                normalize_text(e.label()) and noun in normalize_text(e.label()) for e in state.visible_elements
+            )
+
+        description = f"{task.expected_end_state or task.goal}"
+        return predicate, description
+
+    def _declared_goal(self, task: TaskSpec) -> tuple[Callable[[WebsiteState], bool], str] | None:
+        """Build a state-level goal from the task's declared success conditions."""
+        specs = list(getattr(task, "predicates", []) or [])
+        if not specs:
+            return None
+        checks: list[tuple[str, str]] = []  # (kind, value/target)
+        for spec in specs:
+            kind = str(spec.get("kind", "")).upper()
+            if not kind:
+                continue
+            checks.append((kind, str(spec.get("value", ""))))
+            if spec.get("target"):
+                checks.append((kind + ":target", str(spec["target"])))
+        if not checks:
+            return None
+
+        def predicate(state: WebsiteState) -> bool:
+            text = normalize_text(f"{state.title} {state.visible_text[:6000]} {state.semantic_summary}")
+            labels = [normalize_text(element.label()) for element in state.visible_elements]
+            for kind, value in checks:
+                wanted = normalize_text(value)
+                if not wanted:
+                    continue
+                if kind == "TEXT_PRESENT":
+                    if wanted not in text and not any(wanted in label for label in labels):
+                        return False
+                elif kind == "TEXT_ABSENT":
+                    if wanted in text or any(wanted in label for label in labels):
+                        return False
+                elif kind == "URL_CONTAINS":
+                    if wanted not in state.url.lower():
+                        return False
+                elif kind in ("ALERT_CONTAINS", "STATE_MATCHES"):
+                    if wanted not in text:
+                        return False
+                elif kind == "DIALOG_OPEN":
+                    if not state.dialogs:
+                        return False
+                    if not any(wanted in normalize_text(f"{d.title} {d.text} {' '.join(d.actions)}") for d in state.dialogs):
+                        return False
+                elif kind == "TABLE_ROW_CONTAINS":
+                    found = False
+                    for row_text in self._table_rows(state):
+                        if wanted in row_text:
+                            found = True
+                            break
+                    if not found:
+                        return False
+                elif kind == "ELEMENT_PRESENT":
+                    if not any(wanted in label for label in labels):
+                        return False
+                elif kind == "ELEMENT_ABSENT":
+                    if any(wanted in label for label in labels):
+                        return False
+                elif kind == "VALUE_EQUALS:target":
+                    target = wanted
+                    for element in state.visible_elements:
+                        if target in normalize_text(element.label()):
+                            if normalize_text(element.value_state.value or "") != normalize_text(
+                                next((v for k, v in checks if k == "VALUE_EQUALS"), "")
+                            ):
+                                return False
+                            break
+                    else:
+                        return False
+                elif kind == "VALUE_EQUALS":
+                    # The value itself is only meaningful together with its target.
+                    continue
+            return True
+
+        return predicate, f"declared success conditions: {'; '.join(k for k, _ in checks if not k.endswith(':target'))}"
+
+    @staticmethod
+    def _table_rows(state: WebsiteState) -> list[str]:
+        """Row text for table-like content observed on a state.
+
+        Table structure is re-derived from the visible elements' sections and the
+        state text, because the persisted state keeps elements rather than raw
+        table payloads.
+        """
+        rows: list[str] = []
+        for line in state.visible_text.split("\n"):
+            cleaned = line.strip()
+            if cleaned and len(cleaned) < 300:
+                rows.append(normalize_text(cleaned))
+        return rows
+
+    def _match_state_id(self, graph: ApplicationGraph, task: TaskSpec) -> str | None:
+        """Pick the most likely current entry state for the task's noun."""
+        if not task.entity_noun:
+            return graph.root_state_id
+        candidates = [
+            state
+            for state in graph.states.values()
+            if task.entity_noun in normalize_text(f"{state.title} {state.page_identity} {state.semantic_summary}")
+        ]
+        if not candidates:
+            return graph.root_state_id
+        candidates.sort(key=lambda s: (-s.visit_count, s.state_id))
+        return candidates[0].state_id
+
+    def _exploration_hint(self, task: TaskSpec, graph: ApplicationGraph, start_state_id: str) -> dict[str, Any]:
+        keywords = [keyword for keyword in [task.entity_noun, task.verb] if keyword]
+        region_states: list[dict[str, Any]] = []
+        for state in graph.states.values():
+            haystack = normalize_text(f"{state.title} {state.page_identity} {state.semantic_summary}")
+            if any(keyword in haystack for keyword in keywords):
+                region_states.append(
+                    {
+                        "state_id": state.state_id,
+                        "label": state.label(),
+                        "url": state.url,
+                        "summary": state.semantic_summary[:160],
+                    }
+                )
+        region_states.sort(key=lambda item: -len(item["summary"]))
+        return {
+            "reason": "no route found; explore the region that mentions the goal",
+            "keywords": keywords,
+            "start_state_id": start_state_id,
+            "region": region_states[:5],
+            "max_actions": 25,
+        }
