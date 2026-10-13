@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Application Form</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="app-header">
+  <h1>Community Grant Program</h1>
+  <p class="app-sub">Application form</p>
+</header>
+
+<main id="main" tabindex="-1">
+
+  <!-- ============ Wizard ============ -->
+  <section class="panel" id="wizard" aria-labelledby="wizard-heading">
+    <h2 id="wizard-heading">Grant application</h2>
+    <p class="step-counter" id="step-counter">Step 1 of 4</p>
+
+    <nav aria-label="Application steps">
+      <ol class="step-list" id="step-list">
+        <li><button type="button" class="step-btn" data-step="1" aria-current="step">1. Applicant</button></li>
+        <li><button type="button" class="step-btn" data-step="2">2. Employment</button></li>
+        <li><button type="button" class="step-btn" data-step="3">3. Documents</button></li>
+        <li><button type="button" class="step-btn" data-step="4">4. Review</button></li>
+      </ol>
+    </nav>
+
+    <p class="error" id="step-error" role="alert" hidden></p>
+
+    <form id="wizard-form" novalidate>
+
+      <!-- ---------- Step 1 ---------- -->
+      <fieldset class="step" id="step-1" aria-describedby="step-1-help">
+        <legend>Step 1: Applicant</legend>
+        <p class="hint" id="step-1-help">Full name and email are required. Phone is optional.</p>
+
+        <div class="field">
+          <label for="full-name">Full name</label>
+          <input type="text" id="full-name" name="fullName" required autocomplete="name">
+        </div>
+
+        <div class="field">
+          <label for="email">Email</label>
+          <input type="text" id="email" name="email" required autocomplete="email"
+                 aria-describedby="email-help">
+          <p class="hint-inline" id="email-help">Must contain an @ character.</p>
+        </div>
+
+        <div class="field">
+          <label for="phone">Phone <span class="opt">(optional)</span></label>
+          <input type="text" id="phone" name="phone" inputmode="numeric" autocomplete="tel"
+                 aria-describedby="phone-help">
+          <p class="hint-inline" id="phone-help">If provided, exactly 10 digits, numbers only.</p>
+        </div>
+      </fieldset>
+
+      <!-- ---------- Step 2 ---------- -->
+      <fieldset class="step" id="step-2" hidden>
+        <legend>Step 2: Employment</legend>
+        <p class="hint">Annual income is required for employed and self-employed applicants.</p>
+
+        <div class="field">
+          <label for="employment-status">Employment status</label>
+          <select id="employment-status" name="employmentStatus">
+            <option value="">Select a status</option>
+            <option value="Employed">Employed</option>
+            <option value="Self-employed">Self-employed</option>
+            <option value="Student">Student</option>
+            <option value="Unemployed">Unemployed</option>
+          </select>
+        </div>
+
+        <div class="field" id="income-field" hidden>
+          <label for="annual-income">Annual income</label>
+          <input type="number" id="annual-income" name="annualIncome" min="0" step="1000"
+                 aria-describedby="income-help">
+          <p class="hint-inline" id="income-help">Required while the status is Employed or Self-employed. Whole currency units.</p>
+        </div>
+
+        <div class="field" id="employer-field" hidden>
+          <label for="employer-name">Employer name <span class="opt">(optional)</span></label>
+          <input type="text" id="employer-name" name="employerName" autocomplete="organization">
+        </div>
+      </fieldset>
+
+      <!-- ---------- Step 3 ---------- -->
+      <fieldset class="step" id="step-3" hidden>
+        <legend>Step 3: Documents</legend>
+        <p class="hint">A PDF or plain text ID document is required.</p>
+
+        <div class="field">
+          <label for="id-document">Upload ID document</label>
+          <input type="file" id="id-document" name="idDocument" accept=".pdf,.txt" required
+                 aria-describedby="document-help">
+          <p class="hint-inline" id="document-help">Accepted formats: .pdf and .txt.</p>
+        </div>
+        <p class="file-status" id="file-status"></p>
+
+        <div class="field checkbox">
+          <input type="checkbox" id="confirm-genuine" name="confirmGenuine" required>
+          <label for="confirm-genuine">I confirm the documents are genuine</label>
+        </div>
+
+        <div class="field">
+          <label for="reference-code">Reference code <span class="opt">(optional)</span></label>
+          <input type="text" id="reference-code" name="referenceCode" pattern="[A-Za-z]{3}-[0-9]{4}"
+                 aria-describedby="reference-help">
+          <p class="hint-inline" id="reference-help">If you have one, use the format ABC-1234.</p>
+        </div>
+      </fieldset>
+
+      <!-- ---------- Step 4 ---------- -->
+      <fieldset class="step" id="step-4" hidden>
+        <legend>Step 4: Review</legend>
+        <p class="hint">Check the details below before submitting.</p>
+
+        <dl class="summary" id="review-list"></dl>
+
+        <div class="field checkbox">
+          <input type="checkbox" id="agree-terms" name="agreeTerms" required>
+          <label for="agree-terms">I agree to the terms</label>
+        </div>
+        <p class="hint-inline" id="submit-help">
+          Submit application becomes available once every step is valid and you agree to the terms.
+        </p>
+      </fieldset>
+
+      <div class="wizard-actions">
+        <button type="button" class="btn" id="back-btn" disabled>Back</button>
+        <button type="button" class="btn primary" id="next-btn">Next</button>
+        <button type="submit" class="btn primary" id="submit-btn" hidden disabled>Submit application</button>
+      </div>
+    </form>
+  </section>
+
+  <!-- ============ Confirmation ============ -->
+  <section class="panel" id="confirmation" aria-labelledby="confirmation-heading" hidden>
+    <h2 id="confirmation-heading" tabindex="-1">Application submitted</h2>
+    <p class="success" role="status" id="confirmation-message">
+      Your application has been received.
+    </p>
+    <dl class="summary">
+      <dt>Reference number</dt>
+      <dd id="reference-number"></dd>
+      <dt>Applicant</dt>
+      <dd id="confirmation-applicant"></dd>
+      <dt>Submitted</dt>
+      <dd id="confirmation-date"></dd>
+    </dl>
+    <p>
+      <button type="button" class="btn primary" id="start-new-btn">Start new application</button>
+    </p>
+  </section>
+
+</main>
+
+<div id="status-region" class="toast" role="status" aria-live="polite"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
