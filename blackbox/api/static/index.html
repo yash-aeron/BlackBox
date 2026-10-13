@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BlackBox - research dashboard</title>
+<link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">BLACKBOX<span class="dim"> / behavioral model inspector</span></div>
+  <div class="topbar-right">
+    <span id="notice"></span>
+    <span id="stream-pill" class="pill">stream: off</span>
+    <span id="health" class="pill">api: ?</span>
+    <span id="clock" class="pill">&mdash;</span>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="rail">
+    <h2>Targets</h2>
+    <div class="rail-actions">
+      <button class="btn tiny" id="refresh-targets">refresh</button>
+      <button class="btn tiny" id="load-logs" title="reload the persisted log for the selected target">reload logs</button>
+    </div>
+    <ul class="target-list" id="target-list"><li class="faint">loading&hellip;</li></ul>
+
+    <form class="register" id="register-form">
+      <h3>Register target</h3>
+      <label>target_id<input name="target_id" placeholder="my_app" required></label>
+      <label>base_url<input name="base_url" placeholder="http://127.0.0.1:3001" required></label>
+      <label>allowed_origins (comma separated)<input name="allowed_origins" placeholder="http://127.0.0.1:3001"></label>
+      <label>mode<select name="mode">
+        <option>SUPERVISED</option>
+        <option>AUTONOMOUS</option>
+        <option>SAFE</option>
+      </select></label>
+      <label>authorized_by<input name="authorized_by" placeholder="operator name"></label>
+      <label class="check"><input type="checkbox" name="allow_medium_actions"> allow medium actions</label>
+      <button class="btn primary" type="submit">register</button>
+    </form>
+  </aside>
+
+  <section class="center">
+    <nav class="tabs" id="tabs">
+      <button data-view="overview" class="active">Overview</button>
+      <button data-view="graph">State Graph</button>
+      <button data-view="current">Current State</button>
+      <button data-view="workflows">Workflows</button>
+      <button data-view="hypotheses">Hypotheses &amp; Constraints</button>
+      <button data-view="experiments">Experiments</button>
+      <button data-view="tasks">Tasks</button>
+      <button data-view="logs">Logs</button>
+      <button data-view="metrics">Metrics</button>
+      <button data-view="approvals">Approvals</button>
+    </nav>
+
+    <div class="view active" id="view-overview"></div>
+
+    <div class="view" id="view-graph">
+      <div class="graph-toolbar">
+        <button class="btn tiny" id="graph-fit">fit</button>
+        <button class="btn tiny" id="graph-in">+</button>
+        <button class="btn tiny" id="graph-out">&minus;</button>
+        <button class="btn tiny" id="graph-reset">reset</button>
+        <span class="dim mono" id="graph-info">no graph loaded</span>
+        <span class="grow"></span>
+        <span class="legend">
+          <span><i style="background:#3fb950"></i>verified</span>
+          <span><i style="background:#d29922"></i>proposed</span>
+          <span><i style="background:#f85149"></i>refuted</span>
+          <span><i style="background:#6e7681"></i>stale</span>
+          <span><i style="background:#58a6ff"></i>selected</span>
+        </span>
+      </div>
+      <div class="graph-host" id="graph-host">
+        <svg id="graph" xmlns="http://www.w3.org/2000/svg"></svg>
+      </div>
+      <div class="dim" style="margin-top:4px">Click a node for its URL, screenshot and elements; click an edge for its action, effects and evidence. Wheel = zoom, drag = pan.</div>
+    </div>
+
+    <div class="view" id="view-current"></div>
+    <div class="view" id="view-workflows"></div>
+    <div class="view" id="view-hypotheses"></div>
+    <div class="view" id="view-experiments"></div>
+    <div class="view" id="view-tasks"></div>
+    <div class="view" id="view-logs"></div>
+    <div class="view" id="view-metrics"></div>
+    <div class="view" id="view-approvals"></div>
+  </section>
+
+  <aside class="sidepanel" id="sidepanel">
+    <h3 class="section">Selection</h3>
+    <div class="dim" id="selection">nothing selected</div>
+  </aside>
+</div>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
