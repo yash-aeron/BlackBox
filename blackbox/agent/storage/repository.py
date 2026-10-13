@@ -222,3 +222,277 @@ class Repository:
                 "source_state": evidence.source_state,
                 "target_state": evidence.target_state,
                 "message": evidence.message,
+                "created_at": evidence.created_at,
+                "payload": dumps(evidence.model_dump(mode="json")),
+            },
+        )
+
+    def save_experiment(self, record: Any) -> None:
+        payload = record.to_dict() if hasattr(record, "to_dict") else dict(record)
+        self.db.upsert(
+            "experiments",
+            {"experiment_id": payload["experiment_id"]},
+            {
+                "target_id": payload.get("target_id", self.target_id),
+                "kind": payload.get("kind", "exploration"),
+                "seed": payload.get("seed"),
+                "browser_version": payload.get("browser_version"),
+                "model_version": payload.get("model_version"),
+                "prompt_version": payload.get("prompt_version"),
+                "status": payload.get("status"),
+                "started_at": payload.get("started_at"),
+                "finished_at": payload.get("finished_at"),
+                "metrics": dumps(payload.get("metrics", {})),
+                "payload": dumps(payload),
+            },
+        )
+
+    def save_observation_meta(self, observation: Observation, state_id: str | None = None) -> None:
+        self.db.upsert(
+            "observations",
+            {"observation_id": observation.observation_id},
+            {
+                "target_id": self.target_id,
+                "state_id": state_id,
+                "url": observation.url,
+                "title": observation.title,
+                "element_count": len(observation.interactive_elements),
+                "captured_ms": observation.captured_ms,
+                "screenshot_ref": observation.screenshot_reference,
+                "created_at": time.time(),
+                "payload": dumps(observation.summary()),
+            },
+        )
+
+    def save_page(self, page: Page) -> None:
+        self.db.upsert(
+            "pages",
+            {"page_id": page.page_id},
+            {
+                "target_id": self.target_id,
+                "name": page.name,
+                "url_pattern": page.url_pattern,
+                "section": page.section,
+                "parent_page_id": page.parent_page_id,
+                "payload": dumps(page.model_dump(mode="json")),
+            },
+        )
+
+    def save_event(self, kind: str, payload: dict[str, Any], *, session_id: str | None = None) -> None:
+        self.db.execute(
+            "INSERT INTO events (target_id, session_id, kind, created_at, payload) VALUES (?, ?, ?, ?, ?)",
+            (self.target_id, session_id, kind, time.time(), dumps(payload)),
+        )
+
+    def read_events(self, *, limit: int = 200, kind: str | None = None) -> list[dict[str, Any]]:
+        if kind:
+            rows = self.db.query(
+                "SELECT * FROM events WHERE target_id = ? AND kind = ? ORDER BY event_id DESC LIMIT ?",
+                (self.target_id, kind, limit),
+            )
+        else:
+            rows = self.db.query(
+                "SELECT * FROM events WHERE target_id = ? ORDER BY event_id DESC LIMIT ?",
+                (self.target_id, limit),
+            )
+        for row in rows:
+            row["payload"] = loads(row["payload"])
+        return rows
+
+    def clear_workflows(self, *, model_version: int | None = None) -> None:
+        """Drop mined workflows so a re-mine replaces them instead of accumulating."""
+        version = model_version or self.model_version
+        self.db.execute(
+            "DELETE FROM workflows WHERE target_id = ? AND model_version = ?", (self.target_id, version)
+        )
+
+    def mark_stale(self, *, state_ids: list[str], transition_ids: list[str], reason: str = "") -> dict[str, int]:
+        """Mark affected knowledge STALE when the website has changed.
+
+        Old knowledge is never deleted: it stays as historical evidence, and the
+        counters below say how much of the model was affected.
+        """
+        marked_states = 0
+        for state_id in state_ids:
+            row = self.db.query_one(
+                "SELECT payload FROM states WHERE state_id = ? AND target_id = ?", (state_id, self.target_id)
+            )
+            if not row:
+                continue
+            state = WebsiteState.model_validate(loads(row["payload"]))
+            state.status = StateStatus.STALE
+            self.save_state(state)
+            marked_states += 1
+        marked_transitions = 0
+        for transition_id in transition_ids:
+            row = self.db.query_one(
+                "SELECT payload FROM transitions WHERE transition_id = ? AND target_id = ?",
+                (transition_id, self.target_id),
+            )
+            if not row:
+                continue
+            transition = Transition.model_validate(loads(row["payload"]))
+            transition.status = TransitionStatus.STALE
+            self.save_transition(transition)
+            marked_transitions += 1
+        if reason:
+            self.save_event("model_stale", {"reason": reason, "states": marked_states, "transitions": marked_transitions})
+        return {"states": marked_states, "transitions": marked_transitions}
+
+    def start_run(self, run_id: str, kind: str) -> None:
+        self.db.upsert(
+            "runs",
+            {"run_id": run_id},
+            {
+                "target_id": self.target_id,
+                "kind": kind,
+                "status": "running",
+                "started_at": time.time(),
+                "finished_at": None,
+                "summary": None,
+            },
+        )
+
+    def finish_run(self, run_id: str, status: str, summary: dict[str, Any] | None = None) -> None:
+        self.db.upsert(
+            "runs",
+            {"run_id": run_id},
+            {
+                "target_id": self.target_id,
+                "kind": None,
+                "status": status,
+                "started_at": None,
+                "finished_at": time.time(),
+                "summary": dumps(summary or {}),
+            },
+        )
+
+    # -- reads -------------------------------------------------------------
+    def load_graph(self, *, model_version: int | None = None) -> ApplicationGraph:
+        version = model_version or self.model_version
+        graph = ApplicationGraph(target_id=self.target_id)
+        for row in self.db.query(
+            "SELECT payload FROM states WHERE target_id = ? AND model_version = ?", (self.target_id, version)
+        ):
+            state = WebsiteState.model_validate(loads(row["payload"]))
+            graph.states[state.state_id] = state
+        for row in self.db.query(
+            "SELECT payload FROM transitions WHERE target_id = ? AND model_version = ?", (self.target_id, version)
+        ):
+            transition = Transition.model_validate(loads(row["payload"]))
+            graph.transitions[transition.transition_id] = transition
+        for row in self.db.query(
+            "SELECT payload FROM workflows WHERE target_id = ? AND model_version = ?", (self.target_id, version)
+        ):
+            workflow = Workflow.model_validate(loads(row["payload"]))
+            graph.workflows[workflow.workflow_id] = workflow
+        for row in self.db.query(
+            "SELECT payload FROM constraints WHERE target_id = ? AND model_version = ?", (self.target_id, version)
+        ):
+            constraint = Constraint.model_validate(loads(row["payload"]))
+            graph.constraints[constraint.constraint_id] = constraint
+        for row in self.db.query(
+            "SELECT payload FROM evidence WHERE target_id = ? AND model_version = ?", (self.target_id, version)
+        ):
+            evidence = Evidence.model_validate(loads(row["payload"]))
+            graph.evidence[evidence.evidence_id] = evidence
+        for row in self.db.query("SELECT payload FROM pages WHERE target_id = ?", (self.target_id,)):
+            page = Page.model_validate(loads(row["payload"]))
+            graph.pages[page.page_id] = page
+        if graph.states and graph.root_state_id is None:
+            first = min(graph.states.values(), key=lambda s: s.first_seen)
+            graph.root_state_id = first.state_id
+        return graph
+
+    def load_model(self, *, model_version: int | None = None) -> BehavioralModel:
+        version = model_version or self.model_version
+        graph = self.load_graph(model_version=version)
+        target = self.load_target(self.target_id)
+        model = BehavioralModel(
+            website=WebsiteIdentity(
+                target_id=self.target_id,
+                base_url=target.base_url if target else "",
+                allowed_origins=target.normalized_origins() if target else [],
+                root_title=next((s.title for s in graph.states.values()), ""),
+            ).finalize(),
+            model_version=ModelVersion(version=version),
+            states=list(graph.states.values()),
+            transitions=list(graph.transitions.values()),
+            workflows=list(graph.workflows.values()),
+            constraints=list(graph.constraints.values()),
+            pages=list(graph.pages.values()),
+            evidence=list(graph.evidence.values()),
+        )
+        rows = self.db.query(
+            "SELECT payload FROM hypotheses WHERE target_id = ? AND model_version = ?", (self.target_id, version)
+        )
+        model.hypotheses = [HypothesisRecord.model_validate(loads(row["payload"])) for row in rows]
+        experiments = self.db.query(
+            "SELECT metrics, payload FROM experiments WHERE target_id = ? ORDER BY started_at DESC LIMIT 50",
+            (self.target_id,),
+        )
+        model.experiments = [loads(row["payload"]) for row in experiments]
+        model.stats = self.stats()
+        return model
+
+    def stats(self) -> dict[str, Any]:
+        def count(table: str, where: str = "target_id = ?", params: tuple[Any, ...] = ()) -> int:
+            row = self.db.query_one(
+                f"SELECT COUNT(*) AS n FROM {table} WHERE {where}", (self.target_id, *params)
+            )
+            return int(row["n"]) if row else 0
+
+        verified_row = self.db.query_one(
+            "SELECT COUNT(*) AS n FROM transitions WHERE target_id = ? AND status = ?",
+            (self.target_id, "VERIFIED"),
+        )
+        return {
+            "target_id": self.target_id,
+            "model_version": self.model_version,
+            "states": count("states"),
+            "transitions": count("transitions"),
+            "verified_transitions": int(verified_row["n"]) if verified_row else 0,
+            "workflows": count("workflows"),
+            "constraints": count("constraints"),
+            "hypotheses": count("hypotheses"),
+            "evidence": count("evidence"),
+            "experiments": count("experiments"),
+            "pages": count("pages"),
+        }
+
+    # -- export / import ---------------------------------------------------
+    def export_model(self, path: str | Path, *, model_version: int | None = None) -> Path:
+        model = self.load_model(model_version=model_version)
+        destination = Path(path)
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        destination.write_text(
+            __import__("json").dumps(model.to_json(), indent=2, ensure_ascii=False, default=str),
+            encoding="utf-8",
+        )
+        return destination
+
+    def import_model(self, path: str | Path, *, as_new_version: bool = True) -> BehavioralModel:
+        import json
+
+        payload = json.loads(Path(path).read_text(encoding="utf-8"))
+        model = BehavioralModel.model_validate(payload)
+        version = self.create_model_version(notes=[f"imported from {Path(path).name}"]) if as_new_version else self.model_version
+        for state in model.states:
+            self.save_state(state)
+        for transition in model.transitions:
+            self.save_transition(transition)
+        for workflow in model.workflows:
+            self.save_workflow(workflow)
+        for constraint in model.constraints:
+            self.save_constraint(constraint)
+        for evidence in model.evidence:
+            self.save_evidence(evidence)
+        for page in model.pages:
+            self.save_page(page)
+        for hypothesis in model.hypotheses:
+            self.save_hypothesis(hypothesis)
+        self.model_version = version
+        return model
+
+    def latest_similarity_notes(self) -> dict[str, Any]:
+        return {"loaded_at": now_iso(), "states": self.stats()["states"]}
