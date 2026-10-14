@@ -256,3 +256,278 @@ class BlackBoxAgent:
             manager=self.manager,
             observer=self.observer,
             graph=self.graph,
+            detector=self.detector,
+            generator=self.generator,
+            ranker=self.ranker,
+            safety=SafetyClassifier(),
+            policy=SafetyPolicy(
+                mode=self.registration.mode,
+                autonomous_risk=RiskLevel.LOW,
+                allow_medium_with_config=self.registration.allow_medium_actions,
+                allow_high_with_config=self.registration.allow_high_actions,
+                allow_critical_with_config=self.registration.allow_critical_actions,
+            ),
+            novelty=NoveltyTracker(),
+            hypotheses=self.hypotheses,
+            causal=CausalEngine(),
+            effects=EffectExtractor(),
+            preconditions=PreconditionLearner(),
+            recovery=self.recovery,
+            executor=self.executor,
+            approvals=self.approvals,
+            ledger=self.ledger,
+            assertions=self.assertions,
+            confidence=self.confidence,
+            network_guard=self.network_guard,
+            on_event=self._handle_event,
+            storage=self.repository,
+        )
+
+    async def _handle_event(self, event: dict[str, Any]) -> None:
+        try:
+            self.repository.save_event(event.get("type", "event"), event)
+        except Exception:  # noqa: BLE001 - event logging must never break a run
+            log.debug("could not persist event", exc_info=True)
+        if self.on_event is not None:
+            result = self.on_event(event)
+            if asyncio.iscoroutine(result):
+                await result
+
+    async def close(self) -> None:
+        self.running = False
+        await self.manager.close()
+        self.database.close()
+
+    # -- exploration -------------------------------------------------------
+    def default_exploration_config(self, **overrides: Any) -> ExplorationConfig:
+        budget = ExplorationBudget(
+            max_actions=int(overrides.pop("max_actions", self.registration.max_steps)),
+            max_duration_seconds=float(
+                overrides.pop("max_duration_seconds", self.registration.max_duration_seconds)
+            ),
+            max_states=int(overrides.pop("max_states", 80)),
+            max_transitions=int(overrides.pop("max_transitions", 200)),
+        )
+        config = ExplorationConfig(
+            budget=budget,
+            mode=self.registration.mode,
+            seed=self.settings.seed,
+            capture_screenshots=self.settings.capture_screenshots,
+            weights=FingerprintWeights(**overrides.pop("weights", {})),
+            thresholds=SimilarityThresholds(**overrides.pop("thresholds", {})),
+            configuration_label=str(overrides.pop("configuration_label", "default")),
+        )
+        for key, value in overrides.items():
+            if hasattr(config, key):
+                setattr(config, key, value)
+        return config
+
+    async def explore(self, config: ExplorationConfig | None = None, *, url: str | None = None) -> ExplorationResult:
+        if not self.running:
+            await self.start()
+        assert self.explorer is not None
+        result = await self.explorer.run(url=url or self.registration.base_url, config=config)
+        self.mine_workflows()
+        self._persist_model_state()
+        return result
+
+    def mine_workflows(self, *, save: bool = True, replace: bool = True) -> list[Any]:
+        """Extract parameterized workflows from verified transitions."""
+        if replace:
+            self.graph.workflows = {}
+            if save:
+                self.repository.clear_workflows()
+        miner = WorkflowMiner()
+        workflows = miner.mine(self.graph)
+        for workflow in workflows:
+            self.graph.upsert_workflow(workflow)
+            if save:
+                self.repository.save_workflow(workflow)
+        return workflows
+
+    async def name_workflows_with_llm(self) -> int:
+        """Optional: let the provider improve workflow names, never their steps.
+
+        Only the human-facing name, goal and description may change; the steps,
+        parameters and evidence are exactly what was verified in the browser.
+        """
+        if not self.llm.available:
+            return 0
+        renamed = 0
+        for workflow in list(self.graph.workflows.values()):
+            steps = "\n".join(step.describe() for step in workflow.steps)
+            summary = await self.llm.summarize_workflow(
+                steps=steps,
+                end_state=workflow.expected_end_state,
+                parameters=", ".join(parameter.name for parameter in workflow.parameters),
+            )
+            if summary is None:
+                continue
+            workflow.name = summary.name[:60] or workflow.name
+            workflow.goal = summary.goal[:60] or workflow.goal
+            workflow.confidence = workflow.confidence
+            self.repository.save_workflow(workflow)
+            renamed += 1
+        return renamed
+
+    async def _current_state_id(self) -> tuple[str | None, Any]:
+        """Observe the live page and match it to a known state."""
+        page = self.manager.page
+        observation = await self.observer.observe(page, settle=True)
+        elements = self.detector.detect(observation)
+        observation.interactive_elements = elements
+        labeler = SemanticLabeler()
+        identity = identity_for(observation)
+        candidate = build_state(
+            observation,
+            page_identity=identity.url_pattern,
+            page_id=identity.page_id,
+            semantic_summary=labeler.observation_summary(observation),
+        )
+        assign_page(candidate, identity)
+        known, _ = match_state(candidate, list(self.graph.states.values()))
+        return (known.state_id if known else None), observation
+
+    async def run_task(
+        self,
+        task_text: str,
+        *,
+        predicates: list[Any] | None = None,
+        allow_exploration: bool = True,
+        max_exploration_actions: int = 20,
+        use_workflows: bool = True,
+        use_transitions: bool = True,
+    ) -> TaskResult:
+        """Parse, plan, execute and verify one task against the learned model."""
+        import time
+
+        started = time.monotonic()
+        if not self.running:
+            await self.start()
+        if self.manager.page:
+            current_url = await self.manager.page.url()
+            if not current_url or current_url.startswith("about:"):
+                await self.manager.page.navigate(self.registration.base_url)
+        parser = TaskParser()
+        task = parser.parse(task_text)
+        if predicates:
+            task.predicates = [
+                {"kind": p.kind.value, "value": p.value, "target": p.target} for p in predicates
+            ]
+        planner = Planner(parser=parser, use_workflows=use_workflows, use_transitions=use_transitions)
+        replanner = Replanner(planner)
+        verifier = Verifier()
+        result = TaskResult(task=task.to_dict())
+        result.model_states_before = len(self.graph.states)
+
+        current_state_id, observation = await self._current_state_id()
+        result.current_state_matched = current_state_id is not None
+        planning_started = time.perf_counter()
+        plan = planner.plan(task, self.graph, current_state_id)
+        result.planning_latency_ms = (time.perf_counter() - planning_started) * 1000.0
+        result.notes.extend(plan.notes)
+
+        if not plan.usable and allow_exploration:
+            used = await self._targeted_exploration(task, observation, max_exploration_actions)
+            result.used_exploration = used > 0
+            result.actions_executed += used
+            if used:
+                self.mine_workflows()
+                current_state_id, observation = await self._current_state_id()
+                planning_started = time.perf_counter()
+                plan = planner.plan(task, self.graph, current_state_id)
+                result.planning_latency_ms += (time.perf_counter() - planning_started) * 1000.0
+                result.notes.append(f"re-planned after {used} targeted exploration action(s)")
+                result.notes.extend(plan.notes)
+
+        result.plan = plan.to_dict()
+        result.plan_source = plan.source
+        result.used_workflow = plan.workflow_id
+        if not plan.usable:
+            result.notes.append("no usable plan: the model does not yet know a route for this task")
+            result.success = False
+            analysis = await self._explain_failure_with_llm(task, "no plan was available")
+            if analysis:
+                result.notes.append(f"model analysis: {analysis}")
+            result.duration_seconds = time.monotonic() - started
+            result.model_states_after = len(self.graph.states)
+            await self._record_task_experiment(task, result)
+            return result
+
+        step_verifications: list[StepVerification] = []
+        excluded_steps: set[str] = set()
+        index = 0
+        while index < len(plan.steps):
+            step = plan.steps[index]
+            action_result = await self.executor.execute(self.manager.page, step.action)
+            result.actions_executed += 1
+            after = await self.observer.observe(self.manager.page)
+            elements = self.detector.detect(after)
+            after.interactive_elements = elements
+            diff = diff_states(observation, after)
+            verification = verifier.verify_step(
+                step,
+                action_result=action_result,
+                diff=diff,
+                observation=after,
+                transition_id=step.transition_id,
+            )
+            step_verifications.append(verification)
+            if verification.no_effect:
+                result.unnecessary_actions += 1
+            if step.target_state:
+                observed_state = self._match_observation_state(after)
+                if observed_state == step.target_state:
+                    result.transition_predictions_hit += 1
+                else:
+                    result.transition_predictions_missed += 1
+            result.step_results.append(
+                {
+                    **verification.to_dict(),
+                    "action": step.action.describe(),
+                    "status": action_result.status,
+                    "duration_ms": round(action_result.duration_ms, 1),
+                    "locator": action_result.locator_used,
+                    "error": action_result.error,
+                }
+            )
+
+            evidence = Evidence(
+                kind=EvidenceKind.ACTION_RESULT if action_result.ok else EvidenceKind.FAILURE,
+                action_id=step.action.action_id,
+                transition_id=step.transition_id,
+                source_state=current_state_id,
+                target_state=verification.transition_id,
+                effects=[],
+                observations=[observation.observation_id, after.observation_id],
+                message=f"task step {step.index}: {step.action.describe()} -> "
+                + ("verified" if verification.verified else (action_result.error or "no predicted effect")),
+                notes=[f"task:{task.task_id}"],
+            ).finalize()
+            self.graph.add_evidence(evidence)
+            self.repository.save_evidence(evidence)
+
+            if step.transition_id and step.transition_id in self.graph.transitions:
+                self.graph.record_execution(
+                    step.transition_id, success=verification.verified, evidence_id=evidence.evidence_id
+                )
+                self.repository.save_transition(self.graph.transitions[step.transition_id])
+
+            if verification.verified:
+                observation = after
+                index += 1
+                continue
+
+            result.recoveries += 1
+            decision = replanner.decide(
+                task=task,
+                plan=plan,
+                graph=self.graph,
+                current_state_id=current_state_id,
+                failed_step=step,
+                failure_reason=action_result.error or "step produced no predicted effect",
+                step_attempts=1,
+                excluded_transitions=set(excluded_steps),
+            )
+            result.replans = replanner.replans
+            result.notes.append(f"step {step.index} recovery: {decision.kind.value} - {decision.reason}")
