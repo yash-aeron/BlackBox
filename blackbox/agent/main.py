@@ -531,3 +531,330 @@ class BlackBoxAgent:
             )
             result.replans = replanner.replans
             result.notes.append(f"step {step.index} recovery: {decision.kind.value} - {decision.reason}")
+
+            if decision.kind is ReplanKind.RETRY_STEP:
+                continue
+            if decision.kind in (ReplanKind.ALTERNATE_ROUTE, ReplanKind.TARGETED_EXPLORATION):
+                if step.transition_id:
+                    excluded_steps.add(step.transition_id)
+                if decision.kind is ReplanKind.TARGETED_EXPLORATION and allow_exploration:
+                    used = await self._targeted_exploration(task, after, decision.max_additional_actions)
+                    result.actions_executed += used
+                    result.used_exploration = result.used_exploration or used > 0
+                    if used:
+                        self.mine_workflows()
+                current_state_id, observation = await self._current_state_id()
+                replanned = planner.plan(task, self.graph, current_state_id)
+                if replanned.usable:
+                    plan = replanned
+                    result.plan = plan.to_dict()
+                    result.plan_source = plan.source
+                    result.used_workflow = plan.workflow_id or result.used_workflow
+                    step_verifications = []
+                    index = 0
+                    result.notes.append("re-planned along an alternative route")
+                    continue
+            result.notes.append("no viable route remains for this task")
+            break
+
+        # Re-observe the settled final state before judging the task: an
+        # observation taken the instant a button was clicked can catch a
+        # mid-render frame that the user never sees.
+        observation = await self.observer.observe(self.manager.page, settle=True)
+        observation.interactive_elements = self.detector.detect(observation)
+        current_state_id = self._match_observation_state(observation) or current_state_id
+        final_success, predicate_results = self.assertions.evaluate_all(
+            list(predicates or []), observation, self.graph.states.get(current_state_id or "")
+        )
+        verification = verifier.verify_task(
+            task,
+            plan,
+            observation=observation,
+            state=self.graph.states.get(current_state_id or ""),
+            step_results=step_verifications,
+            predicates=list(predicates or []),
+            assertion_engine=self.assertions,
+        )
+        if predicates:
+            verification.success = final_success
+        result.success = verification.success
+        result.verification = verification.to_dict()
+        result.steps_total = verification.steps_total
+        result.steps_verified = verification.steps_verified
+        result.notes.extend(verification.notes)
+        result.duration_seconds = time.monotonic() - started
+        result.model_states_after = len(self.graph.states)
+
+        if result.success and plan.workflow_id and plan.workflow_id in self.graph.workflows:
+            workflow = self.graph.workflows[plan.workflow_id]
+            workflow.record_verification()
+            self.repository.save_workflow(workflow)
+
+        self._persist_model_state()
+        await self._record_task_experiment(task, result)
+        return result
+
+    async def _explain_failure_with_llm(self, task: TaskSpec, result_summary: str) -> str | None:
+        """Optional: ask the provider to explain a failure. Advisory text only."""
+        if not self.llm.available:
+            return None
+        analysis = await self.llm.analyze_failure(
+            action=task.goal,
+            result=result_summary[:400],
+            effects="",
+            alerts="",
+            hypotheses="; ".join(h.statement[:80] for h in self.hypotheses.all()[:5]),
+        )
+        if analysis is None:
+            return None
+        return f"[{analysis.failure_kind} c={analysis.confidence:.2f}] {analysis.explanation[:220]}"
+
+    def _match_observation_state(self, observation: Any) -> str | None:
+        """Which known state does this observation correspond to?"""
+        labeler = SemanticLabeler()
+        identity = identity_for(observation)
+        candidate = build_state(
+            observation,
+            page_identity=identity.url_pattern,
+            page_id=identity.page_id,
+            semantic_summary=labeler.observation_summary(observation),
+        )
+        assign_page(candidate, identity)
+        known, _ = match_state(candidate, list(self.graph.states.values()))
+        return known.state_id if known else None
+
+    async def _targeted_exploration(self, task: TaskSpec, observation: Any, max_actions: int) -> int:
+        """Explore only the region relevant to the missing knowledge."""
+        if self.explorer is None:
+            return 0
+        config = self.default_exploration_config(
+            max_actions=max(4, max_actions),
+            max_duration_seconds=120,
+            max_states=25,
+            configuration_label=f"targeted:{task.goal}",
+        )
+        config.resume = True
+        self.explorer.stopped = False
+        result = await self.explorer.run(url=None, config=config)
+        return max(0, result.actions_executed)
+
+    def _exploration_hint_for(self, task: TaskSpec) -> dict[str, Any]:
+        keywords = [keyword for keyword in [task.entity_noun, task.verb] if keyword]
+        region = []
+        for state in self.graph.states.values():
+            haystack = f"{state.title} {state.page_identity} {state.semantic_summary}".lower()
+            if any(keyword in haystack for keyword in keywords):
+                region.append({"state_id": state.state_id, "label": state.label(), "url": state.url})
+        return {"keywords": keywords, "region": region[:5], "max_actions": 15}
+
+    async def _record_task_experiment(self, task: TaskSpec, result: TaskResult) -> None:
+        record = ExperimentRecord(
+            target_id=self.registration.target_id,
+            kind="task",
+            seed=self.settings.seed,
+            browser_version=self.manager.browser_version,
+            model_version=self.repository.model_version,
+            configuration={"task": task.to_dict()},
+        )
+        record.finish(status="completed" if result.success else "failed", metrics=result.to_dict())
+        self.ledger.add(record)
+        self.repository.save_experiment(record)
+
+    def _persist_model_state(self) -> None:
+        for state in self.graph.states.values():
+            self.repository.save_state(state)
+        for transition in self.graph.transitions.values():
+            self.repository.save_transition(transition)
+        for workflow in self.graph.workflows.values():
+            self.repository.save_workflow(workflow)
+        for constraint in self.graph.constraints.values():
+            self.repository.save_constraint(constraint)
+        for hypothesis in self.hypotheses.all():
+            self.repository.save_hypothesis(
+                HypothesisRecord(
+                    hypothesis_id=hypothesis.hypothesis_id,
+                    statement=hypothesis.statement,
+                    status=hypothesis.status.value,
+                    confidence=hypothesis.confidence,
+                    supporting_experiments=hypothesis.supporting_experiments,
+                    contradicting_experiments=hypothesis.contradicting_experiments,
+                    evidence=hypothesis.evidence,
+                    created_at=hypothesis.created_at,
+                    updated_at=hypothesis.updated_at,
+                    details={**hypothesis.details, "kind": hypothesis.kind.value},
+                )
+            )
+
+    # -- model handling ----------------------------------------------------
+    def export_model(self, path: str | Path) -> Path:
+        self._persist_model_state()
+        return self.repository.export_model(path)
+
+    def import_model(self, path: str | Path) -> None:
+        self.repository.import_model(path)
+        self.graph = self.repository.load_graph()
+        if self.explorer is not None:
+            self.explorer.graph = self.graph
+
+    def status(self) -> AgentStatus:
+        return AgentStatus(
+            target_id=self.registration.target_id,
+            base_url=self.registration.base_url,
+            mode=self.registration.mode.value,
+            browser=self.manager.health_report(),
+            model=self.repository.stats(),
+            sandbox=self.sandbox.snapshot(),
+            policy={
+                "allow_medium_actions": self.registration.allow_medium_actions,
+                "allow_high_actions": self.registration.allow_high_actions,
+                "allow_critical_actions": self.registration.allow_critical_actions,
+                "approvals": self.approvals.summary(),
+            },
+            settings=self.settings.describe(),
+            llm=self.llm.describe(),
+        )
+
+    def graph_json(self) -> dict[str, Any]:
+        return self.graph.to_graph_json()
+
+
+# -- CLI -------------------------------------------------------------------
+def _configure_logging(verbose: bool) -> None:
+    logging.basicConfig(
+        level=logging.DEBUG if verbose else logging.INFO,
+        format="%(asctime)s %(levelname)-7s %(name)s: %(message)s",
+        datefmt="%H:%M:%S",
+    )
+
+
+async def _cmd_explore(args: argparse.Namespace) -> int:
+    settings = Settings()
+    if args.headless is not None:
+        settings.headless = args.headless
+    registration = demo_registration(args.target, mode=args.mode)
+    if args.max_actions:
+        registration.max_steps = args.max_actions
+    agent = BlackBoxAgent(settings, registration)
+    try:
+        await agent.start()
+        config = agent.default_exploration_config(
+            max_actions=args.max_actions or 60,
+            max_duration_seconds=args.max_seconds or 300,
+        )
+        result = await agent.explore(config)
+        print(json.dumps(result.to_dict(), indent=2))
+        graph = agent.graph_json()
+        print(
+            json.dumps(
+                {
+                    "states": graph["stats"]["states"],
+                    "transitions": graph["stats"]["transitions"],
+                    "verified": graph["stats"]["verified"],
+                    "workflows": graph["stats"]["workflows"],
+                },
+                indent=2,
+            )
+        )
+        if args.export:
+            path = agent.export_model(args.export)
+            print(f"model exported to {path}")
+        return 0
+    finally:
+        await agent.close()
+
+
+async def _cmd_status(args: argparse.Namespace) -> int:
+    settings = Settings()
+    registration = demo_registration(args.target, mode=args.mode)
+    agent = BlackBoxAgent(settings, registration)
+    try:
+        print(json.dumps(agent.status().to_dict(), indent=2))
+        return 0
+    finally:
+        await agent.close()
+
+
+async def _cmd_task(args: argparse.Namespace) -> int:
+    settings = Settings()
+    if args.headless is not None:
+        settings.headless = args.headless
+    registration = demo_registration(args.target, mode=args.mode)
+    agent = BlackBoxAgent(settings, registration)
+    try:
+        await agent.start()
+        predicates = []
+        if args.expect_text:
+            from .execution.assertions import Predicate, PredicateKind
+
+            predicates.append(Predicate(kind=PredicateKind.TEXT_PRESENT, value=args.expect_text))
+        result = await agent.run_task(args.text, predicates=predicates, allow_exploration=not args.no_explore)
+        print(json.dumps(result.to_dict(), indent=2))
+        return 0 if result.success or not args.require_success else 2
+    finally:
+        await agent.close()
+
+
+async def _cmd_mine(args: argparse.Namespace) -> int:
+    from .learning.workflow_miner import summarize_workflows
+
+    agent = BlackBoxAgent(Settings(), demo_registration(args.target))
+    try:
+        workflows = agent.mine_workflows()
+        print(json.dumps(summarize_workflows(workflows), indent=2, default=str))
+        print(f"mined {len(workflows)} workflow(s) from model v{agent.repository.model_version}")
+        return 0
+    finally:
+        agent.database.close()
+
+
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(prog="blackbox", description="BlackBox black-box website learner")
+    parser.add_argument("--verbose", action="store_true")
+    sub = parser.add_subparsers(dest="command", required=True)
+
+    explore = sub.add_parser("explore", help="explore a registered target and learn its behavior")
+    explore.add_argument("target", choices=["demo_crm", "demo_ecommerce", "demo_project_manager", "demo_forms"])
+    explore.add_argument("--mode", default="AUTONOMOUS", choices=[m.value for m in ExecutionMode])
+    explore.add_argument("--max-actions", type=int, default=60)
+    explore.add_argument("--max-seconds", type=float, default=300)
+    explore.add_argument("--headless", dest="headless", action="store_true", default=None)
+    explore.add_argument("--headed", dest="headless", action="store_false")
+    explore.add_argument("--export", type=str, default=None, help="write the learned model to this JSON path")
+
+    status = sub.add_parser("status", help="show agent configuration, model and browser state")
+    status.add_argument("target", choices=["demo_crm", "demo_ecommerce", "demo_project_manager", "demo_forms"])
+    status.add_argument("--mode", default="AUTONOMOUS", choices=[m.value for m in ExecutionMode])
+
+    mine = sub.add_parser("mine", help="re-mine workflows from the stored model (no browser)")
+    mine.add_argument("target", choices=["demo_crm", "demo_ecommerce", "demo_project_manager", "demo_forms"])
+
+    task = sub.add_parser("task", help="run a natural-language task against a learned model")
+    task.add_argument("target", choices=["demo_crm", "demo_ecommerce", "demo_project_manager", "demo_forms"])
+    task.add_argument("text", help="e.g. \"Create a customer named Yash with email yash@example.com\"")
+    task.add_argument("--mode", default="AUTONOMOUS", choices=[m.value for m in ExecutionMode])
+    task.add_argument("--expect-text", default=None, help="visible text that must be present on success")
+    task.add_argument("--no-explore", action="store_true", help="never explore; plan only from the learned model")
+    task.add_argument("--require-success", action="store_true")
+    task.add_argument("--headless", dest="headless", action="store_true", default=None)
+    task.add_argument("--headed", dest="headless", action="store_false")
+    return parser
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = build_parser()
+    args = parser.parse_args(argv)
+    _configure_logging(args.verbose)
+    if args.command == "explore":
+        return asyncio.run(_cmd_explore(args))
+    if args.command == "status":
+        return asyncio.run(_cmd_status(args))
+    if args.command == "task":
+        return asyncio.run(_cmd_task(args))
+    if args.command == "mine":
+        return asyncio.run(_cmd_mine(args))
+    parser.print_help()
+    return 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())
