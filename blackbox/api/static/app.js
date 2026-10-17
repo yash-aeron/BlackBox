@@ -1069,3 +1069,661 @@ function eventRow(event) {
   </div>`;
 }
 
+// -- workflows -------------------------------------------------------------
+async function renderWorkflows(token) {
+  const host = $("#view-workflows");
+  host.innerHTML = '<div class="dim">loading workflows&hellip;</div>';
+  const payload = await api(`/targets/${encodeURIComponent(S.target)}/workflows`);
+  if (!current(token)) return;
+  const workflows = payload.workflows || [];
+  if (!workflows.length) {
+    host.innerHTML = '<div class="muted-box">No workflows mined yet. Run an exploration, then re-mine from Overview.</div>';
+    return;
+  }
+  host.innerHTML =
+    `<div class="dim">${workflows.length} workflow(s) mined from verified transitions</div>` +
+    workflows
+      .map(
+        (workflow) => `<div class="card">
+        <div class="card-head">
+          <span class="title">${esc(workflow.name || workflow.goal)}</span>
+          ${statusPill(workflow.confidence >= 0.8 ? "VERIFIED" : "PROPOSED")}
+          <span class="faint mono">${esc(workflow.workflow_id)}</span>
+          <span class="grow"></span>
+          <span class="mono dim">confidence ${pct(workflow.confidence)} &middot; verified ${esc(workflow.verification_count)}\u00d7</span>
+        </div>
+        ${kv([
+          ["goal", `<span class="mono">${esc(workflow.goal)}</span>`],
+          ["expected end state", `<span class="id">${esc(workflow.expected_end_state || "-")}</span>`],
+          ["path", (workflow.path_state_ids || []).map((id) => `<span class="id">${esc(id)}</span>`).join(" \u2192 ") || "-"],
+          ["preconditions", esc((workflow.preconditions || []).join("; ") || "none")],
+        ])}
+        <table class="tbl">
+          <thead><tr><th>parameter</th><th>kind</th><th>required</th><th>example</th></tr></thead>
+          <tbody>${(workflow.parameters || [])
+            .map(
+              (parameter) => `<tr>
+                <td class="id">${esc(parameter.name)}</td>
+                <td>${esc(parameter.kind)}</td>
+                <td>${parameter.required ? "yes" : "no"}</td>
+                <td class="mono">${esc(parameter.example_value || "-")}</td>
+              </tr>`
+            )
+            .join("") || '<tr><td colspan="4" class="faint">no parameters lifted</td></tr>'}</tbody>
+        </table>
+        <div class="steps">${(workflow.steps || [])
+          .map(
+            (step) => `<div class="step">
+              <div class="idx">${esc(step.index)}</div>
+              <div>
+                <span class="mono">${esc(step.description || step.action)}</span>
+                ${riskPill(step.risk)}
+                ${step.parameter_names && step.parameter_names.length ? `<span class="pill info">${esc(step.parameter_names.join(", "))}</span>` : ""}
+                <div class="faint mono">expected: ${esc((step.expected_effect || []).join(", ") || "-")}${step.transition_id ? ` \u00b7 ${esc(step.transition_id)}` : ""}</div>
+              </div>
+            </div>`
+          )
+          .join("")}</div>
+      </div>`
+      )
+      .join("");
+}
+
+// -- hypotheses & constraints ---------------------------------------------
+async function renderHypotheses(token) {
+  const host = $("#view-hypotheses");
+  host.innerHTML = '<div class="dim">loading hypotheses and constraints&hellip;</div>';
+  const [hypotheses, constraints] = await Promise.all([
+    api(`/targets/${encodeURIComponent(S.target)}/hypotheses`),
+    api(`/targets/${encodeURIComponent(S.target)}/constraints`),
+  ]);
+  if (!current(token)) return;
+  const hypothesisRows = (hypotheses.hypotheses || [])
+    .map(
+      (hypothesis) => `<div class="card">
+        <div class="card-head">
+          ${statusPill(hypothesis.status)}
+          <span class="title">${esc(hypothesis.statement)}</span>
+          <span class="grow"></span>
+          <span class="mono dim">${pct(hypothesis.confidence)} ${bar(hypothesis.confidence)}</span>
+        </div>
+        ${kv([
+          ["id", `<span class="id">${esc(hypothesis.hypothesis_id)}</span>`],
+          ["kind", esc(hypothesis.kind || "-")],
+          ["subject", esc(hypothesis.subject || "-")],
+          ["updated", esc(fmtIso(hypothesis.updated_at))],
+          ["prediction", `<span class="mono">${esc(JSON.stringify(hypothesis.prediction || {}))}</span>`],
+        ])}
+        <div class="dim">supporting evidence:</div>
+        <div>${(hypothesis.evidence || []).map((id) => `<button class="btn tiny" data-evidence="${esc(id)}">${esc(id)}</button>`).join(" ") || '<span class="faint">none</span>'}</div>
+      </div>`
+    )
+    .join("");
+  const constraintRows = (constraints.constraints || [])
+    .map(
+      (constraint) => `<div class="card">
+        <div class="card-head">
+          ${statusPill(constraint.status)}
+          <span class="title">${esc(constraint.kind)} ${esc(constraint.subject || "")}</span>
+          <span class="grow"></span>
+          <span class="mono dim">${pct(constraint.confidence)} ${bar(constraint.confidence)}</span>
+        </div>
+        ${kv([
+          ["id", `<span class="id">${esc(constraint.constraint_id)}</span>`],
+          ["scope", esc(constraint.scope)],
+          ["expression", `<span class="mono">${esc(constraint.expression)}</span>`],
+          ["message", esc(constraint.message || "-")],
+          ["condition", `<span class="mono">${esc(JSON.stringify(constraint.condition || {}))}</span>`],
+        ])}
+        <div class="dim">supporting evidence:</div>
+        <div>${(constraint.supporting_evidence || []).map((id) => `<button class="btn tiny" data-evidence="${esc(id)}">${esc(id)}</button>`).join(" ") || '<span class="faint">none</span>'}
+          ${(constraint.contradicting_evidence || []).length ? `<span class="dim">contradicting:</span> ${constraint.contradicting_evidence.map((id) => `<button class="btn tiny" data-evidence="${esc(id)}">${esc(id)}</button>`).join(" ")}` : ""}</div>
+      </div>`
+    )
+    .join("");
+  host.innerHTML = `
+    <h3 class="section">Hypotheses (${(hypotheses.hypotheses || []).length})</h3>
+    ${hypothesisRows || '<div class="muted-box">No hypotheses recorded. The agent proposes them when it observes a disabled control or a validation message.</div>'}
+    <h3 class="section">Constraints (${(constraints.constraints || []).length})</h3>
+    ${constraintRows || '<div class="muted-box">No constraints learned yet.</div>'}
+    <div id="evidence-detail"></div>
+  `;
+  $$("#view-hypotheses [data-evidence]").forEach((button) => {
+    button.addEventListener("click", () => showEvidence(button.dataset.evidence));
+  });
+}
+
+// -- experiments -----------------------------------------------------------
+async function renderExperiments(token) {
+  const host = $("#view-experiments");
+  host.innerHTML = '<div class="dim">loading experiments&hellip;</div>';
+  const payload = await api(`/targets/${encodeURIComponent(S.target)}/experiments?limit=30`);
+  if (!current(token)) return;
+  const experiments = payload.experiments || [];
+  host.innerHTML = `
+    <h3 class="section">Experiments (${experiments.length})</h3>
+    ${
+      experiments.length
+        ? `<table class="tbl"><thead><tr>
+            <th>experiment</th><th>kind</th><th>status</th><th>model</th><th>started</th><th class="num">seconds</th><th>metrics</th>
+          </tr></thead><tbody>
+          ${experiments
+            .map((experiment) => {
+              const metrics = experiment.metrics || {};
+              const summary = [
+                metrics.success !== undefined ? `success=${metrics.success}` : null,
+                metrics.actions_executed !== undefined ? `actions=${metrics.actions_executed}` : null,
+                metrics.stop_reason ? `stop=${truncate(metrics.stop_reason, 40)}` : null,
+                metrics.actions !== undefined ? `actions=${metrics.actions}` : null,
+                metrics.steps_verified !== undefined ? `steps=${metrics.steps_verified}/${metrics.steps_total}` : null,
+              ].filter(Boolean).join(", ");
+              return `<tr>
+                <td class="id">${esc(experiment.experiment_id)}</td>
+                <td>${esc(experiment.kind)}</td>
+                <td>${statusPill(experiment.status)}</td>
+                <td class="mono">v${esc(experiment.model_version)}</td>
+                <td class="mono">${esc(truncate(fmtIso(experiment.started_at), 19))}</td>
+                <td class="num">${esc(fixed(metrics.duration_seconds, 1))}</td>
+                <td class="dim">${esc(truncate(summary, 120))}</td>
+              </tr>`;
+            })
+            .join("")}
+        </tbody></table>`
+        : '<div class="muted-box">No experiments recorded for this target yet.</div>'
+    }
+    <h3 class="section">Ledger summary</h3>
+    <pre class="code">${esc(JSON.stringify(payload.summary || {}, null, 1))}</pre>
+  `;
+}
+
+// -- tasks -----------------------------------------------------------------
+let predicateRowSeq = 0;
+const PREDICATE_KINDS = [
+  "TEXT_PRESENT", "TEXT_ABSENT", "ELEMENT_PRESENT", "ELEMENT_ABSENT", "URL_CONTAINS",
+  "ALERT_CONTAINS", "DIALOG_OPEN", "TABLE_ROW_CONTAINS", "VALUE_EQUALS", "STATE_MATCHES",
+];
+
+function predicateRow(kind, value, target) {
+  predicateRowSeq += 1;
+  const id = "pred-" + predicateRowSeq;
+  return `<div class="pred-row" id="${id}">
+    <select class="pred-kind">${PREDICATE_KINDS.map((item) => `<option${item === kind ? " selected" : ""}>${item}</option>`).join("")}</select>
+    <input class="pred-value" placeholder="value" value="${esc(value || "")}">
+    <input class="pred-target" placeholder="target (optional)" value="${esc(target || "")}">
+    <button class="btn tiny" data-remove="${id}" title="remove">\u00d7</button>
+  </div>`;
+}
+
+async function renderTasks(token) {
+  const host = $("#view-tasks");
+  host.innerHTML = `
+    <h3 class="section">Run a task</h3>
+    <textarea id="task-text" rows="2" placeholder="Create a customer named Yash Malhotra with email yash@example.com"></textarea>
+    <h3 class="section">Predicates (machine-checkable success conditions)</h3>
+    <div id="predicate-rows"></div>
+    <div class="graph-toolbar">
+      <button class="btn tiny" id="add-predicate">+ predicate</button>
+      <label class="check dim"><input type="checkbox" id="allow-exploration" checked> explore first if the model has no route</label>
+      <label class="dim">max exploration actions <input id="max-explore" type="text" value="20" style="width:44px"></label>
+      <label class="dim"><input type="checkbox" id="use-workflows" checked> workflows</label>
+      <label class="dim"><input type="checkbox" id="use-transitions" checked> transitions</label>
+      <button class="btn primary" id="run-task">run task</button>
+    </div>
+    <div id="job-pane"></div>
+    <h3 class="section">Benchmark tasks for this target</h3>
+    <div id="benchmark-tasks" class="dim">loading&hellip;</div>
+  `;
+  $("#predicate-rows").innerHTML = predicateRow("TEXT_PRESENT", "", "");
+  $("#add-predicate").addEventListener("click", () => {
+    $("#predicate-rows").insertAdjacentHTML("beforeend", predicateRow("TEXT_PRESENT", "", ""));
+    bindPredicateRemoval();
+  });
+  bindPredicateRemoval();
+  $("#run-task").addEventListener("click", runTask);
+  if (S.job) renderJobPane();
+
+  try {
+    const payload = await api(`/targets/${encodeURIComponent(S.target)}/tasks/available`);
+    if (!current(token)) return;
+    const tasks = payload.tasks || [];
+    $("#benchmark-tasks").innerHTML = tasks.length
+      ? `<table class="tbl"><thead><tr><th>task id</th><th>text</th><th>tags</th><th>difficulty</th><th></th></tr></thead><tbody>
+          ${tasks
+            .map(
+              (task) => `<tr>
+              <td class="id">${esc(task.task_id)}</td>
+              <td>${esc(task.text)}</td>
+              <td class="dim">${esc((task.tags || []).join(", "))}</td>
+              <td>${esc(task.difficulty)}${task.expect_blocked ? ' <span class="pill bad">expect blocked</span>' : ""}</td>
+              <td><button class="btn tiny" data-task="${esc(task.task_id)}">use</button></td>
+            </tr>`
+            )
+            .join("")}
+        </tbody></table>`
+      : `<div class="muted-box">No benchmark task file for this target.${payload.error ? " " + esc(payload.error) : ""}</div>`;
+    const byId = new Map(tasks.map((task) => [task.task_id, task]));
+    $$("#benchmark-tasks [data-task]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const task = byId.get(button.dataset.task);
+        if (!task) return;
+        $("#task-text").value = task.text;
+        $("#predicate-rows").innerHTML = (task.predicates || []).length
+          ? task.predicates.map((predicate) => predicateRow(predicate.kind, predicate.value, predicate.target)).join("")
+          : predicateRow("TEXT_PRESENT", "", "");
+        bindPredicateRemoval();
+      });
+    });
+  } catch (err) {
+    if (current(token)) $("#benchmark-tasks").innerHTML = `<div class="muted-box">${esc(err.message)}</div>`;
+  }
+}
+
+function bindPredicateRemoval() {
+  $$("#predicate-rows [data-remove]").forEach((button) => {
+    button.onclick = () => {
+      const row = document.getElementById(button.dataset.remove);
+      if (row) row.remove();
+    };
+  });
+}
+
+function collectPredicates() {
+  return $$("#predicate-rows .pred-row")
+    .map((row) => ({
+      kind: $(".pred-kind", row).value,
+      value: $(".pred-value", row).value,
+      target: $(".pred-target", row).value,
+    }))
+    .filter((predicate) => predicate.value || predicate.target || predicate.kind === "DIALOG_OPEN");
+}
+
+async function runTask() {
+  const text = $("#task-text").value.trim();
+  if (!text) { notice("enter a task first", "err"); return; }
+  const body = {
+    text,
+    predicates: collectPredicates(),
+    allow_exploration: $("#allow-exploration").checked,
+    use_workflows: $("#use-workflows").checked,
+    use_transitions: $("#use-transitions").checked,
+    max_exploration_actions: Number($("#max-explore").value) || 20,
+  };
+  try {
+    const response = await api(`/targets/${encodeURIComponent(S.target)}/tasks`, { method: "POST", body: JSON.stringify(body) });
+    notice(`task job ${response.job_id} started`, "ok");
+    pollJob(response.job_id);
+  } catch (err) {
+    notice("task failed to start: " + err.message, "err");
+  }
+}
+
+function pollJob(jobId) {
+  if (S.jobTimer) clearInterval(S.jobTimer);
+  const target = S.target;
+  const tick = async () => {
+    if (S.target !== target) {
+      clearInterval(S.jobTimer);
+      S.jobTimer = null;
+      return;
+    }
+    try {
+      const job = await api(`/targets/${encodeURIComponent(target)}/jobs/${encodeURIComponent(jobId)}`);
+      S.job = job;
+      renderJobPane();
+      if (job.status !== "running" && job.status !== "queued") {
+        clearInterval(S.jobTimer);
+        S.jobTimer = null;
+        loadJobs();
+        refreshTargetsSoon();
+        if (job.status === "succeeded") notice(`job ${job.job_id} succeeded in ${job.duration_seconds}s`, "ok");
+        else if (job.status === "failed") notice(`job ${job.job_id} failed: ${job.error || "see result"}`, "err");
+        else notice(`job ${job.job_id} ${job.status}`, "");
+      }
+    } catch (err) {
+      clearInterval(S.jobTimer);
+      S.jobTimer = null;
+      notice("job polling failed: " + err.message, "err");
+    }
+  };
+  tick();
+  S.jobTimer = setInterval(tick, 1500);
+}
+
+function renderJobPane() {
+  const pane = $("#job-pane");
+  if (!pane) return;
+  const job = S.job;
+  if (!job) { pane.innerHTML = ""; return; }
+  const result = job.result || null;
+  let body = "";
+  if (job.kind === "task" && result) {
+    const plan = result.plan || {};
+    const verification = result.verification || {};
+    body = `
+      <h3 class="section">Result</h3>
+      ${kv([
+        ["success", result.success ? '<span class="pill ok">true</span>' : '<span class="pill bad">false</span>'],
+        ["plan source", esc(result.plan_source)],
+        ["used workflow", esc(result.used_workflow || "-")],
+        ["steps verified", `${esc(result.steps_verified)} / ${esc(result.steps_total)}`],
+        ["actions", esc(result.actions_executed)],
+        ["recoveries / replans", `${esc(result.recoveries)} / ${esc(result.replans)}`],
+        ["duration", esc(fixed(result.duration_seconds, 1)) + " s"],
+        ["planning latency", esc(fixed(result.planning_latency_ms, 1)) + " ms"],
+        ["used exploration", esc(result.used_exploration)],
+        ["states before / after", `${esc(result.model_states_before)} / ${esc(result.model_states_after)}`],
+        ["prediction hits / misses", `${esc(result.transition_predictions_hit)} / ${esc(result.transition_predictions_missed)}`],
+      ])}
+      <h3 class="section">Plan (${esc(plan.source || "none")})</h3>
+      ${plan.steps && plan.steps.length
+        ? `<div class="steps">${plan.steps
+            .map(
+              (step) => `<div class="step"><div class="idx">${esc(step.index)}</div><div>
+                <span class="mono">${esc(step.action)}</span> ${riskPill(step.risk)}
+                <div class="faint mono">${esc(step.description || "")}${step.transition_id ? ` \u00b7 ${esc(step.transition_id)}` : ""}</div>
+              </div></div>`
+            )
+            .join("")}</div>`
+        : '<div class="muted-box">no usable plan: the model does not know a route for this task</div>'}
+      <h3 class="section">Per-step verification</h3>
+      <table class="tbl"><thead><tr><th>#</th><th>verified</th><th>action</th><th>status</th><th>locator</th><th class="num">ms</th><th>notes</th></tr></thead><tbody>
+        ${(result.step_results || [])
+          .map(
+            (step) => `<tr>
+            <td class="num">${esc(step.step_index)}</td>
+            <td>${step.verified ? '<span class="pill ok">yes</span>' : '<span class="pill bad">no</span>'}</td>
+            <td class="mono">${esc(truncate(step.action, 44))}</td>
+            <td>${esc(step.status)}</td>
+            <td class="mono dim">${esc(step.locator || "-")}</td>
+            <td class="num">${esc(fixed(step.duration_ms, 0))}</td>
+            <td class="dim">${esc(truncate([].concat(step.notes || [], step.error || []).join("; "), 90))}</td>
+          </tr>`
+          )
+          .join("")}
+      </tbody></table>
+      <h3 class="section">Predicate outcomes</h3>
+      <table class="tbl"><thead><tr><th>kind</th><th>value</th><th>satisfied</th><th>evidence</th></tr></thead><tbody>
+        ${(verification.predicates || [])
+          .map(
+            (predicate) => `<tr>
+            <td class="mono">${esc(predicate.kind)}</td>
+            <td class="mono">${esc(truncate(predicate.value, 60))}</td>
+            <td>${predicate.satisfied ? '<span class="pill ok">yes</span>' : '<span class="pill bad">no</span>'}</td>
+            <td class="dim">${esc(truncate(predicate.evidence, 110))}</td>
+          </tr>`
+          )
+          .join("") || '<tr><td colspan="4" class="faint">no predicates supplied</td></tr>'}
+      </tbody></table>
+      <h3 class="section">Notes</h3>
+      <div class="mono dim">${(result.notes || []).map((note) => esc(note)).join("<br>") || "none"}</div>
+    `;
+  } else if (result) {
+    body = `<h3 class="section">Result</h3><pre class="code">${esc(JSON.stringify(result, null, 1))}</pre>`;
+  }
+  pane.innerHTML = `
+    <div class="card">
+      <div class="card-head">
+        <span class="id">${esc(job.job_id)}</span>
+        <span class="pill">${esc(job.kind)}</span>
+        ${statusPill(job.status)}
+        <span class="faint mono">${esc(fmtClock(job.started_at))}${job.duration_seconds ? ` \u00b7 ${esc(job.duration_seconds)}s` : ""}</span>
+      </div>
+      ${job.error ? `<div class="mono" style="color:var(--bad)">${esc(job.error)}</div>` : ""}
+    </div>
+    ${body}
+  `;
+}
+
+// -- logs ------------------------------------------------------------------
+async function renderLogs(token) {
+  const host = $("#view-logs");
+  host.innerHTML = `
+    <div class="graph-toolbar">
+      <button class="btn tiny" id="toggle-pause">${S.paused ? "resume" : "pause"}</button>
+      <span class="dim mono" id="log-count"></span>
+      <span class="grow"></span>
+      <label class="dim">kind <select id="log-kind"><option value="">all</option></select></label>
+      <label class="dim">limit <input id="log-limit" type="text" value="200" style="width:48px"></label>
+      <button class="btn tiny" id="reload-logs">reload persisted</button>
+    </div>
+    <h3 class="section">Live events (EventSource)</h3>
+    <div class="log-scroll" id="live-log"></div>
+    <h3 class="section">Persisted log (repository.read_events)</h3>
+    <div class="log-scroll" id="stored-log"><div class="faint" style="padding:5px">loading&hellip;</div></div>
+  `;
+  renderLiveLog();
+  $("#toggle-pause").addEventListener("click", () => {
+    S.paused = !S.paused;
+    $("#toggle-pause").textContent = S.paused ? "resume" : "pause";
+    if (!S.paused) renderLiveLog();
+  });
+  $("#reload-logs").addEventListener("click", () => loadStoredLog());
+  $("#log-kind").addEventListener("change", () => loadStoredLog());
+  await loadStoredLog();
+  if (!current(token)) return;
+}
+
+function renderLiveLog() {
+  const host = $("#live-log");
+  if (!host) return;
+  if (S.paused) return;
+  const events = S.events.slice(-200).reverse();
+  host.innerHTML = events.map(eventRow).join("") || '<div class="faint" style="padding:5px">no live events yet</div>';
+  const count = $("#log-count");
+  if (count) count.textContent = `${S.events.length} live event(s) buffered`;
+}
+
+function appendLiveEvent(event) {
+  const host = $("#live-log");
+  if (!host) { renderLiveLog(); return; }
+  host.insertAdjacentHTML("afterbegin", eventRow(event));
+  while (host.childElementCount > 250) host.removeChild(host.lastElementChild);
+  const count = $("#log-count");
+  if (count) count.textContent = `${S.events.length} live event(s) buffered`;
+}
+
+async function loadStoredLog() {
+  const host = $("#stored-log");
+  if (!host || !S.target) return;
+  const kindSelect = $("#log-kind");
+  const kind = kindSelect ? kindSelect.value : "";
+  const limit = Number(($("#log-limit") || {}).value) || 200;
+  host.innerHTML = '<div class="faint" style="padding:5px">loading&hellip;</div>';
+  try {
+    const payload = await api(`/targets/${encodeURIComponent(S.target)}/logs?limit=${limit}${kind ? `&kind=${encodeURIComponent(kind)}` : ""}`);
+    S.stored = payload.events || [];
+    if (kindSelect && payload.kinds) {
+      const existing = kindSelect.value;
+      kindSelect.innerHTML = '<option value="">all</option>' +
+        payload.kinds.map((item) => `<option value="${esc(item.kind)}">${esc(item.kind)} (${esc(item.count)})</option>`).join("");
+      kindSelect.value = existing;
+    }
+    host.innerHTML = S.stored
+      .map((event) => eventRow({ type: event.type, ts: event.ts, summary: event.summary }))
+      .join("") || `<div class="faint" style="padding:5px">no persisted events${payload.error ? ": " + esc(payload.error) : ""}</div>`;
+  } catch (err) {
+    host.innerHTML = `<div class="muted-box">${esc(err.message)}</div>`;
+  }
+}
+
+// -- metrics ---------------------------------------------------------------
+async function renderMetrics(token) {
+  const host = $("#view-metrics");
+  host.innerHTML = '<div class="dim">loading metrics&hellip;</div>';
+  const metrics = await api(`/targets/${encodeURIComponent(S.target)}/metrics`);
+  if (!current(token)) return;
+  S.metrics = metrics;
+  const counts = metrics.counts || {};
+  const fingerprints = metrics.fingerprints || {};
+  host.innerHTML = `
+    <h3 class="section">Counts</h3>
+    <div class="counters">${Object.keys(counts).map((key) => counter(key, counts[key])).join("")}</div>
+    <h3 class="section">Fingerprint &amp; observation stats</h3>
+    ${kv([
+      ["states current / stale", `${esc(fingerprints.states_current)} / ${esc(fingerprints.states_stale)}`],
+      ["mean state confidence", `${pct(fingerprints.mean_confidence)} ${bar(fingerprints.mean_confidence)}`],
+      ["mean visit count", esc(fixed(fingerprints.mean_visit_count, 2))],
+      ["total elements observed", esc(fingerprints.total_elements)],
+      ["distinct url keys", esc(fingerprints.distinct_url_keys)],
+      ["distinct page ids", esc(fingerprints.distinct_page_ids)],
+      ["fingerprint signals", esc(fingerprints.fingerprint_signals)],
+      ["live observations", esc((metrics.observations || {}).observations || 0)],
+      ["mean observation ms", `${esc(fixed(metrics.mean_observation_ms, 2))} <span class="faint">(${esc(metrics.mean_observation_ms_source)})</span>`],
+      ["persisted observations", `${esc(metrics.observations_persisted)} (mean ${esc(fixed(metrics.observations_persisted_mean_ms, 2))} ms)`],
+      ["sandbox blocked", esc(metrics.sandbox_blocked_count)],
+    ])}
+    <h3 class="section">Network guard</h3>
+    <pre class="code">${esc(JSON.stringify(metrics.network_guard || {}, null, 1))}</pre>
+    <h3 class="section">Sandbox</h3>
+    <pre class="code">${esc(JSON.stringify(metrics.sandbox || {}, null, 1))}</pre>
+    <h3 class="section">Per-event counters</h3>
+    <div class="counters" id="event-counters"></div>
+    <h3 class="section">Jobs</h3>
+    <div class="counters">${Object.keys(metrics.jobs || {}).map((key) => counter(key, metrics.jobs[key])).join("") || '<span class="faint">none</span>'}</div>
+  `;
+  renderEventCounters();
+}
+
+function renderEventCounters() {
+  const host = $("#event-counters");
+  if (!host) return;
+  const merged = Object.assign({}, (S.metrics && S.metrics.events_by_type) || {}, S.byType);
+  host.innerHTML = Object.keys(merged)
+    .sort()
+    .map((key) => counter(key, merged[key]))
+    .join("") || '<span class="faint">no events seen in this session</span>';
+}
+
+// -- approvals -------------------------------------------------------------
+async function renderApprovals(token) {
+  const host = $("#view-approvals");
+  await loadApprovals(token);
+}
+
+async function loadApprovals(token) {
+  if (!S.target) return;
+  const host = $("#view-approvals");
+  if (!host) return;
+  try {
+    const payload = await api(`/targets/${encodeURIComponent(S.target)}/approvals`);
+    if (token !== undefined && !current(token)) return;
+    const pending = payload.pending || [];
+    const summary = payload.summary || {};
+    host.innerHTML = `
+      <div class="graph-toolbar">
+        <span class="dim mono">${pending.length} pending</span>
+        <span class="dim mono">decisions: ${esc(summary.decisions || 0)} (approved ${esc(summary.approved || 0)} / rejected ${esc(summary.rejected || 0)})</span>
+        ${payload.live ? '<span class="pill ok">agent live</span>' : '<span class="pill">no live agent</span>'}
+        ${payload.unattended ? '<span class="pill warn">unattended: risky actions auto-reject</span>' : ""}
+        <span class="grow"></span>
+        <button class="btn tiny" id="reload-approvals">refresh</button>
+      </div>
+      ${
+        pending.length
+          ? pending
+              .map(
+                (request) => `<div class="card appr">
+                  <div class="card-head">
+                    <span class="id">${esc(request.request_id)}</span>
+                    ${riskPill(request.risk)}
+                    <span class="grow"></span>
+                    <button class="btn tiny ok" data-approve="${esc(request.request_id)}">approve</button>
+                    <button class="btn tiny danger" data-reject="${esc(request.request_id)}">reject</button>
+                  </div>
+                  ${kv([
+                    ["action", `<span class="mono">${esc(request.action)}</span>`],
+                    ["target", esc(request.target)],
+                    ["reason", esc(request.reason)],
+                    ["expected effect", esc(request.expected_effect)],
+                    ["evidence", esc((request.evidence || []).join(", ") || "-")],
+                    ["raised", esc(fmtClock(request.created_at))],
+                  ])}
+                </div>`
+              )
+              .join("")
+          : '<div class="muted-box">No pending approvals. In SUPERVISED mode the safety gate parks risky actions here until a human decides.</div>'
+      }
+    `;
+    $$("#view-approvals [data-approve]").forEach((button) =>
+      button.addEventListener("click", () => decideApproval(button.dataset.approve, "APPROVE"))
+    );
+    $$("#view-approvals [data-reject]").forEach((button) =>
+      button.addEventListener("click", () => decideApproval(button.dataset.reject, "REJECT"))
+    );
+    $("#reload-approvals").addEventListener("click", () => loadApprovals());
+  } catch (err) {
+    if (token !== undefined && !current(token)) return;
+    host.innerHTML = `<div class="muted-box">${esc(err.message)}</div>`;
+  }
+}
+
+async function decideApproval(requestId, decision) {
+  try {
+    const response = await api(`/targets/${encodeURIComponent(S.target)}/approvals/${encodeURIComponent(requestId)}`, {
+      method: "POST",
+      body: JSON.stringify({ decision }),
+    });
+    notice(`${response.decision} ${response.request_id} (resolved=${response.resolved})`, "ok");
+  } catch (err) {
+    notice("approval failed: " + err.message, "err");
+  }
+  loadApprovals();
+  refreshTargetsSoon();
+}
+
+// -- registration ----------------------------------------------------------
+async function submitRegistration(event) {
+  event.preventDefault();
+  const form = event.target;
+  const data = new FormData(form);
+  const origins = String(data.get("allowed_origins") || "")
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean);
+  const baseUrl = String(data.get("base_url") || "").trim();
+  if (!origins.length && baseUrl) origins.push(baseUrl);
+  const body = {
+    target_id: String(data.get("target_id") || "").trim(),
+    base_url: baseUrl,
+    allowed_origins: origins,
+    mode: String(data.get("mode") || "SUPERVISED"),
+    allow_medium_actions: data.get("allow_medium_actions") !== null,
+    authorized_by: String(data.get("authorized_by") || "").trim(),
+    max_steps: 300,
+    max_duration_seconds: 600,
+  };
+  try {
+    const response = await api("/targets", { method: "POST", body: JSON.stringify(body) });
+    notice(`registered ${response.target_id}`, "ok");
+    form.reset();
+    await loadTargets(response.target_id);
+  } catch (err) {
+    notice("registration failed: " + err.message, "err");
+  }
+}
+
+// -- boot ------------------------------------------------------------------
+function init() {
+  $$("#tabs button").forEach((button) => button.addEventListener("click", () => setView(button.dataset.view)));
+  $("#refresh-targets").addEventListener("click", () => loadTargets().catch((err) => notice(err.message, "err")));
+  $("#load-logs").addEventListener("click", () => {
+    if (S.view !== "logs") setView("logs");
+    else loadStoredLog();
+  });
+  $("#register-form").addEventListener("submit", submitRegistration);
+  initGraphInteractions();
+
+  const clock = () => { $("#clock").textContent = new Date().toTimeString().slice(0, 8); };
+  clock();
+  setInterval(clock, 1000);
+
+  loadHealth();
+  setInterval(loadHealth, 30000);
+  loadTargets().catch((err) => {
+    $("#target-list").innerHTML = `<li class="faint">${esc(err.message)}</li>`;
+    notice("could not load targets: " + err.message, "err");
+  });
+}
+
+if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+else init();
