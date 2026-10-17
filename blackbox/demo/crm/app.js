@@ -260,3 +260,325 @@
       '<p class="field"><button type="submit" class="btn btn-primary" id="export-report"' + (both ? '' : ' disabled') +
       ' title="' + title + '">Export report</button></p>' +
       '</div><p class="hint" id="export-hint">' + hint + '</p>' +
+      '<p class="form-error" id="report-error" role="alert" hidden></p></form></div>' +
+      '<div class="panel" id="report-preview">' + (state.reportRows ? reportsPreviewMarkup() : '') + '</div>';
+  }
+
+  function reportsPreviewMarkup() {
+    var rows = state.reportRows || [];
+    var heading = '<h3>Exported rows (' + rows.length + ')</h3>';
+    if (!rows.length) { return heading + '<p class="muted">No customer records fall inside this range.</p>'; }
+    return heading + '<ul class="summary-list">' + rows.map(function (c) {
+      return '<li>' + esc(c.name) + ' \u2014 ' + esc(c.createdAt) + ' \u2014 ' + fmtMoney(c.revenue) + '</li>';
+    }).join('') + '</ul>';
+  }
+
+  function syncExportState() {
+    var from = byId('report-from');
+    var to = byId('report-to');
+    if (!from || !to) { return; }
+    state.reportFrom = from.value;
+    state.reportTo = to.value;
+    var both = Boolean(state.reportFrom && state.reportTo);
+    var button = byId('export-report');
+    var hint = byId('export-hint');
+    if (button) {
+      button.disabled = !both;
+      button.title = both ? 'Export the selected date range' : 'Select both From and To dates to enable export';
+    }
+    if (hint) { hint.textContent = both ? 'Date range ready. Select Export report to run it.' : 'Select both From and To dates to enable export.'; }
+  }
+
+  function attemptExport() {
+    syncExportState();
+    var error = byId('report-error');
+    var problem = '';
+    if (!state.reportFrom || !state.reportTo) { problem = 'Select a date range before exporting.'; }
+    else if (state.reportFrom > state.reportTo) { problem = 'The From date must be on or before the To date.'; }
+    if (problem) {
+      if (error) { error.textContent = problem; error.hidden = false; }
+      return false;
+    }
+    if (error) { error.hidden = true; error.textContent = ''; }
+    state.reportRows = state.customers
+      .filter(function (c) { return c.createdAt >= state.reportFrom && c.createdAt <= state.reportTo; })
+      .sort(function (a, b) { return a.createdAt.localeCompare(b.createdAt); });
+    showStatus('Report exported.');
+    var panel = byId('report-preview');
+    if (panel) { panel.innerHTML = reportsPreviewMarkup(); }
+    return true;
+  }
+
+  /* Settings */
+  function settingsMarkup() {
+    var sizes = [5, 10, 25].map(function (n) {
+      return '<option value="' + n + '"' + (Number(state.settings.defaultPageSize) === n ? ' selected' : '') + '>' + n + ' rows</option>';
+    }).join('');
+    return '<h2>Settings</h2><div class="panel"><h3>Workspace preferences</h3>' +
+      '<form id="settings-form" novalidate>' +
+      '<p class="field checkline"><input type="checkbox" id="setting-email" name="emailNotifications"' +
+      (state.settings.emailNotifications ? ' checked' : '') + '>' +
+      '<label for="setting-email">Email notifications</label></p>' +
+      '<p class="field"><label for="setting-page-size">Default page size</label>' +
+      '<select id="setting-page-size" name="defaultPageSize">' + sizes + '</select>' +
+      '<span class="hint">Applies to the customer list.</span></p>' +
+      '<button type="submit" class="btn btn-primary" id="save-settings">Save settings</button></form></div>';
+  }
+
+  /* View wiring */
+  function wireView() {
+    if (state.route === 'dashboard') {
+      var toCustomers = byId('dashboard-customers');
+      var addShortcut = byId('dashboard-add');
+      if (toCustomers) { toCustomers.addEventListener('click', function () { go('customers'); }); }
+      if (addShortcut) { addShortcut.addEventListener('click', function () { openCustomerDialog(null); }); }
+      return;
+    }
+
+    if (state.route === 'customers') {
+      var add = byId('add-customer');
+      var search = byId('customer-search');
+      var statusFilter = byId('status-filter');
+      var pageSize = byId('page-size');
+      if (add) { add.addEventListener('click', function () { openCustomerDialog(null); }); }
+      if (search) {
+        search.addEventListener('input', function () {
+          state.query = search.value; state.page = 1; refreshCustomers(150, 'customer-search');
+        });
+      }
+      if (statusFilter) {
+        statusFilter.value = state.statusFilter;
+        statusFilter.addEventListener('change', function () {
+          state.statusFilter = statusFilter.value; state.page = 1; refreshCustomers(200, 'status-filter');
+        });
+      }
+      if (pageSize) {
+        pageSize.value = String(state.pageSize);
+        pageSize.addEventListener('change', function () {
+          state.pageSize = Number(pageSize.value); state.page = 1; refreshCustomers(200, 'page-size');
+        });
+      }
+      return;
+    }
+
+    if (state.route === 'reports') {
+      var form = byId('report-form');
+      var from = byId('report-from');
+      var to = byId('report-to');
+      if (from) { from.addEventListener('change', syncExportState); }
+      if (to) { to.addEventListener('change', syncExportState); }
+      if (form) { form.addEventListener('submit', function (event) { event.preventDefault(); attemptExport(); }); }
+      return;
+    }
+
+    var settingsForm = byId('settings-form');
+    if (settingsForm) {
+      settingsForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        state.settings.emailNotifications = byId('setting-email').checked;
+        state.settings.defaultPageSize = Number(byId('setting-page-size').value);
+        state.pageSize = state.settings.defaultPageSize;
+        state.page = 1;
+        showStatus('Settings saved.');
+      });
+    }
+  }
+
+  function onViewClick(event) {
+    var sortButton = event.target.closest('[data-sort]');
+    if (sortButton) {
+      var key = sortButton.getAttribute('data-sort');
+      if (!SORTABLE[key]) { return; }
+      if (state.sortKey === key) { state.sortDir = state.sortDir === 'asc' ? 'desc' : 'asc'; }
+      else { state.sortKey = key; state.sortDir = 'asc'; }
+      var region = byId('customers-table-region');
+      if (!region) { return; }
+      var token = ++tableToken;
+      region.innerHTML = '<p class="loading" role="status">Loading\u2026</p>';
+      window.setTimeout(function () {
+        if (token !== tableToken) { return; }
+        var live = byId('customers-table-region');
+        if (!live) { return; }
+        live.innerHTML = tableMarkup();
+        var again = live.querySelector('[data-sort="' + key + '"]');
+        if (again) { again.focus(); }
+      }, 220);
+      return;
+    }
+
+    if (event.target.closest('#prev-page')) {
+      if (state.page > 1) { state.page -= 1; refreshCustomers(200, 'page-indicator'); }
+      return;
+    }
+    if (event.target.closest('#next-page')) {
+      state.page += 1;
+      refreshCustomers(200, 'page-indicator');
+      return;
+    }
+
+    var actionButton = event.target.closest('[data-action]');
+    if (!actionButton) { return; }
+    var action = actionButton.getAttribute('data-action');
+    var id = actionButton.getAttribute('data-id');
+    if (action === 'edit') { openCustomerDialog(id); }
+    if (action === 'delete') { openConfirmDialog(id); }
+  }
+
+  /* Add / edit dialog */
+  function openCustomerDialog(id) {
+    var customer = id ? state.customers.filter(function (c) { return c.id === id; })[0] || null : null;
+    state.editingId = customer ? customer.id : null;
+    state.openerFocusKey = customer ? 'edit-' + customer.id : 'add-customer';
+    byId('customer-dialog-title').textContent = customer ? 'Edit customer' : 'Add customer';
+    byId('customer-name').value = customer ? customer.name : '';
+    byId('customer-email').value = customer ? customer.email : '';
+    byId('customer-company').value = customer ? customer.company : '';
+    byId('customer-status').value = customer ? customer.status : 'Active';
+    byId('customer-revenue').value = customer ? String(customer.revenue) : '0';
+    clearFormError();
+    syncSaveState();
+    if (!customerDialog.open) { customerDialog.showModal(); }
+    byId('customer-name').focus();
+  }
+
+  function clearFormError() {
+    var error = byId('customer-form-error');
+    error.textContent = '';
+    error.hidden = true;
+    ['customer-name', 'customer-email', 'customer-revenue'].forEach(function (fieldId) {
+      var field = byId(fieldId);
+      if (field) { field.removeAttribute('aria-invalid'); }
+    });
+  }
+
+  function syncSaveState() {
+    var name = byId('customer-name').value.trim();
+    var email = byId('customer-email').value.trim();
+    byId('customer-save').disabled = !(name && email);
+  }
+
+  function submitCustomerForm() {
+    clearFormError();
+    var nameField = byId('customer-name');
+    var emailField = byId('customer-email');
+    var revenueField = byId('customer-revenue');
+    var name = nameField.value.trim();
+    var email = emailField.value.trim();
+    var revenueRaw = revenueField.value.trim();
+    var revenue = revenueRaw === '' ? 0 : Number(revenueRaw);
+
+    var problem = null;
+    if (!name) { problem = { field: nameField, message: 'Enter a customer name.' }; }
+    else if (!email) { problem = { field: emailField, message: 'Enter an email address.' }; }
+    else if (email.indexOf('@') === -1) { problem = { field: emailField, message: 'Enter a valid email address.' }; }
+    else if (!(revenue >= 0)) { problem = { field: revenueField, message: 'Revenue must be 0 or greater.' }; }
+
+    if (problem) {
+      problem.field.setAttribute('aria-invalid', 'true');
+      var error = byId('customer-form-error');
+      error.textContent = problem.message;
+      error.hidden = false;
+      problem.field.focus();
+      return false;
+    }
+
+    var company = byId('customer-company').value.trim();
+    var status = byId('customer-status').value;
+    if (state.editingId) {
+      state.customers = state.customers.map(function (c) {
+        if (c.id !== state.editingId) { return c; }
+        return Object.assign({}, c, { name: name, email: email, company: company, status: status, revenue: revenue });
+      });
+      state.highlightId = state.editingId;
+      state.focusKey = 'edit-' + state.editingId;
+      showStatus('Customer updated.');
+    } else {
+      var id = 'c' + (++state.nextId);
+      state.customers.push({ id: id, name: name, email: email, company: company, status: status, revenue: revenue, createdAt: todayISO() });
+      state.highlightId = id;
+      state.focusKey = 'edit-' + id;
+      showStatus('Customer created.');
+    }
+
+    customerDialog.close();
+    state.editingId = null;
+    state.query = '';
+    state.statusFilter = 'all';
+    state.sortKey = 'name';
+    state.sortDir = 'asc';
+    revealHighlighted();
+    render();
+    return true;
+  }
+
+  function todayISO() {
+    var now = new Date();
+    return now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
+  }
+
+  function revealHighlighted() {
+    var rows = filteredCustomers();
+    var index = -1;
+    rows.forEach(function (c, i) { if (c.id === state.highlightId) { index = i; } });
+    state.page = index === -1 ? 1 : Math.floor(index / state.pageSize) + 1;
+  }
+
+  /* Delete confirmation */
+  function openConfirmDialog(id) {
+    var customer = state.customers.filter(function (c) { return c.id === id; })[0];
+    if (!customer) { return; }
+    state.pendingDeleteId = id;
+    state.openerFocusKey = 'delete-' + id;
+    byId('confirm-dialog-body').textContent =
+      'The record for ' + customer.name + ' (' + customer.company + ') will be removed from the list.';
+    confirmDialog.showModal();
+    byId('confirm-cancel').focus();
+  }
+
+  function deletePendingCustomer() {
+    var id = state.pendingDeleteId;
+    if (!id) { return; }
+    state.customers = state.customers.filter(function (c) { return c.id !== id; });
+    state.pendingDeleteId = null;
+    if (state.highlightId === id) { state.highlightId = null; }
+    confirmDialog.close();
+    showStatus('Customer deleted.');
+    var remaining = filteredCustomers();
+    var totalPages = Math.max(1, Math.ceil(remaining.length / state.pageSize));
+    if (state.page > totalPages) { state.page = totalPages; }
+    var firstOnPage = remaining[(state.page - 1) * state.pageSize];
+    refreshCustomers(200, firstOnPage ? 'edit-' + firstOnPage.id : 'add-customer');
+  }
+
+  /* Bootstrap */
+  window.addEventListener('hashchange', function () { clearBanners(); render(); });
+  document.addEventListener('click', onViewClick);
+
+  customerForm.addEventListener('submit', function (event) {
+    event.preventDefault();
+    submitCustomerForm();
+  });
+  ['customer-name', 'customer-email'].forEach(function (fieldId) {
+    byId(fieldId).addEventListener('input', syncSaveState);
+  });
+  byId('customer-cancel').addEventListener('click', function () { customerDialog.close(); });
+  customerDialog.addEventListener('close', function () {
+    state.editingId = null;
+    clearFormError();
+    restoreOpenerFocus();
+  });
+  byId('confirm-cancel').addEventListener('click', function () {
+    state.pendingDeleteId = null;
+    confirmDialog.close();
+  });
+  byId('confirm-delete').addEventListener('click', deletePendingCustomer);
+  confirmDialog.addEventListener('close', function () {
+    state.pendingDeleteId = null;
+    restoreOpenerFocus();
+  });
+
+  if (!location.hash || location.hash === '#/' || ROUTES.indexOf(parseHash().path) === -1) {
+    history.replaceState(null, '', '#/dashboard');
+  }
+  render();
+})();
