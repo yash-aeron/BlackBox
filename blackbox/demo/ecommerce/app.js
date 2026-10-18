@@ -278,3 +278,347 @@
         '<input type="number" id="qty-' + p.id + '" data-id="' + p.id + '" min="1" max="' + MAX_QTY + '" step="1" value="' + line.qty +
         '" aria-label="Quantity for ' + esc(p.name) + '"></td>' +
         '<td class="num" id="line-total-' + p.id + '">' + fmt(p.price * line.qty) + '</td>' +
+        '<td><button type="button" class="btn btn-small" data-action="remove" data-id="' + p.id + '" data-focus="remove-' + p.id +
+        '" aria-label="Remove ' + esc(p.name) + ' from cart">Remove</button></td></tr>';
+    }).join('');
+
+    var discountRow = state.coupon === COUPON
+      ? '<div id="discount-row"><span>Discount (SAVE10, 10% off)</span><span class="num" id="cart-discount">-' + fmt(cartDiscount()) + '</span></div>'
+      : '<div id="discount-row" hidden><span>Discount</span><span class="num" id="cart-discount">' + fmt(0) + '</span></div>';
+
+    return '<h2>Cart</h2><div class="panel">' +
+      '<div class="panel-head"><h3>Items in your cart</h3><p class="hint" id="cart-summary">' + cartCount() + ' item(s)</p></div>' +
+      '<div class="table-scroll"><table><caption>Cart contents</caption><thead><tr>' +
+      '<th scope="col">Product</th><th scope="col">Category</th><th scope="col">Price</th>' +
+      '<th scope="col">Quantity</th><th scope="col">Line total</th><th scope="col">Actions</th>' +
+      '</tr></thead><tbody>' + rows + '</tbody></table></div>' +
+      '<div class="totals"><div><span>Subtotal</span><span class="num" id="cart-subtotal">' + fmt(cartSubtotal()) + '</span></div>' +
+      discountRow +
+      '<div class="grand"><span>Total</span><span class="num" id="cart-total">' + fmt(cartTotal()) + '</span></div></div></div>' +
+      '<div class="panel"><h3>Coupon code</h3><form id="coupon-form" novalidate>' +
+      '<p class="field"><label for="coupon-code">Coupon code</label>' +
+      '<input type="text" id="coupon-code" data-focus="coupon-code" value="' + esc(state.coupon || '') + '" autocomplete="off">' +
+      '<span class="hint">Promotional codes are applied to the subtotal.</span></p>' +
+      '<button type="submit" class="btn" id="apply-coupon" data-focus="apply-coupon">Apply coupon</button></form></div>' +
+      '<div class="panel"><div class="btn-row">' +
+      '<button type="button" class="btn btn-primary" id="proceed-checkout">Proceed to checkout</button>' +
+      '<button type="button" class="btn btn-danger" id="empty-cart">Empty cart</button></div>' +
+      '<p class="hint" id="checkout-hint">' + checkoutHint() + '</p></div>';
+  }
+
+  function checkoutHint() {
+    return state.cart.length ? 'Your cart is ready for checkout.' : 'Add items to your cart to enable checkout.';
+  }
+
+  function renderCartNow(focusKey) {
+    if (state.route !== 'cart') { return; }
+    state.focusKey = focusKey || null;
+    viewRoot.innerHTML = cartMarkup();
+    wireView();
+    applyFocus();
+  }
+
+  function updateCartTotalsInPlace() {
+    var subtotal = byId('cart-subtotal');
+    var total = byId('cart-total');
+    var discount = byId('cart-discount');
+    var discountRow = byId('discount-row');
+    var summary = byId('cart-summary');
+    if (subtotal) { subtotal.textContent = fmt(cartSubtotal()); }
+    if (total) { total.textContent = fmt(cartTotal()); }
+    if (discount) { discount.textContent = '-' + fmt(cartDiscount()); }
+    if (discountRow) { discountRow.hidden = state.coupon !== COUPON; }
+    if (summary) { summary.textContent = cartCount() + ' item(s)'; }
+    state.cart.forEach(function (line) {
+      var cell = byId('line-total-' + line.id);
+      var p = productById(line.id);
+      if (cell && p) { cell.textContent = fmt(p.price * line.qty); }
+    });
+  }
+
+  function applyCoupon(code) {
+    if (String(code || '').trim().toUpperCase() === COUPON) {
+      state.coupon = COUPON;
+      showStatus('Coupon applied.');
+      renderCartNow('apply-coupon');
+      return true;
+    }
+    state.coupon = null;
+    showAlert('Invalid coupon code.');
+    renderCartNow('coupon-code');
+    return false;
+  }
+
+  /* Checkout */
+  function checkoutMarkup() {
+    if (state.orderPlaced) {
+      var order = state.orderPlaced;
+      return '<h2>Checkout</h2><div class="confirmation" id="order-confirmation"><h3>Order placed</h3>' +
+        '<p>Thank you. Your order number is</p><p class="order-number" id="order-number">' + esc(order.number) + '</p>' +
+        '<p>Items: ' + order.items + ' \u00b7 Total paid: ' + fmt(order.total) + '</p>' +
+        '<p class="muted">A confirmation has been sent to the address on your account.</p>' +
+        '<button type="button" class="btn btn-primary" id="continue-shopping">Continue shopping</button></div>';
+    }
+
+    return '<h2>Checkout</h2><form id="checkout-form" novalidate>' +
+      '<fieldset><legend>Shipping</legend>' +
+      '<p class="field"><label for="co-name">Full name</label><input type="text" id="co-name" autocomplete="off"></p>' +
+      '<p class="field"><label for="co-address">Address</label><input type="text" id="co-address" autocomplete="off"></p>' +
+      '<p class="field"><label for="co-city">City</label><input type="text" id="co-city" autocomplete="off"></p>' +
+      '<p class="field"><label for="co-zip">ZIP code</label><input type="text" id="co-zip" inputmode="numeric" autocomplete="off">' +
+      '<span class="hint">Five digits, for example 60614.</span></p></fieldset>' +
+      '<fieldset><legend>Payment</legend>' +
+      '<p class="simulation-note" id="payment-note">Simulation only. No real payment is processed, ' +
+      'no card details are transmitted, and nothing is stored after you leave this page.</p>' +
+      '<p class="field"><label for="co-card">Card number</label>' +
+      '<input type="text" id="co-card" inputmode="numeric" autocomplete="off" placeholder="4242 4242 4242 4242">' +
+      '<span class="hint">Sixteen digits, spaces are ignored.</span></p>' +
+      '<p class="field"><label for="co-expiry">Expiry (MM/YY)</label>' +
+      '<input type="text" id="co-expiry" autocomplete="off" placeholder="09/27"></p>' +
+      '<p class="field"><label for="co-cvc">CVC</label><input type="text" id="co-cvc" inputmode="numeric" autocomplete="off" placeholder="123">' +
+      '<span class="hint">Three digits from the back of the card.</span></p></fieldset>' +
+      '<p class="form-error" id="checkout-error" role="alert" hidden></p>' +
+      '<div class="btn-row"><button type="submit" class="btn btn-primary" id="place-order" disabled>Place order</button>' +
+      '<button type="button" class="btn" id="back-to-cart">Back to cart</button></div>' +
+      '<p class="hint" id="place-order-hint">' + placeOrderHint() + '</p></form>';
+  }
+
+  function fieldsComplete() {
+    return CHECKOUT_FIELDS.every(function (field) {
+      var el = byId(field.id);
+      return el && el.value.trim().length > 0;
+    });
+  }
+
+  function placeOrderHint() {
+    if (!state.cart.length) { return 'Add items to your cart before placing an order.'; }
+    if (!fieldsComplete()) { return 'Complete every required field to enable Place order.'; }
+    return 'All required details are complete. Review and place your order.';
+  }
+
+  function syncPlaceOrder() {
+    var button = byId('place-order');
+    var hint = byId('place-order-hint');
+    if (!button) { return; }
+    button.disabled = !(state.cart.length > 0 && fieldsComplete());
+    if (hint) { hint.textContent = placeOrderHint(); }
+  }
+
+  function submitCheckout() {
+    var error = byId('checkout-error');
+    if (!state.cart.length) {
+      if (error) { error.textContent = 'Add items to your cart before placing an order.'; error.hidden = false; }
+      return false;
+    }
+    CHECKOUT_FIELDS.forEach(function (field) {
+      var el = byId(field.id);
+      if (el) { el.removeAttribute('aria-invalid'); }
+    });
+    var problem = null;
+    CHECKOUT_FIELDS.forEach(function (field) {
+      if (problem) { return; }
+      var el = byId(field.id);
+      if (el && !field.validate(el.value.trim())) { problem = { field: field, el: el }; }
+    });
+    if (problem) {
+      problem.el.setAttribute('aria-invalid', 'true');
+      if (error) { error.textContent = problem.field.message; error.hidden = false; }
+      problem.el.focus();
+      return false;
+    }
+    if (error) { error.hidden = true; error.textContent = ''; }
+
+    state.orderPlaced = { number: 'MF-' + (2000 + state.orderSeq), total: cartTotal(), items: cartCount() };
+    state.orderSeq += 1;
+    state.cart = [];
+    state.coupon = null;
+    updateCartCount();
+    showStatus('Order placed.');
+    paintView();
+    return true;
+  }
+
+  /* View wiring */
+  function wireView() {
+    if (state.route === 'products') {
+      var form = byId('filter-form');
+      var search = byId('product-search');
+      var category = byId('category-filter');
+      var sortBy = byId('sort-by');
+      if (search) {
+        search.addEventListener('input', function () {
+          state.query = search.value; refreshProducts(200, 'product-search');
+        });
+      }
+      if (category) {
+        category.addEventListener('change', function () {
+          state.category = category.value; refreshProducts(200, 'category-filter');
+        });
+      }
+      if (sortBy) {
+        sortBy.addEventListener('change', function () {
+          state.sortKey = sortBy.value; refreshProducts(200, 'sort-by');
+        });
+      }
+      if (form) { form.addEventListener('submit', function (event) { event.preventDefault(); applyPriceFilters(); }); }
+      refreshProducts(300, null);
+      return;
+    }
+
+    if (state.route === 'cart') {
+      var couponForm = byId('coupon-form');
+      var proceed = byId('proceed-checkout');
+      var browse = byId('browse-products');
+      var empty = byId('empty-cart');
+      if (couponForm) {
+        couponForm.addEventListener('submit', function (event) {
+          event.preventDefault(); applyCoupon(byId('coupon-code').value);
+        });
+      }
+      if (proceed) { proceed.addEventListener('click', function () { go('checkout'); }); }
+      if (browse) { browse.addEventListener('click', function () { go('products'); }); }
+      if (empty) {
+        empty.addEventListener('click', function () {
+          emptyCartDialog.showModal(); byId('empty-cart-cancel').focus();
+        });
+      }
+      Array.prototype.forEach.call(viewRoot.querySelectorAll('input[type="number"][data-id]'), function (input) {
+        input.addEventListener('change', function () { onQuantityChange(input); });
+      });
+      return;
+    }
+
+    var checkoutForm = byId('checkout-form');
+    if (checkoutForm) {
+      CHECKOUT_FIELDS.forEach(function (field) {
+        var el = byId(field.id);
+        if (el) { el.addEventListener('input', syncPlaceOrder); }
+      });
+      checkoutForm.addEventListener('submit', function (event) { event.preventDefault(); submitCheckout(); });
+      var back = byId('back-to-cart');
+      if (back) { back.addEventListener('click', function () { go('cart'); }); }
+      syncPlaceOrder();
+    }
+    var continueShopping = byId('continue-shopping');
+    if (continueShopping) {
+      continueShopping.addEventListener('click', function () {
+        state.orderPlaced = null;
+        go('products');
+      });
+    }
+  }
+
+  function applyPriceFilters() {
+    var minField = byId('min-price');
+    var maxField = byId('max-price');
+    var error = byId('price-error');
+    var minRaw = minField.value.trim();
+    var maxRaw = maxField.value.trim();
+    var min = minRaw === '' ? null : Number(minRaw);
+    var max = maxRaw === '' ? null : Number(maxRaw);
+    var negative = (min !== null && !(min >= 0)) || (max !== null && !(max >= 0));
+    var inverted = min !== null && max !== null && min > max;
+    minField.removeAttribute('aria-invalid');
+    maxField.removeAttribute('aria-invalid');
+    if (negative || inverted) {
+      var message = negative ? 'Prices cannot be negative.' : 'Minimum price cannot be greater than maximum price.';
+      if (negative) {
+        if (min !== null && !(min >= 0)) { minField.setAttribute('aria-invalid', 'true'); }
+        if (max !== null && !(max >= 0)) { maxField.setAttribute('aria-invalid', 'true'); }
+      } else {
+        minField.setAttribute('aria-invalid', 'true');
+        maxField.setAttribute('aria-invalid', 'true');
+      }
+      error.textContent = message;
+      error.hidden = false;
+      return false;
+    }
+    error.hidden = true;
+    error.textContent = '';
+    state.minPrice = min;
+    state.maxPrice = max;
+    showStatus('Filters applied.');
+    refreshProducts(300, 'apply-filters');
+    return true;
+  }
+
+  function onQuantityChange(input) {
+    var line = cartLine(input.getAttribute('data-id'));
+    if (!line) { return; }
+    var qty = Math.floor(Number(input.value));
+    if (!isFinite(qty) || qty < 1) { qty = 1; }
+    if (qty > MAX_QTY) {
+      qty = MAX_QTY;
+      showAlert('Quantity limited to ' + MAX_QTY + ' per item.');
+    }
+    input.value = String(qty);
+    line.qty = qty;
+    updateCartCount();
+    updateCartTotalsInPlace();
+  }
+
+  function onViewClick(event) {
+    var actionButton = event.target.closest('[data-action]');
+    if (!actionButton) { return; }
+    var action = actionButton.getAttribute('data-action');
+    var id = actionButton.getAttribute('data-id');
+
+    if (action === 'details') {
+      state.openerFocusKey = 'details-' + id;
+      openProductDialog(id);
+      return;
+    }
+    if (action === 'add') {
+      if (actionButton.disabled) { return; }
+      addToCart(id);
+      return;
+    }
+    if (action === 'remove') {
+      var p = productById(id);
+      state.cart = state.cart.filter(function (l) { return l.id !== id; });
+      if (!state.cart.length) { state.coupon = null; }
+      updateCartCount();
+      if (p) { showStatus('Removed ' + p.name + ' from cart.'); }
+      var nextLine = state.cart.length ? state.cart[0] : null;
+      renderCartNow(nextLine ? 'remove-' + nextLine.id : 'browse-products');
+    }
+  }
+
+  /* Bootstrap */
+  window.addEventListener('hashchange', function () { clearBanners(); render(); });
+  document.addEventListener('click', onViewClick);
+
+  productDialog.addEventListener('click', function (event) {
+    if (event.target.closest('#dialog-close')) { productDialog.close(); return; }
+    var add = event.target.closest('#dialog-add');
+    if (add && !add.disabled) {
+      addToCart(add.getAttribute('data-id'));
+      productDialog.close();
+    }
+  });
+
+  productDialog.addEventListener('close', function () {
+    var key = state.openerFocusKey;
+    state.openerFocusKey = null;
+    if (!key) { return; }
+    var target = viewRoot.querySelector('[data-focus="' + key + '"]');
+    if (target && typeof target.focus === 'function') { target.focus(); }
+  });
+
+  byId('empty-cart-cancel').addEventListener('click', function () { emptyCartDialog.close(); });
+
+  byId('empty-cart-confirm').addEventListener('click', function () {
+    state.cart = [];
+    state.coupon = null;
+    updateCartCount();
+    emptyCartDialog.close();
+    showStatus('Cart emptied.');
+    renderCartNow('browse-products');
+  });
+
+  if (!location.hash || location.hash === '#/' || ROUTES.indexOf(parseHash().path) === -1) {
+    history.replaceState(null, '', '#/products');
+  }
+  updateCartCount();
+  render();
+})();
