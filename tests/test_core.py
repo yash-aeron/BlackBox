@@ -580,3 +580,361 @@ def test_task_parser_extracts_goal_entities_and_expectations():
     assert task.entities["name"] == "Yash"
     assert task.entities["email"] == "yash@example.com"
     assert task.expected_end_state == "customer_created"
+
+    assert parser.parse("Export the sales report for 2026-01-01").verb == "export"
+    assert parser.parse("Export the sales report for 2026-01-01").entities["date"] == "2026-01-01"
+    assert parser.parse('Add a task titled "Draft checklist"').entities.get("name") == "Draft checklist"
+    assert parser.parse("Place an order with ZIP 12345").entities.get("zip") == "12345" or "12345" in str(parser.parse("Place an order with ZIP 12345").entities)
+    assert parser.parse("Delete the project Alpha").verb == "delete"
+
+    bound = parser.bind_parameters(task, ["customer_name", "email_address"])
+    assert bound == {"customer_name": "Yash", "email_address": "yash@example.com"}
+
+
+def test_planner_uses_learned_workflow_and_substitutes_parameters():
+    graph = build_graph()
+    workflow = Workflow(
+        goal="create_customer",
+        name="Create customer",
+        steps=[
+            WorkflowStep(index=0, action=action(ActionType.TYPE, element("Name *", ElementRole.TEXT_FIELD, tag="input", editable=True), value="BlackBox Sample"), parameter_names=["name"]),
+            WorkflowStep(index=1, action=action(ActionType.CLICK, element("Save customer")), transition_id=next(t.transition_id for t in graph.transitions.values() if t.target_state == "s2")),
+        ],
+        parameters=[WorkflowParameter(name="name", label="Name *", target_element_id=element("Name *", ElementRole.TEXT_FIELD, tag="input", editable=True).element_id)],
+        expected_end_state="create a customer",
+    ).finalize()
+    graph.upsert_workflow(workflow)
+
+    task = TaskParser().parse("Create a customer named Yash with email yash@example.com")
+    # The workflow path is what carries parameters, so exercise it directly here;
+    # the shortest-route preference is covered by its own test below.
+    workflow_plan = Planner()._plan_from_workflow(task, graph, "s1")
+    assert workflow_plan is not None and workflow_plan.source == "workflow"
+    typing = next(step for step in workflow_plan.steps if step.action.type is ActionType.TYPE)
+    assert typing.action.parameters["value"] == "Yash"
+
+
+def test_planner_reports_missing_knowledge_instead_of_guessing():
+    plan = Planner().plan(TaskParser().parse("Create a customer named Yash"), ApplicationGraph(target_id="demo"), None)
+    assert not plan.usable
+    assert plan.source == "none"
+    assert plan.exploration_hint
+
+
+def test_planner_prefers_the_shorter_declared_goal_route():
+    graph = build_graph()
+    workflow = Workflow(
+        goal="create_customer",
+        steps=[
+            WorkflowStep(index=0, action=action(ActionType.TYPE, element("Name *", ElementRole.TEXT_FIELD, tag="input", editable=True), value="x")),
+            WorkflowStep(index=1, action=action(ActionType.CLICK, element("Save customer"))),
+            WorkflowStep(index=2, action=action(ActionType.CLICK, element("Another"))),
+        ],
+    ).finalize()
+    graph.upsert_workflow(workflow)
+    task = TaskParser().parse("Open the customers page")
+    task.predicates = [{"kind": "TEXT_PRESENT", "value": "Customers"}]
+    plan = Planner().plan(task, graph, "s0")
+    assert plan.usable
+    assert len(plan.steps) <= len(workflow.steps)
+
+
+def test_replanner_decisions_are_bounded():
+    graph = build_graph()
+    task = TaskParser().parse("Create a customer named Yash")
+    planner = Planner()
+    plan = planner.plan(task, graph, "s0")
+    replanner = Replanner(planner, max_replans=2)
+    retry = replanner.decide(task=task, plan=plan, graph=graph, current_state_id="s0", failed_step=None, failure_reason="x", step_attempts=0)
+    assert retry.kind in (ReplanKind.RETRY_STEP, ReplanKind.ALTERNATE_ROUTE, ReplanKind.TARGETED_EXPLORATION)
+    empty = ApplicationGraph(target_id="demo")
+    exhausted = None
+    for _ in range(5):
+        exhausted = replanner.decide(task=task, plan=plan, graph=empty, current_state_id="s0", failed_step=None, failure_reason="nothing works", step_attempts=9)
+    assert exhausted.kind is ReplanKind.ABANDON
+
+
+def test_recovery_manager_is_bounded():
+    manager = RecoveryManager(max_recoveries_per_task=3)
+    first = manager.decide(FailureKind.LOCATOR_FAILURE, locator_attempts=0)
+    assert first.strategy is RecoveryStrategy.REGENERATE_LOCATOR
+    stopped = None
+    for _ in range(6):
+        stopped = manager.decide(FailureKind.LOCATOR_FAILURE, locator_attempts=9)
+    assert stopped.strategy is RecoveryStrategy.SAFE_STOP and stopped.terminal
+    origin = RecoveryManager().decide(FailureKind.ORIGIN_BLOCKED)
+    assert origin.strategy is RecoveryStrategy.SAFE_STOP
+
+
+def test_verifier_checks_steps_and_tasks():
+    verifier = Verifier()
+    before = observation()
+    after = observation(alerts=[{"role": "status", "text": "Customer created."}])
+    step = __import__("blackbox.agent.planning.planner", fromlist=["PlanStep"]).PlanStep(
+        index=0,
+        action=action(ActionType.CLICK, element("Save customer"), expected=[EffectKind.SUCCESS_MESSAGE]),
+        expected_effect=[EffectKind.SUCCESS_MESSAGE.value],
+    )
+    from blackbox.agent.model.action import ActionResult
+
+    verification = verifier.verify_step(
+        step,
+        action_result=ActionResult(action=step.action, status="OK"),
+        diff=diff_states(before, after),
+        observation=after,
+    )
+    assert verification.verified and verification.matched
+
+    no_effect = verifier.verify_step(
+        step,
+        action_result=ActionResult(action=step.action, status="OK"),
+        diff=diff_states(before, before),
+        observation=before,
+    )
+    assert not no_effect.verified and no_effect.no_effect
+
+    from blackbox.agent.planning.planner import Plan
+
+    plan = Plan(task=TaskParser().parse("Create a customer"), steps=[step])
+    task_verification = verifier.verify_task(
+        plan.task,
+        plan,
+        observation=after,
+        state=None,
+        step_results=[verification],
+        predicates=[Predicate(kind=PredicateKind.ALERT_CONTAINS, value="Customer created.")],
+        assertion_engine=AssertionEngine(),
+    )
+    assert task_verification.success and task_verification.steps_verified == 1
+
+
+def test_assertion_predicates():
+    engine = AssertionEngine()
+    page = observation(
+        text="Customers Page 2 of 3",
+        elements=[element("Next")],
+        alerts=[{"role": "alert", "text": "Enter a valid email address."}],
+    )
+    assert engine.evaluate(Predicate(kind=PredicateKind.TEXT_PRESENT, value="Page 2 of 3"), page).satisfied
+    assert not engine.evaluate(Predicate(kind=PredicateKind.TEXT_ABSENT, value="Page 2 of 3"), page).satisfied
+    assert engine.evaluate(Predicate(kind=PredicateKind.ALERT_CONTAINS, value="valid email"), page).satisfied
+    assert engine.evaluate(Predicate(kind=PredicateKind.ELEMENT_PRESENT, value="next"), page).satisfied
+    assert engine.evaluate(Predicate(kind=PredicateKind.URL_CONTAINS, value="customers"), page).satisfied
+    satisfied, results = engine.evaluate_all([Predicate(kind=PredicateKind.TEXT_PRESENT, value="Customers")], page)
+    assert satisfied and len(results) == 1
+
+
+# ---------------------------------------------------------------- generation
+
+
+def test_value_synthesis_respects_field_semantics_and_patterns():
+    synthesizer = ValueSynthesizer()
+    assert "@" in synthesizer.synthesize(element("Email *", ElementRole.TEXT_FIELD, tag="input", attributes={"type": "email"}, editable=True))
+    phone = synthesizer.synthesize(element("Phone (optional)", ElementRole.TEXT_FIELD, tag="input", editable=True))
+    assert phone is not None and phone.isdigit() and len(phone) == 10
+    patterned = synthesizer.synthesize(
+        element("Reference code", ElementRole.TEXT_FIELD, tag="input", attributes={"pattern": "[A-Za-z]{3}-\\d{4}"}, editable=True)
+    )
+    assert patterned == "ABC-1234"
+    assert synthesizer.synthesize_from_pattern("\\d{5}") == "12345"
+    assert synthesizer.synthesize(element("Password", ElementRole.PASSWORD_FIELD, tag="input", editable=True)) is None
+
+
+def test_action_generator_covers_controls_and_skips_disabled():
+    generator = ActionGenerator()
+    add = element("Add customer")
+    save_disabled = element("Save customer", enabled=False)
+    name = element("Name *", ElementRole.TEXT_FIELD, tag="input", editable=True)
+    status = element("Status", ElementRole.SELECT, tag="select", attributes={"__options": "Active,Inactive,Lead"}, value="Active")
+    check = element("Email notifications", ElementRole.CHECKBOX, tag="input", checked=False)
+    page = observation(elements=[add, save_disabled, name, status, check])
+    actions = generator.generate(page, elements=page.interactive_elements)
+    types = {action.type for action in actions}
+    assert ActionType.CLICK in types
+    assert ActionType.TYPE in types
+    assert ActionType.SELECT in types
+    assert ActionType.CHECK in types
+    assert not any(a.target and a.target.element_id == save_disabled.element_id and a.type is ActionType.CLICK for a in actions)
+
+
+def test_ranker_prefers_novelty_and_penalises_risk_and_repeats():
+    ranker = ActionRanker()
+    novelty = NoveltyTracker()
+    state = WebsiteState(state_id="s1", url="http://x/s1", title="Customers")
+    safe = action(ActionType.CLICK, element("Add customer"))
+    risky = action(ActionType.CLICK, element("Delete customer"), risk=ModelRisk.HIGH)
+    ranked = ranker.rank([safe, risky], state=state, novelty=novelty)
+    assert ranked[0].action.action_id == safe.action_id
+    novelty.note_action("s1", safe, effects=0)
+    novelty.note_action("s1", safe, effects=0)
+    reranked = ranker.rank([safe], state=state, novelty=novelty)
+    assert reranked[0].score < ranked[0].score
+    assert reranked[0].reasons
+
+
+# --------------------------------------------------------------- persistence
+
+
+def test_repository_round_trip_and_versioning(tmp_path: Path):
+    database = Database(f"sqlite:///{tmp_path / 'model.db'}")
+    database.connect()
+    repository = Repository(database, "demo")
+    repository.use_latest_version()
+    graph = build_graph()
+    for state in graph.states.values():
+        repository.save_state(state)
+    for transition in graph.transitions.values():
+        repository.save_transition(transition)
+    for workflow in WorkflowMiner().mine(graph):
+        repository.save_workflow(workflow)
+    repository.save_constraint(
+        Constraint(kind=ConstraintKind.PRECONDITION, scope=ConstraintScope.ACTION, subject="CLICK Export", expression="date != empty").finalize()
+    )
+    stats = repository.stats()
+    assert stats["states"] == 3 and stats["transitions"] == 4
+
+    reloaded = repository.load_graph()
+    assert set(reloaded.states) == set(graph.states)
+    assert len(reloaded.transitions) == len(graph.transitions)
+
+    export_path = repository.export_model(tmp_path / "model.json")
+    assert export_path.exists()
+    payload = json.loads(export_path.read_text(encoding="utf-8"))
+    assert payload["website"]["target_id"] == "demo"
+
+    second = Repository(Database(f"sqlite:///{tmp_path / 'second.db'}"), "demo")
+    second.db.connect()
+    second.import_model(export_path)
+    assert second.stats()["states"] == 3
+
+    version = repository.model_version
+    assert repository.use_latest_version() == version, "a restart continues the newest version"
+    assert repository.create_model_version() == version + 1
+
+    repository.mark_stale(state_ids=["s1"], transition_ids=[next(iter(reloaded.transitions))])
+    assert any(row["status"] == "STALE" for row in database.query("SELECT status FROM states WHERE target_id = 'demo'"))
+    # Workflows are version-scoped, so clearing targets the version they were mined in.
+    repository.clear_workflows(model_version=version)
+    assert repository.stats()["workflows"] == 0
+    database.close()
+
+
+def test_model_serialisation_round_trip():
+    model = BehavioralModel(website=WebsiteIdentity(target_id="demo", base_url="http://x.test").finalize())
+    model.states = list(build_graph().states.values())
+    payload = model.to_json()
+    restored = BehavioralModel.from_json(payload)
+    assert restored.summary()["states"] == len(model.states)
+    assert restored.website.identity_hash == model.website.identity_hash
+
+
+def test_target_registration_validation():
+    with pytest.raises(ValueError):
+        TargetRegistration(target_id="", base_url="http://127.0.0.1:3001")
+    with pytest.raises(ValueError):
+        TargetRegistration(target_id="demo", base_url="ftp://127.0.0.1")
+    registration = TargetRegistration(
+        target_id="demo", base_url="http://127.0.0.1:3001", allowed_origins=["http://127.0.0.1:3001"]
+    )
+    assert registration.normalized_origins() == ["http://127.0.0.1:3001"]
+    assert registration.validate_authorization() == []
+
+
+def test_database_upsert_is_idempotent(tmp_path: Path):
+    database = Database(f"sqlite:///{tmp_path / 'upsert.db'}")
+    database.connect()
+    database.upsert("runs", {"run_id": "r1"}, {"target_id": "demo", "kind": "exploration", "status": "running", "started_at": 1.0, "finished_at": None, "summary": None})
+    database.upsert("runs", {"run_id": "r1"}, {"target_id": "demo", "kind": "exploration", "status": "completed", "started_at": 1.0, "finished_at": 2.0, "summary": "{}"})
+    rows = database.query("SELECT * FROM runs")
+    assert len(rows) == 1 and rows[0]["status"] == "completed"
+    database.close()
+
+
+# ------------------------------------------------------------------- metrics
+
+
+def test_metrics_collector_and_comparison():
+    from blackbox.benchmarks.metrics.collector import MetricsCollector, TaskMetrics, ablation_table, compare, learning_curve
+
+    collector = MetricsCollector("demo_crm", "learned")
+    collector.add(TaskMetrics(task_id="t1", success=True, actions=4, plan_source="workflow", used_workflow=True, state_matched=True, predictions_hit=3, steps_verified=4, steps_total=4))
+    collector.add(TaskMetrics(task_id="t2", success=False, actions=8, plan_source="none", state_matched=True, predictions_hit=1, predictions_missed=1, steps_verified=0, steps_total=2))
+    collector.add(TaskMetrics(task_id="t3", success=False, actions=0, policy_blocked=True))
+    summary = collector.summarize(tasks_total=3)
+    assert summary.tasks_run == 3 and summary.policy_blocked == 1
+    assert summary.success_rate == pytest.approx(0.5)
+    assert summary.mean_actions == pytest.approx(6.0)
+    assert summary.model_reuse_rate == pytest.approx(0.5)
+    assert summary.workflow_reuse_rate == pytest.approx(0.5)
+    assert summary.workflow_reuse_success_rate == pytest.approx(1.0)
+    assert summary.transition_prediction_accuracy == pytest.approx(4 / 5)
+    assert summary.mean_step_verification_rate == pytest.approx((1.0 + 0.0) / 2)
+
+    baseline = MetricsCollector("demo_crm", "baseline")
+    baseline.add(TaskMetrics(task_id="t1", success=False, actions=12))
+    baseline.add(TaskMetrics(task_id="t2", success=False, actions=14))
+    table = compare({"baseline": baseline.summarize(), "learned": summary})
+    assert table["learned_vs_baseline"]["actions_delta"] < 0
+    assert table["rows"]
+
+    curve = learning_curve([{"actions_spent": 40, "task_success_rate": 0.4, "mean_actions_per_task": 6}])
+    assert curve["measured"] and curve["points"][0]["actions_spent"] == 40
+    assert ablation_table({"a": summary})["rows"]
+
+
+def test_benchmark_task_library_is_complete():
+    from blackbox.benchmarks.runner import TaskLibrary
+
+    library = TaskLibrary()
+    total = 0
+    for target in library.available_targets():
+        tasks = library.load(target)
+        total += len(tasks)
+        ids = [task.task_id for task in tasks]
+        assert len(ids) == len(set(ids)), f"duplicate task ids in {target}"
+        for task in tasks:
+            assert task.text.strip()
+            assert task.predicates, f"{task.task_id} has no success condition"
+    assert total >= 40, f"expected at least 40 benchmark tasks, found {total}"
+
+
+# ------------------------------------------------------------------ llm layer
+
+
+def test_llm_provider_defaults_to_deterministic(settings):
+    provider = build_provider(settings)
+    assert isinstance(provider, NullProvider)
+    assert provider.available is False
+    assert schema_for("analyze_observation").__name__ == "ObservationAnalysis"
+    with pytest.raises(KeyError):
+        schema_for("nonsense")
+    payload = ActionProposal.model_validate({"actions": [{"action_type": "CLICK", "target_element_id": "e1", "rationale": "test"}]})
+    assert payload.actions[0].action_type == "CLICK"
+    with pytest.raises(Exception):
+        ActionProposal.model_validate({"actions": [{"action_type": "RUN_SHELL", "rationale": "x"}]})
+
+
+@pytest.mark.asyncio
+async def test_null_provider_returns_nothing(settings):
+    provider = build_provider(settings)
+    assert await provider.analyze_observation(visible_text="x", elements="e") is None
+    assert await provider.interpret_task(text="create a customer") is None
+    assert provider.describe()["available"] is False
+
+
+# -------------------------------------------------------------- page classifier
+
+
+def test_page_classification_and_identity():
+    kind, confidence, reasons = classify(observation(elements=[element("Save", ElementRole.BUTTON)], forms=[FormSummary(form_id="f", fields=[FormField(element_id="e", label="Name"), FormField(element_id="e2", label="Email")])]))
+    assert kind is PageKind.FORM and confidence > 0 and reasons
+
+    wizard = classify(observation(text="Step 1 of 4 Applicant", elements=[element("Next")]))
+    assert wizard[0] is PageKind.WIZARD
+
+    dialog = classify(observation(dialogs=[DialogSummary(title="Add customer", role="dialog", text="Name Email", actions=["Save"])]))
+    assert dialog[0] is PageKind.DIALOG
+
+    identity = identity_for(observation(url="http://x.test/customers/42"))
+    assert identity.url_pattern.endswith("{id}") or identity.url_pattern.endswith("customers")
+    assert url_pattern("http://x.test/customers/42") == "x.test/customers/{id}"
