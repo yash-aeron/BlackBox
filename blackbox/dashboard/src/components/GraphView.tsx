@@ -362,3 +362,449 @@ export function GraphView({ targetId, graph, loading, error, onReload }: GraphVi
     const observer = new ResizeObserver(measure);
     observer.observe(element);
     return () => observer.disconnect();
+  }, [graph]);
+
+  const fitToView = useCallback(() => {
+    const element = containerRef.current;
+    const width = element?.clientWidth || viewport.width || 900;
+    const height = element?.clientHeight || viewport.height || 600;
+    if (!layout) return;
+    const scale = clamp(
+      Math.min(
+        (width - FIT_MARGIN * 2) / Math.max(1, layout.width),
+        (height - FIT_MARGIN * 2) / Math.max(1, layout.height),
+      ),
+      MIN_ZOOM,
+      MAX_ZOOM,
+    );
+    setView({
+      zoom: scale,
+      x: (width - layout.width * scale) / 2,
+      y: (height - layout.height * scale) / 2,
+    });
+  }, [layout, viewport.width, viewport.height]);
+
+  useEffect(() => {
+    if (!graph || !targetId || viewport.width === 0) return;
+    if (fittedRef.current === targetId) return;
+    fittedRef.current = targetId;
+    fitToView();
+  }, [graph, targetId, viewport.width, fitToView]);
+
+  // Wheel zoom must be a non-passive native listener: React attaches `onWheel`
+  // passively, so preventDefault() there would be ignored.
+  useEffect(() => {
+    const element = containerRef.current;
+    if (!element) return undefined;
+    const onWheel = (event: WheelEvent) => {
+      event.preventDefault();
+      const rect = element.getBoundingClientRect();
+      const pointerX = event.clientX - rect.left;
+      const pointerY = event.clientY - rect.top;
+      setView((previous) => {
+        const factor = Math.exp(-event.deltaY * 0.0015);
+        const zoom = clamp(previous.zoom * factor, MIN_ZOOM, MAX_ZOOM);
+        if (Math.abs(zoom - previous.zoom) < 0.0001) return previous;
+        const graphX = (pointerX - previous.x) / previous.zoom;
+        const graphY = (pointerY - previous.y) / previous.zoom;
+        return { zoom, x: pointerX - graphX * zoom, y: pointerY - graphY * zoom };
+      });
+    };
+    element.addEventListener('wheel', onWheel, { passive: false });
+    return () => element.removeEventListener('wheel', onWheel);
+  }, [graph]);
+
+  /* -------------------------------------------------------------- panning */
+
+  const handlePointerDown = (event: ReactPointerEvent<SVGSVGElement>): void => {
+    if (event.button !== 0) return;
+    suppressClickRef.current = false;
+    dragRef.current = {
+      pointerId: event.pointerId,
+      startX: event.clientX,
+      startY: event.clientY,
+      originX: view.x,
+      originY: view.y,
+      moved: false,
+    };
+  };
+
+  const handlePointerMove = (event: ReactPointerEvent<SVGSVGElement>): void => {
+    const drag = dragRef.current;
+    if (!drag || drag.pointerId !== event.pointerId) return;
+    const dx = event.clientX - drag.startX;
+    const dy = event.clientY - drag.startY;
+    if (!drag.moved && Math.abs(dx) + Math.abs(dy) > 3) drag.moved = true;
+    if (!drag.moved) return;
+    setView((previous) => ({ ...previous, x: drag.originX + dx, y: drag.originY + dy }));
+  };
+
+  const endDrag = (event: ReactPointerEvent<SVGSVGElement>): void => {
+    const drag = dragRef.current;
+    if (!drag || drag.pointerId !== event.pointerId) return;
+    dragRef.current = null;
+    suppressClickRef.current = drag.moved;
+  };
+
+  const selectNode = (nodeId: string): void => {
+    if (suppressClickRef.current) {
+      suppressClickRef.current = false;
+      return;
+    }
+    setSelectedNodeId(nodeId);
+    setSelectedEdgeId(null);
+    setPathTo(null);
+  };
+
+  const selectEdge = (edgeId: string): void => {
+    if (suppressClickRef.current) {
+      suppressClickRef.current = false;
+      return;
+    }
+    setSelectedEdgeId(edgeId);
+    setSelectedNodeId(null);
+    setPathTo(null);
+  };
+
+  const selectedNode = selectedNodeId
+    ? graph?.nodes.find((node) => node.id === selectedNodeId) ?? null
+    : null;
+  const selectedEdge = selectedEdgeId
+    ? graph?.edges.find((edge) => edge.id === selectedEdgeId) ?? null
+    : null;
+
+  const totalNodes = graph?.nodes.length ?? 0;
+  const totalEdges = graph?.edges.length ?? 0;
+
+  const body = ((): ReactElement => {
+    if (error) return <ErrorState error={error} onRetry={onReload} />;
+    if (!graph) return loading ? <Loading label="loading state graph…" /> : <EmptyState message="no graph loaded" />;
+    if (totalNodes === 0) {
+      return (
+        <EmptyState
+          message="no states learned yet — run an exploration"
+          hint="the graph fills in as BlackBox observes the site: each verified action becomes an edge."
+        />
+      );
+    }
+    if (!layout) return <Loading label="laying out graph…" />;
+
+    const transform = `translate(${view.x} ${view.y}) scale(${view.zoom})`;
+
+    return (
+      <div className="graph-view">
+        <div className="graph-toolbar" role="group" aria-label="graph filters">
+          <label className="field-inline" htmlFor="graph-search">
+            <span className="field-label">search</span>
+            <input
+              id="graph-search"
+              className="input mono"
+              type="search"
+              value={query}
+              placeholder="label, url or state id"
+              onChange={(event) => setQuery(event.target.value)}
+            />
+          </label>
+          <label className="field-inline" htmlFor="graph-risk">
+            <span className="field-label">risk</span>
+            <select
+              id="graph-risk"
+              className="input mono"
+              value={riskFilter}
+              onChange={(event) => setRiskFilter(event.target.value)}
+            >
+              {RISK_OPTIONS.map((option) => (
+                <option key={option} value={option}>
+                  {option.toLowerCase()}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="field-inline" htmlFor="graph-status">
+            <span className="field-label">status</span>
+            <select
+              id="graph-status"
+              className="input mono"
+              value={statusFilter}
+              onChange={(event) => setStatusFilter(event.target.value)}
+            >
+              {STATUS_OPTIONS.map((option) => (
+                <option key={option} value={option}>
+                  {option.toLowerCase()}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="checkbox">
+            <input
+              type="checkbox"
+              checked={verifiedOnly}
+              onChange={(event) => setVerifiedOnly(event.target.checked)}
+            />
+            <span>verified only</span>
+          </label>
+          {pathInfo ? (
+            <button
+              type="button"
+              className="btn btn-small"
+              onClick={() => setPathTo(null)}
+              title="clear the highlighted path"
+            >
+              clear path
+            </button>
+          ) : null}
+          <span className="toolbar-spacer" />
+          <span className="mono muted">
+            {totalNodes} states · {visibleEdgeIds.size}/{totalEdges} transitions · zoom{' '}
+            {(view.zoom * 100).toFixed(0)}%
+          </span>
+          <button type="button" className="btn btn-small" onClick={fitToView}>
+            fit to view
+          </button>
+          <button type="button" className="btn btn-small" onClick={() => setView({ x: 0, y: 0, zoom: 1 })}>
+            reset view
+          </button>
+          <button type="button" className="btn btn-small" onClick={onReload}>
+            refresh
+          </button>
+        </div>
+
+        <div className="graph-canvas" ref={containerRef}>
+          <svg
+            className="graph-svg"
+            role="application"
+            aria-label={`state graph for ${targetId}: ${totalNodes} states, ${totalEdges} transitions`}
+            onPointerDown={handlePointerDown}
+            onPointerMove={handlePointerMove}
+            onPointerUp={endDrag}
+            onPointerLeave={endDrag}
+          >
+            <defs>
+              {['VERIFIED', 'PROPOSED', 'REFUTED', 'STALE', 'UNKNOWN'].map((status) => (
+                <marker
+                  key={status}
+                  id={`bb-arrow-${status.toLowerCase()}`}
+                  viewBox="0 0 10 8"
+                  markerWidth="7"
+                  markerHeight="7"
+                  refX="9"
+                  refY="4"
+                  orient="auto"
+                  markerUnits="strokeWidth"
+                >
+                  <path d="M 0 0 L 10 4 L 0 8 z" fill={edgeColor(status)} />
+                </marker>
+              ))}
+              <marker
+                id="bb-arrow-path"
+                viewBox="0 0 10 8"
+                markerWidth="7"
+                markerHeight="7"
+                refX="9"
+                refY="4"
+                orient="auto"
+                markerUnits="strokeWidth"
+              >
+                <path d="M 0 0 L 10 4 L 0 8 z" fill={PATH_COLOR} />
+              </marker>
+            </defs>
+
+            <g transform={transform}>
+              <g className="graph-edges">
+                {layout.edges
+                  .filter((laid) => visibleEdgeIds.has(laid.edge.id))
+                  .map((laid) => {
+                    const onPath = pathEdgeIds.has(laid.edge.id);
+                    const dimmed = (pathActive && !onPath) || (matchingNodeIds !== null &&
+                      !matchingNodeIds.has(laid.edge.source) &&
+                      !matchingNodeIds.has(laid.edge.target));
+                    const style: CSSProperties = {
+                      stroke: onPath ? PATH_COLOR : laid.color,
+                      strokeWidth: onPath ? laid.width + 1.4 : laid.width,
+                      strokeDasharray: laid.dashed ? '5 4' : undefined,
+                    };
+                    return (
+                      <g
+                        key={laid.edge.id}
+                        className={classNames(
+                          'gedge-group',
+                          laid.edge.status === 'STALE' && 'gedge-stale',
+                          onPath && 'is-path',
+                          dimmed && 'is-dim',
+                        )}
+                      >
+                        <title>
+                          {`${laid.edge.action} · ${laid.edge.status} · ${normalizeToken(laid.edge.risk)} risk · ${
+                            count(laid.edge.success_count)
+                          } ok / ${count(laid.edge.failure_count)} failed`}
+                        </title>
+                        <path
+                          className="gedge-hit"
+                          d={laid.path}
+                          fill="none"
+                          stroke="transparent"
+                          strokeWidth={14}
+                          pointerEvents="stroke"
+                          onClick={() => selectEdge(laid.edge.id)}
+                        />
+                        <path
+                          className="gedge"
+                          d={laid.path}
+                          fill="none"
+                          style={style}
+                          markerEnd={`url(#${onPath ? 'bb-arrow-path' : laid.markerId})`}
+                          onClick={() => selectEdge(laid.edge.id)}
+                        />
+                      </g>
+                    );
+                  })}
+              </g>
+
+              <g className="graph-nodes">
+                {layout.nodes.map((laid) => {
+                  const node = laid.node;
+                  const selected = node.id === selectedNodeId;
+                  const onPath = pathNodeIds.has(node.id);
+                  const dimmed = (pathActive && !onPath) || (matchingNodeIds !== null && !matchingNodeIds.has(node.id));
+                  const visits = count(node.visit_count);
+                  return (
+                    <g
+                      key={node.id}
+                      className={classNames(
+                        'gnode',
+                        selected && 'gnode-selected',
+                        onPath && 'gnode-path',
+                        dimmed && 'is-dim',
+                        laid.node.id === layout.rootId && 'gnode-root',
+                      )}
+                      transform={`translate(${laid.x} ${laid.y})`}
+                      tabIndex={0}
+                      role="button"
+                      aria-pressed={selected}
+                      aria-label={`state ${node.id} ${node.label ?? ''} status ${node.status} visits ${visits}`}
+                      onClick={() => selectNode(node.id)}
+                      onKeyDown={(event) => {
+                        if (event.key === 'Enter' || event.key === ' ') {
+                          event.preventDefault();
+                          selectNode(node.id);
+                        }
+                      }}
+                    >
+                      <title>
+                        {`${node.label || node.id}\n${node.url ?? ''}\n${node.status} · ${visits} visit(s) · ${
+                          count(node.elements)
+                        } element(s)`}
+                      </title>
+                      <rect
+                        className="gnode-box"
+                        width={NODE_W}
+                        height={NODE_H}
+                        rx={3}
+                        style={{ fill: nodeFill(node.status) }}
+                      />
+                      <text className="gnode-label" x={10} y={19}>
+                        {truncate(node.label || node.url_key || node.id, 24)}
+                      </text>
+                      <text className="gnode-sub mono" x={10} y={35}>
+                        {truncate(node.id, 20)} · {normalizeToken(node.status).toLowerCase()}
+                      </text>
+                      <g transform={`translate(${NODE_W - 30} 6)`} className="gnode-visits">
+                        <title>{`${visits} visit(s)`}</title>
+                        <rect width={24} height={14} rx={2} />
+                        <text x={12} y={10} textAnchor="middle">
+                          {visits > 99 ? '99+' : visits}
+                        </text>
+                      </g>
+                    </g>
+                  );
+                })}
+              </g>
+            </g>
+          </svg>
+
+          <ul className="graph-legend" aria-label="graph legend">
+            {(['VERIFIED', 'PROPOSED', 'REFUTED', 'STALE'] as const).map((status) => (
+              <li key={status}>
+                <span className="swatch" style={{ background: edgeColor(status) }} /> {status.toLowerCase()}
+              </li>
+            ))}
+            <li>
+              <span className="swatch swatch-dashed" /> never succeeded
+            </li>
+            <li>
+              <span className="swatch swatch-node" /> node fill = state status
+            </li>
+            {pathActive ? (
+              <li>
+                <span className="swatch" style={{ background: PATH_COLOR }} /> highlighted path
+              </li>
+            ) : null}
+          </ul>
+
+          <p className="graph-hint muted">drag to pan · wheel to zoom (0.3–3×) · click a state or transition</p>
+        </div>
+
+        <aside className="graph-side" aria-label="graph detail">
+          {selectedEdge ? (
+            <GraphEdgePanel
+              targetId={targetId}
+              edge={selectedEdge}
+              graph={graph}
+              onClose={() => setSelectedEdgeId(null)}
+              onSelectNode={(nodeId) => {
+                setSelectedEdgeId(null);
+                setSelectedNodeId(nodeId);
+              }}
+            />
+          ) : selectedNode ? (
+            <GraphNodePanel
+              targetId={targetId}
+              node={selectedNode}
+              graph={graph}
+              pathInfo={pathInfo}
+              onFindPath={() => setPathTo(selectedNode.id)}
+              onClearPath={() => setPathTo(null)}
+              onClose={() => setSelectedNodeId(null)}
+              onSelectEdge={(edgeId) => {
+                setSelectedNodeId(null);
+                setSelectedEdgeId(edgeId);
+              }}
+            />
+          ) : (
+            <div className="side-empty">
+              <p className="state state-empty">select a state or transition</p>
+              <p className="hint">
+                states show their observed elements and screenshots; transitions show expected vs observed
+                effects and the evidence behind them.
+              </p>
+            </div>
+          )}
+        </aside>
+      </div>
+    );
+  })();
+
+  return (
+    <Panel
+      title="Learned state graph"
+      subtitle={
+        graph
+          ? `${count(graph.stats.states)} states · ${count(graph.stats.transitions)} transitions (${
+              count(graph.stats.verified)
+            } verified) · ${count(graph.stats.pages)} pages`
+          : 'BFS-layered from the root state'
+      }
+      actions={
+        <>
+          {loading && graph ? <span className="muted mono">refreshing…</span> : null}
+          <button type="button" className="btn btn-small" onClick={onReload}>
+            reload graph
+          </button>
+        </>
+      }
+      className="panel-graph"
+    >
+      {body}
+    </Panel>
+  );
+}
