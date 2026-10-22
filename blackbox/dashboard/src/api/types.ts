@@ -355,3 +355,441 @@ export interface ActionDescriptor {
   confidence?: number | null;
   origin?: string | null;
   rationale?: string | null;
+  /** Some payloads flatten the description onto the action. */
+  description?: string | null;
+  [key: string]: unknown;
+}
+
+export interface ObservedEffect {
+  kind: string;
+  detail?: string | null;
+  before?: string | null;
+  after?: string | null;
+  element_id?: string | null;
+  message?: string | null;
+  [key: string]: unknown;
+}
+
+export interface TransitionSummary {
+  transition_id: string;
+  source_state: string;
+  target_state: string;
+  action: string;
+  action_type?: string | null;
+  risk: Risk;
+  confidence: number;
+  status: TransitionStatus;
+  verified?: boolean;
+  execution_count?: number | null;
+  success_count?: number | null;
+  failure_count?: number | null;
+  effects?: string[] | null;
+  evidence_ids?: string[] | null;
+}
+
+export interface TransitionDetail {
+  transition_id: string;
+  source_state: string;
+  target_state: string;
+  action: ActionDescriptor;
+  observed_effects: ObservedEffect[];
+  preconditions: string[];
+  postconditions: string[];
+  confidence: number;
+  status: TransitionStatus;
+  execution_count?: number | null;
+  success_count?: number | null;
+  failure_count?: number | null;
+  evidence_ids: string[];
+  created_at?: Timestamp;
+  updated_at?: Timestamp;
+}
+
+/* --------------------------------------------------------------- workflows */
+
+export interface WorkflowParameter {
+  name: string;
+  label?: string | null;
+  kind?: string | null;
+  required?: boolean | null;
+  example_value?: string | null;
+  target_element_id?: string | null;
+  [key: string]: unknown;
+}
+
+export interface WorkflowStep {
+  index: number;
+  description?: string | null;
+  parameter_names?: string[] | null;
+  expected_effect?: string[] | null;
+  transition_id?: string | null;
+  action?: ActionDescriptor | null;
+  optional?: boolean | null;
+  [key: string]: unknown;
+}
+
+export interface WorkflowSummary {
+  workflow_id: string;
+  name: string;
+  goal: string;
+  confidence: number;
+  verification_count?: number | null;
+  expected_end_state?: string | null;
+  start_state_id?: string | null;
+  path_state_ids?: string[] | null;
+  source?: string | null;
+  created_at?: Timestamp;
+  updated_at?: Timestamp;
+  /** Present when the list endpoint returns full workflows rather than summaries. */
+  parameters?: WorkflowParameter[] | null;
+  steps?: WorkflowStep[] | null;
+  preconditions?: string[] | null;
+  evidence_ids?: string[] | null;
+  [key: string]: unknown;
+}
+
+export interface WorkflowDetail extends WorkflowSummary {
+  parameters: WorkflowParameter[];
+  steps: WorkflowStep[];
+  preconditions: string[];
+  evidence_ids: string[];
+}
+
+/* ------------------------------------------------- hypotheses/constraints */
+
+export interface Hypothesis {
+  hypothesis_id: string;
+  statement: string;
+  status: string;
+  confidence: number;
+  supporting_experiments: string[];
+  contradicting_experiments: string[];
+  evidence: string[];
+  updated_at?: Timestamp;
+  kind?: string | null;
+  subject?: string | null;
+  prediction?: Record<string, unknown> | null;
+  details?: Record<string, unknown> | null;
+  created_at?: Timestamp;
+  [key: string]: unknown;
+}
+
+export interface Constraint {
+  constraint_id: string;
+  kind: string;
+  scope: string;
+  subject: string;
+  expression: string;
+  message?: string | null;
+  status: string;
+  confidence: number;
+  supporting_evidence: string[];
+  contradicting_evidence: string[];
+  condition?: Record<string, unknown> | null;
+  created_at?: Timestamp;
+  updated_at?: Timestamp;
+  [key: string]: unknown;
+}
+
+/* ---------------------------------------------------------------- evidence */
+
+export interface EvidenceRecord {
+  evidence_id: string;
+  kind: string;
+  experiment_id?: string | null;
+  action_id?: string | null;
+  source_state?: string | null;
+  target_state?: string | null;
+  transition_id?: string | null;
+  effects?: Array<string | ObservedEffect> | null;
+  observations?: string[] | null;
+  screenshot_refs?: string[] | null;
+  message?: string | null;
+  notes?: string[] | null;
+  step_index?: number | null;
+  session_id?: string | null;
+  created_at?: Timestamp;
+  [key: string]: unknown;
+}
+
+/* ------------------------------------------------------------- experiments */
+
+export interface Experiment {
+  experiment_id: string;
+  kind: string;
+  status: string;
+  target_id?: string | null;
+  seed?: number | null;
+  browser_version?: string | null;
+  model_version?: number | null;
+  prompt_version?: string | null;
+  budget?: Record<string, unknown> | null;
+  configuration?: Record<string, unknown> | null;
+  started_at?: Timestamp;
+  finished_at?: Timestamp;
+  steps?: Array<Record<string, unknown>> | null;
+  metrics?: Record<string, unknown> | null;
+  notes?: string[] | null;
+  [key: string]: unknown;
+}
+
+/* ----------------------------------------------------------------- metrics */
+
+export interface ObservationMetrics {
+  observations?: number | null;
+  mean_capture_ms?: number | null;
+  [key: string]: unknown;
+}
+
+export interface SandboxMetrics {
+  blocked_count?: number | null;
+  [key: string]: unknown;
+}
+
+export interface NetworkGuardMetrics {
+  observed_requests?: number | null;
+  blocked_agent_requests?: number | null;
+  policy?: string | Record<string, unknown> | null;
+  [key: string]: unknown;
+}
+
+export interface MetricsResponse {
+  target_id?: string | null;
+  model_version?: number | null;
+  states?: number | null;
+  transitions?: number | null;
+  verified_transitions?: number | null;
+  workflows?: number | null;
+  constraints?: number | null;
+  hypotheses?: number | null;
+  evidence?: number | null;
+  experiments?: number | null;
+  pages?: number | null;
+  observation?: ObservationMetrics | null;
+  sandbox?: SandboxMetrics | null;
+  network_guard?: NetworkGuardMetrics | null;
+  [key: string]: unknown;
+}
+
+/* -------------------------------------------------------------- approvals */
+
+export interface ApprovalRequest {
+  request_id: string;
+  action: string;
+  target?: string | null;
+  risk: Risk;
+  reason?: string | null;
+  expected_effect?: string | string[] | null;
+  evidence?: string[] | null;
+  created_at?: Timestamp;
+  [key: string]: unknown;
+}
+
+export interface ApprovalInbox {
+  pending: ApprovalRequest[];
+  decisions?: number;
+  approved?: number;
+  rejected?: number;
+}
+
+export interface ApprovalDecisionResponse {
+  request_id?: string;
+  decision?: string;
+  status?: string;
+  ok?: boolean;
+  [key: string]: unknown;
+}
+
+/* -------------------------------------------------------------------- jobs */
+
+export interface JobStatus<R = TaskResult | null> {
+  job_id: string;
+  kind: string;
+  status: JobLifecycle;
+  target_id?: string | null;
+  started_at?: Timestamp;
+  finished_at?: Timestamp;
+  duration_seconds?: number | null;
+  stop_requested?: boolean;
+  error?: string | null;
+  result: R;
+}
+
+export interface ExploreRequest {
+  max_actions?: number | null;
+  max_seconds?: number | null;
+  max_states?: number | null;
+  configuration_label?: string | null;
+}
+
+export interface JobHandle {
+  job_id: string;
+  [key: string]: unknown;
+}
+
+/* ------------------------------------------------------------------- tasks */
+
+export interface PredicateSpec {
+  kind: string;
+  value: string;
+  target: string;
+}
+
+/** Shape accepted by `POST /tasks` and `predicates` inside `available tasks`. */
+export interface PredicateSpecLoose {
+  kind: string;
+  value?: unknown;
+  target?: unknown;
+}
+
+export interface TaskRequest {
+  text: string;
+  predicates: PredicateSpec[];
+  allow_exploration: boolean;
+  use_workflows: boolean;
+  use_transitions: boolean;
+  max_exploration_actions: number;
+}
+
+export interface BenchmarkTask {
+  task_id: string;
+  text: string;
+  target: string;
+  predicates: PredicateSpecLoose[];
+  tags: string[];
+  difficulty: string;
+  expect_blocked: boolean;
+  [key: string]: unknown;
+}
+
+export interface TaskGoal {
+  goal: string;
+  entities?: Record<string, string> | Array<string | Record<string, unknown>> | null;
+  expected_end_state?: string | null;
+  task_id?: string | null;
+  constraints?: string[] | null;
+  source_text?: string | null;
+  parse_source?: string | null;
+  predicates?: PredicateSpecLoose[] | null;
+  [key: string]: unknown;
+}
+
+export interface PlanStep {
+  index: number;
+  action: string;
+  action_type: string;
+  description: string;
+  target_state?: string | null;
+  risk: Risk;
+  parameters?: Record<string, unknown> | null;
+  transition_id?: string | null;
+  source_state?: string | null;
+  expected_effect?: string[] | null;
+  [key: string]: unknown;
+}
+
+export interface TaskPlan {
+  plan_id: string;
+  source: string;
+  workflow_id?: string | null;
+  start_state_id?: string | null;
+  expected_end_state?: string | null;
+  confidence: number;
+  estimated_cost?: number | null;
+  steps: PlanStep[];
+  notes: string[];
+  exploration_hint?: Record<string, unknown> | null;
+  [key: string]: unknown;
+}
+
+export interface PredicateOutcome {
+  kind: string;
+  value?: unknown;
+  satisfied: boolean;
+  evidence?: string | null;
+  target?: string | null;
+  [key: string]: unknown;
+}
+
+export interface TaskVerification {
+  success: boolean;
+  steps_verified: number;
+  steps_total: number;
+  confidence: number;
+  predicates: PredicateOutcome[];
+  final_state_id?: string | null;
+  notes?: string[] | null;
+}
+
+export interface StepResult {
+  step_index: number;
+  verified: boolean;
+  expected: string[];
+  matched: string[];
+  missed: string[];
+  no_effect: boolean;
+  notes: string[];
+  action: string;
+  status: string;
+  duration_ms?: number | null;
+  locator?: string | null;
+  error?: string | null;
+  transition_id?: string | null;
+  [key: string]: unknown;
+}
+
+export interface TaskResult {
+  task: TaskGoal;
+  plan: TaskPlan;
+  success: boolean;
+  actions_executed: number;
+  steps_verified: number;
+  steps_total: number;
+  recoveries: number;
+  replans: number;
+  /** Workflow id that produced the plan, or null when the plan came from the graph. */
+  used_workflow?: string | null;
+  used_exploration: boolean;
+  duration_seconds: number;
+  planning_latency_ms: number;
+  verification: TaskVerification;
+  step_results: StepResult[];
+  notes: string[];
+  current_state_matched: boolean;
+  plan_source: string;
+  transition_predictions_hit: number;
+  transition_predictions_missed: number;
+  unnecessary_actions: number;
+  model_states_before?: number | null;
+  model_states_after?: number | null;
+  [key: string]: unknown;
+}
+
+/* ------------------------------------------------------------------- logs */
+
+export interface LogRecord {
+  event_id: string;
+  target_id: string;
+  kind: string;
+  created_at?: Timestamp;
+  payload?: Record<string, unknown> | null;
+}
+
+/* ------------------------------------------------------------------ events */
+
+/**
+ * One SSE message from `/api/targets/{id}/stream` (and one row from `/logs`).
+ * The server sends `EventOut`: `{type, ts, target_id, kind, summary, payload}`;
+ * `payload` carries the type-specific fields.
+ */
+export interface AgentEvent {
+  type: AgentEventType;
+  ts?: Timestamp;
+  target_id?: string | null;
+  kind?: string | null;
+  /** Server-provided one-line summary; preferred over the client fallback. */
+  summary?: string | null;
+  payload?: Record<string, unknown> | null;
+  /** Flattened event fields for servers that inline the payload. */
+  [key: string]: unknown;
+}
