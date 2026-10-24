@@ -1,0 +1,738 @@
+{
+  "target": "demo_crm",
+  "mode": "ablation_states",
+  "seed": 7,
+  "browser_version": "Chrome/153.0.8010.12",
+  "model_version": 1,
+  "model": {
+    "states": 10,
+    "transitions": 195,
+    "workflows": 2
+  },
+  "configuration": {
+    "use_workflows": false,
+    "use_transitions": false,
+    "allow_exploration": true,
+    "max_actions": 30
+  },
+  "started_at": "2026-10-09T08:25:00",
+  "finished_at": "2026-10-09T08:31:09",
+  "duration_seconds": 369.32,
+  "metrics": {
+    "target": "demo_crm",
+    "mode": "ablation_states",
+    "tasks_total": 8,
+    "tasks_run": 8,
+    "successes": 0,
+    "policy_blocked": 0,
+    "success_rate": 0.0,
+    "mean_actions": 30.0,
+    "mean_unnecessary_actions": 0.0,
+    "mean_duration_seconds": 45.2,
+    "mean_planning_latency_ms": 0.08,
+    "total_recoveries": 0,
+    "total_replans": 0,
+    "model_reuse_rate": 0.0,
+    "workflow_reuse_rate": 0.0,
+    "workflow_reuse_success_rate": 0.0,
+    "state_recognition_accuracy": 1.0,
+    "transition_prediction_accuracy": 0.0,
+    "mean_step_verification_rate": 0.0,
+    "exploration_actions": 0,
+    "per_task": [
+      {
+        "task_id": "crm_create_customer",
+        "mode": "ablation_states",
+        "success": false,
+        "policy_blocked": false,
+        "actions": 30,
+        "unnecessary_actions": 0,
+        "duration_seconds": 47.75,
+        "planning_latency_ms": 0.12,
+        "recoveries": 0,
+        "replans": 0,
+        "steps_verified": 0,
+        "steps_total": 0,
+        "used_workflow": false,
+        "used_exploration": true,
+        "exploration_actions": 0,
+        "plan_source": "none",
+        "state_matched": true,
+        "predictions_hit": 0,
+        "predictions_missed": 0,
+        "model_reuse": false,
+        "verification": {},
+        "plan": {
+          "plan_id": "plan_bf0c415d4115",
+          "task": {
+            "task_id": "task_cf5d6f834909",
+            "goal": "create_customer",
+            "entities": {
+              "email": "yash@example.com",
+              "name": "Yash Malhotra"
+            },
+            "constraints": [],
+            "expected_end_state": "customer_created",
+            "source_text": "Create a customer named Yash Malhotra with email yash@example.com",
+            "parse_source": "deterministic",
+            "predicates": [
+              {
+                "kind": "TEXT_PRESENT",
+                "value": "Customer created.",
+                "target": ""
+              }
+            ]
+          },
+          "source": "none",
+          "workflow_id": null,
+          "start_state_id": "s_0c3313f77f4f",
+          "expected_end_state": "",
+          "confidence": 0.0,
+          "estimated_cost": 0.0,
+          "steps": [],
+          "notes": [
+            "transition reuse disabled (ablation); exploration required"
+          ],
+          "exploration_hint": {
+            "reason": "transition reuse disabled",
+            "keywords": [
+              "customer"
+            ],
+            "start_state_id": "s_0c3313f77f4f",
+            "region": [],
+            "max_actions": 25
+          }
+        },
+        "notes": [
+          "transition reuse disabled (ablation); exploration required",
+          "re-planned after 30 targeted exploration action(s)",
+          "transition reuse disabled (ablation); exploration required",
+          "no usable plan: the model does not yet know a route for this task"
+        ]
+      },
+      {
+        "task_id": "crm_invalid_email",
+        "mode": "ablation_states",
+        "success": false,
+        "policy_blocked": false,
+        "actions": 30,
+        "unnecessary_actions": 0,
+        "duration_seconds": 44.05,
+        "planning_latency_ms": 0.07,
+        "recoveries": 0,
+        "replans": 0,
+        "steps_verified": 0,
+        "steps_total": 0,
+        "used_workflow": false,
+        "used_exploration": true,
+        "exploration_actions": 0,
+        "plan_source": "none",
+        "state_matched": true,
+        "predictions_hit": 0,
+        "predictions_missed": 0,
+        "model_reuse": false,
+        "verification": {},
+        "plan": {
+          "plan_id": "plan_afc15a49565b",
+          "task": {
+            "task_id": "task_ba72d481ecf8",
+            "goal": "create_customer",
+            "entities": {
+              "name": "Test Person",
+              "email": "not-an-email"
+            },
+            "constraints": [],
+            "expected_end_state": "customer_created",
+            "source_text": "Add a customer named Test Person with email not-an-email",
+            "parse_source": "deterministic",
+            "predicates": [
+              {
+                "kind": "ALERT_CONTAINS",
+                "value": "Enter a valid email address.",
+                "target": ""
+              }
+            ]
+          },
+          "source": "none",
+          "workflow_id": null,
+          "start_state_id": "s_b9926ade5519",
+          "expected_end_state": "",
+          "confidence": 0.0,
+          "estimated_cost": 0.0,
+          "steps": [],
+          "notes": [
+            "transition reuse disabled (ablation); exploration required"
+          ],
+          "exploration_hint": {
+            "reason": "transition reuse disabled",
+            "keywords": [
+              "customer"
+            ],
+            "start_state_id": "s_b9926ade5519",
+            "region": [],
+            "max_actions": 25
+          }
+        },
+        "notes": [
+          "transition reuse disabled (ablation); exploration required",
+          "re-planned after 30 targeted exploration action(s)",
+          "transition reuse disabled (ablation); exploration required",
+          "no usable plan: the model does not yet know a route for this task"
+        ]
+      },
+      {
+        "task_id": "crm_search_customer",
+        "mode": "ablation_states",
+        "success": false,
+        "policy_blocked": false,
+        "actions": 30,
+        "unnecessary_actions": 0,
+        "duration_seconds": 44.77,
+        "planning_latency_ms": 0.05,
+        "recoveries": 0,
+        "replans": 0,
+        "steps_verified": 0,
+        "steps_total": 0,
+        "used_workflow": false,
+        "used_exploration": true,
+        "exploration_actions": 0,
+        "plan_source": "none",
+        "state_matched": true,
+        "predictions_hit": 0,
+        "predictions_missed": 0,
+        "model_reuse": false,
+        "verification": {},
+        "plan": {
+          "plan_id": "plan_b3b7021591e9",
+          "task": {
+            "task_id": "task_caf2b22d2104",
+            "goal": "search_customer",
+            "entities": {},
+            "constraints": [],
+            "expected_end_state": "results_filtered",
+            "source_text": "Search the customer list for Elena",
+            "parse_source": "deterministic",
+            "predicates": [
+              {
+                "kind": "TABLE_ROW_CONTAINS",
+                "value": "elena@vinetoworks.it",
+                "target": ""
+              }
+            ]
+          },
+          "source": "none",
+          "workflow_id": null,
+          "start_state_id": "s_c90cfdf139fd",
+          "expected_end_state": "",
+          "confidence": 0.0,
+          "estimated_cost": 0.0,
+          "steps": [],
+          "notes": [
+            "transition reuse disabled (ablation); exploration required"
+          ],
+          "exploration_hint": {
+            "reason": "transition reuse disabled",
+            "keywords": [
+              "customer"
+            ],
+            "start_state_id": "s_c90cfdf139fd",
+            "region": [],
+            "max_actions": 25
+          }
+        },
+        "notes": [
+          "transition reuse disabled (ablation); exploration required",
+          "re-planned after 30 targeted exploration action(s)",
+          "transition reuse disabled (ablation); exploration required",
+          "no usable plan: the model does not yet know a route for this task"
+        ]
+      },
+      {
+        "task_id": "crm_filter_leads",
+        "mode": "ablation_states",
+        "success": false,
+        "policy_blocked": false,
+        "actions": 30,
+        "unnecessary_actions": 0,
+        "duration_seconds": 44.69,
+        "planning_latency_ms": 0.12,
+        "recoveries": 0,
+        "replans": 0,
+        "steps_verified": 0,
+        "steps_total": 0,
+        "used_workflow": false,
+        "used_exploration": true,
+        "exploration_actions": 0,
+        "plan_source": "none",
+        "state_matched": true,
+        "predictions_hit": 0,
+        "predictions_missed": 0,
+        "model_reuse": false,
+        "verification": {},
+        "plan": {
+          "plan_id": "plan_a840d5ba99c0",
+          "task": {
+            "task_id": "task_9086f8233a2a",
+            "goal": "filter_customer",
+            "entities": {},
+            "constraints": [],
+            "expected_end_state": "filter_done",
+            "source_text": "Filter the customer list to show only leads",
+            "parse_source": "deterministic",
+            "predicates": [
+              {
+                "kind": "TABLE_ROW_CONTAINS",
+                "value": "tomas.bergstrom@nordvik.se",
+                "target": ""
+              },
+              {
+                "kind": "TEXT_ABSENT",
+                "value": "amara.okafor@brightlaneco.com",
+                "target": ""
+              }
+            ]
+          },
+          "source": "none",
+          "workflow_id": null,
+          "start_state_id": "s_c7f5fac284da",
+          "expected_end_state": "",
+          "confidence": 0.0,
+          "estimated_cost": 0.0,
+          "steps": [],
+          "notes": [
+            "transition reuse disabled (ablation); exploration required"
+          ],
+          "exploration_hint": {
+            "reason": "transition reuse disabled",
+            "keywords": [
+              "customer"
+            ],
+            "start_state_id": "s_c7f5fac284da",
+            "region": [],
+            "max_actions": 25
+          }
+        },
+        "notes": [
+          "transition reuse disabled (ablation); exploration required",
+          "re-planned after 30 targeted exploration action(s)",
+          "transition reuse disabled (ablation); exploration required",
+          "no usable plan: the model does not yet know a route for this task"
+        ]
+      },
+      {
+        "task_id": "crm_sort_revenue_desc",
+        "mode": "ablation_states",
+        "success": false,
+        "policy_blocked": false,
+        "actions": 30,
+        "unnecessary_actions": 0,
+        "duration_seconds": 43.8,
+        "planning_latency_ms": 0.07,
+        "recoveries": 0,
+        "replans": 0,
+        "steps_verified": 0,
+        "steps_total": 0,
+        "used_workflow": false,
+        "used_exploration": true,
+        "exploration_actions": 0,
+        "plan_source": "none",
+        "state_matched": true,
+        "predictions_hit": 0,
+        "predictions_missed": 0,
+        "model_reuse": false,
+        "verification": {},
+        "plan": {
+          "plan_id": "plan_703ee2481332",
+          "task": {
+            "task_id": "task_02c7d6b9ed80",
+            "goal": "customer",
+            "entities": {},
+            "constraints": [],
+            "expected_end_state": "task_done",
+            "source_text": "Sort the customers by revenue from highest to lowest",
+            "parse_source": "deterministic",
+            "predicates": [
+              {
+                "kind": "TABLE_ROW_CONTAINS",
+                "value": "Hannah Petrov",
+                "target": ""
+              }
+            ]
+          },
+          "source": "none",
+          "workflow_id": null,
+          "start_state_id": "s_b9926ade5519",
+          "expected_end_state": "",
+          "confidence": 0.0,
+          "estimated_cost": 0.0,
+          "steps": [],
+          "notes": [
+            "transition reuse disabled (ablation); exploration required"
+          ],
+          "exploration_hint": {
+            "reason": "transition reuse disabled",
+            "keywords": [
+              "customer"
+            ],
+            "start_state_id": "s_b9926ade5519",
+            "region": [],
+            "max_actions": 25
+          }
+        },
+        "notes": [
+          "transition reuse disabled (ablation); exploration required",
+          "re-planned after 30 targeted exploration action(s)",
+          "transition reuse disabled (ablation); exploration required",
+          "no usable plan: the model does not yet know a route for this task"
+        ]
+      },
+      {
+        "task_id": "crm_pagination_next",
+        "mode": "ablation_states",
+        "success": false,
+        "policy_blocked": false,
+        "actions": 30,
+        "unnecessary_actions": 0,
+        "duration_seconds": 45.45,
+        "planning_latency_ms": 0.07,
+        "recoveries": 0,
+        "replans": 0,
+        "steps_verified": 0,
+        "steps_total": 0,
+        "used_workflow": false,
+        "used_exploration": true,
+        "exploration_actions": 0,
+        "plan_source": "none",
+        "state_matched": true,
+        "predictions_hit": 0,
+        "predictions_missed": 0,
+        "model_reuse": false,
+        "verification": {},
+        "plan": {
+          "plan_id": "plan_1b9e1dadc385",
+          "task": {
+            "task_id": "task_bc2ff4fd8b03",
+            "goal": "view_customer",
+            "entities": {},
+            "constraints": [],
+            "expected_end_state": "view_done",
+            "source_text": "Go to the second page of the customer list",
+            "parse_source": "deterministic",
+            "predicates": [
+              {
+                "kind": "TEXT_PRESENT",
+                "value": "Page 2 of 3",
+                "target": ""
+              }
+            ]
+          },
+          "source": "none",
+          "workflow_id": null,
+          "start_state_id": "s_55eee504b8d7",
+          "expected_end_state": "",
+          "confidence": 0.0,
+          "estimated_cost": 0.0,
+          "steps": [],
+          "notes": [
+            "transition reuse disabled (ablation); exploration required"
+          ],
+          "exploration_hint": {
+            "reason": "transition reuse disabled",
+            "keywords": [
+              "customer"
+            ],
+            "start_state_id": "s_55eee504b8d7",
+            "region": [],
+            "max_actions": 25
+          }
+        },
+        "notes": [
+          "transition reuse disabled (ablation); exploration required",
+          "re-planned after 30 targeted exploration action(s)",
+          "transition reuse disabled (ablation); exploration required",
+          "no usable plan: the model does not yet know a route for this task"
+        ]
+      },
+      {
+        "task_id": "crm_open_add_dialog",
+        "mode": "ablation_states",
+        "success": false,
+        "policy_blocked": false,
+        "actions": 30,
+        "unnecessary_actions": 0,
+        "duration_seconds": 45.52,
+        "planning_latency_ms": 0.07,
+        "recoveries": 0,
+        "replans": 0,
+        "steps_verified": 0,
+        "steps_total": 0,
+        "used_workflow": false,
+        "used_exploration": true,
+        "exploration_actions": 0,
+        "plan_source": "none",
+        "state_matched": true,
+        "predictions_hit": 0,
+        "predictions_missed": 0,
+        "model_reuse": false,
+        "verification": {},
+        "plan": {
+          "plan_id": "plan_e08c2798022c",
+          "task": {
+            "task_id": "task_e7ce2ef73c1e",
+            "goal": "create_customer",
+            "entities": {},
+            "constraints": [],
+            "expected_end_state": "customer_created",
+            "source_text": "Open the Add customer form",
+            "parse_source": "deterministic",
+            "predicates": [
+              {
+                "kind": "DIALOG_OPEN",
+                "value": "Add customer",
+                "target": ""
+              }
+            ]
+          },
+          "source": "none",
+          "workflow_id": null,
+          "start_state_id": "s_b9926ade5519",
+          "expected_end_state": "",
+          "confidence": 0.0,
+          "estimated_cost": 0.0,
+          "steps": [],
+          "notes": [
+            "transition reuse disabled (ablation); exploration required"
+          ],
+          "exploration_hint": {
+            "reason": "transition reuse disabled",
+            "keywords": [
+              "customer"
+            ],
+            "start_state_id": "s_b9926ade5519",
+            "region": [],
+            "max_actions": 25
+          }
+        },
+        "notes": [
+          "transition reuse disabled (ablation); exploration required",
+          "re-planned after 30 targeted exploration action(s)",
+          "transition reuse disabled (ablation); exploration required",
+          "no usable plan: the model does not yet know a route for this task"
+        ]
+      },
+      {
+        "task_id": "crm_save_settings",
+        "mode": "ablation_states",
+        "success": false,
+        "policy_blocked": false,
+        "actions": 30,
+        "unnecessary_actions": 0,
+        "duration_seconds": 45.55,
+        "planning_latency_ms": 0.07,
+        "recoveries": 0,
+        "replans": 0,
+        "steps_verified": 0,
+        "steps_total": 0,
+        "used_workflow": false,
+        "used_exploration": true,
+        "exploration_actions": 0,
+        "plan_source": "none",
+        "state_matched": true,
+        "predictions_hit": 0,
+        "predictions_missed": 0,
+        "model_reuse": false,
+        "verification": {},
+        "plan": {
+          "plan_id": "plan_11f9656e764f",
+          "task": {
+            "task_id": "task_2361283ac017",
+            "goal": "update_setting",
+            "entities": {},
+            "constraints": [],
+            "expected_end_state": "setting_updated",
+            "source_text": "In settings change the default page size to 25 and save",
+            "parse_source": "deterministic",
+            "predicates": [
+              {
+                "kind": "TEXT_PRESENT",
+                "value": "Settings saved.",
+                "target": ""
+              }
+            ]
+          },
+          "source": "none",
+          "workflow_id": null,
+          "start_state_id": "s_b17936eb03b9",
+          "expected_end_state": "",
+          "confidence": 0.0,
+          "estimated_cost": 0.0,
+          "steps": [],
+          "notes": [
+            "transition reuse disabled (ablation); exploration required"
+          ],
+          "exploration_hint": {
+            "reason": "transition reuse disabled",
+            "keywords": [
+              "setting"
+            ],
+            "start_state_id": "s_b17936eb03b9",
+            "region": [],
+            "max_actions": 25
+          }
+        },
+        "notes": [
+          "transition reuse disabled (ablation); exploration required",
+          "re-planned after 30 targeted exploration action(s)",
+          "transition reuse disabled (ablation); exploration required",
+          "no usable plan: the model does not yet know a route for this task"
+        ]
+      }
+    ]
+  },
+  "tasks": [
+    {
+      "task_id": "crm_create_customer",
+      "text": "Create a customer named Yash Malhotra with email yash@example.com",
+      "target": "demo_crm",
+      "tags": [
+        "crud",
+        "create",
+        "workflow"
+      ],
+      "difficulty": "medium",
+      "expect_blocked": false,
+      "predicates": [
+        {
+          "kind": "TEXT_PRESENT",
+          "value": "Customer created.",
+          "target": ""
+        }
+      ]
+    },
+    {
+      "task_id": "crm_invalid_email",
+      "text": "Add a customer named Test Person with email not-an-email",
+      "target": "demo_crm",
+      "tags": [
+        "validation"
+      ],
+      "difficulty": "easy",
+      "expect_blocked": false,
+      "predicates": [
+        {
+          "kind": "ALERT_CONTAINS",
+          "value": "Enter a valid email address.",
+          "target": ""
+        }
+      ]
+    },
+    {
+      "task_id": "crm_search_customer",
+      "text": "Search the customer list for Elena",
+      "target": "demo_crm",
+      "tags": [
+        "search"
+      ],
+      "difficulty": "easy",
+      "expect_blocked": false,
+      "predicates": [
+        {
+          "kind": "TABLE_ROW_CONTAINS",
+          "value": "elena@vinetoworks.it",
+          "target": ""
+        }
+      ]
+    },
+    {
+      "task_id": "crm_filter_leads",
+      "text": "Filter the customer list to show only leads",
+      "target": "demo_crm",
+      "tags": [
+        "filter"
+      ],
+      "difficulty": "medium",
+      "expect_blocked": false,
+      "predicates": [
+        {
+          "kind": "TABLE_ROW_CONTAINS",
+          "value": "tomas.bergstrom@nordvik.se",
+          "target": ""
+        },
+        {
+          "kind": "TEXT_ABSENT",
+          "value": "amara.okafor@brightlaneco.com",
+          "target": ""
+        }
+      ]
+    },
+    {
+      "task_id": "crm_sort_revenue_desc",
+      "text": "Sort the customers by revenue from highest to lowest",
+      "target": "demo_crm",
+      "tags": [
+        "sort"
+      ],
+      "difficulty": "medium",
+      "expect_blocked": false,
+      "predicates": [
+        {
+          "kind": "TABLE_ROW_CONTAINS",
+          "value": "Hannah Petrov",
+          "target": ""
+        }
+      ]
+    },
+    {
+      "task_id": "crm_pagination_next",
+      "text": "Go to the second page of the customer list",
+      "target": "demo_crm",
+      "tags": [
+        "pagination"
+      ],
+      "difficulty": "easy",
+      "expect_blocked": false,
+      "predicates": [
+        {
+          "kind": "TEXT_PRESENT",
+          "value": "Page 2 of 3",
+          "target": ""
+        }
+      ]
+    },
+    {
+      "task_id": "crm_open_add_dialog",
+      "text": "Open the Add customer form",
+      "target": "demo_crm",
+      "tags": [
+        "dialog"
+      ],
+      "difficulty": "easy",
+      "expect_blocked": false,
+      "predicates": [
+        {
+          "kind": "DIALOG_OPEN",
+          "value": "Add customer",
+          "target": ""
+        }
+      ]
+    },
+    {
+      "task_id": "crm_save_settings",
+      "text": "In settings change the default page size to 25 and save",
+      "target": "demo_crm",
+      "tags": [
+        "settings",
+        "form"
+      ],
+      "difficulty": "medium",
+      "expect_blocked": false,
+      "predicates": [
+        {
+          "kind": "TEXT_PRESENT",
+          "value": "Settings saved.",
+          "target": ""
+        }
+      ]
+    }
+  ]
+}
