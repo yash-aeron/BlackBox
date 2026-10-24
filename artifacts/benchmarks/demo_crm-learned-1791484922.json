@@ -1,0 +1,243 @@
+{
+  "target": "demo_crm",
+  "mode": "learned",
+  "seed": 7,
+  "browser_version": "Chrome/153.0.8010.12",
+  "model_version": 1,
+  "model": {
+    "states": 7,
+    "transitions": 92,
+    "workflows": 2
+  },
+  "configuration": {
+    "use_workflows": true,
+    "use_transitions": true,
+    "allow_exploration": false,
+    "max_actions": 30
+  },
+  "started_at": "2026-10-09T00:11:40",
+  "finished_at": "2026-10-09T00:12:02",
+  "duration_seconds": 22.01,
+  "metrics": {
+    "target": "demo_crm",
+    "mode": "learned",
+    "tasks_total": 3,
+    "tasks_run": 3,
+    "successes": 2,
+    "policy_blocked": 0,
+    "success_rate": 0.6667,
+    "mean_actions": 5.333,
+    "mean_unnecessary_actions": 0.0,
+    "mean_duration_seconds": 5.83,
+    "mean_planning_latency_ms": 2.04,
+    "total_recoveries": 4,
+    "total_replans": 4,
+    "model_reuse_rate": 1.0,
+    "workflow_reuse_rate": 0.6667,
+    "workflow_reuse_success_rate": 0.5,
+    "state_recognition_accuracy": 1.0,
+    "transition_prediction_accuracy": 1.0,
+    "mean_step_verification_rate": 0.8519,
+    "exploration_actions": 0,
+    "per_task": [
+      {
+        "task_id": "crm_create_customer",
+        "mode": "learned",
+        "success": false,
+        "policy_blocked": false,
+        "actions": 6,
+        "unnecessary_actions": 0,
+        "duration_seconds": 7.23,
+        "planning_latency_ms": 3.12,
+        "recoveries": 0,
+        "replans": 0,
+        "steps_verified": 6,
+        "steps_total": 6,
+        "used_workflow": true,
+        "used_exploration": false,
+        "exploration_actions": 0,
+        "plan_source": "workflow",
+        "state_matched": true,
+        "predictions_hit": 0,
+        "predictions_missed": 0,
+        "model_reuse": true,
+        "verification": {
+          "success": false,
+          "steps_verified": 6,
+          "steps_total": 6,
+          "final_state_id": "s_db233137f595",
+          "confidence": 0.5,
+          "notes": [],
+          "predicates": [
+            {
+              "kind": "TEXT_PRESENT",
+              "value": "Customer created.",
+              "satisfied": true,
+              "evidence": "searched 417 chars of visible text"
+            },
+            {
+              "kind": "TABLE_ROW_CONTAINS",
+              "value": "yash@example.com",
+              "satisfied": false,
+              "evidence": "0 table(s) inspected"
+            }
+          ]
+        },
+        "notes": [
+          "reused learned workflow w_b5485c1c71e6 (create_customer)",
+          "parameters using synthesized defaults: company, revenue"
+        ]
+      },
+      {
+        "task_id": "crm_invalid_email",
+        "mode": "learned",
+        "success": true,
+        "policy_blocked": false,
+        "actions": 9,
+        "unnecessary_actions": 0,
+        "duration_seconds": 8.23,
+        "planning_latency_ms": 1.35,
+        "recoveries": 4,
+        "replans": 4,
+        "steps_verified": 5,
+        "steps_total": 9,
+        "used_workflow": true,
+        "used_exploration": false,
+        "exploration_actions": 0,
+        "plan_source": "workflow",
+        "state_matched": true,
+        "predictions_hit": 0,
+        "predictions_missed": 0,
+        "model_reuse": true,
+        "verification": {
+          "success": true,
+          "steps_verified": 5,
+          "steps_total": 9,
+          "final_state_id": "s_0c3313f77f4f",
+          "confidence": 0.778,
+          "notes": [
+            "4 step(s) did not produce their predicted effect"
+          ],
+          "predicates": [
+            {
+              "kind": "ALERT_CONTAINS",
+              "value": "Enter a valid email address.",
+              "satisfied": true,
+              "evidence": "Enter a valid email address."
+            }
+          ]
+        },
+        "notes": [
+          "reused learned workflow w_b5485c1c71e6 (create_customer)",
+          "parameters using synthesized defaults: company, revenue",
+          "step 5 recovery: RETRY_STEP - retrying step 5 after: step produced no predicted effect",
+          "step 5 recovery: RETRY_STEP - retrying step 5 after: step produced no predicted effect",
+          "step 5 recovery: RETRY_STEP - retrying step 5 after: step produced no predicted effect",
+          "step 5 recovery: ABANDON - replan budget exhausted after 3 attempts (step produced no predicted effect)"
+        ]
+      },
+      {
+        "task_id": "crm_open_add_dialog",
+        "mode": "learned",
+        "success": true,
+        "policy_blocked": false,
+        "actions": 1,
+        "unnecessary_actions": 0,
+        "duration_seconds": 2.03,
+        "planning_latency_ms": 1.64,
+        "recoveries": 0,
+        "replans": 0,
+        "steps_verified": 1,
+        "steps_total": 1,
+        "used_workflow": false,
+        "used_exploration": false,
+        "exploration_actions": 0,
+        "plan_source": "graph",
+        "state_matched": true,
+        "predictions_hit": 1,
+        "predictions_missed": 0,
+        "model_reuse": true,
+        "verification": {
+          "success": true,
+          "steps_verified": 1,
+          "steps_total": 1,
+          "final_state_id": "s_0c3313f77f4f",
+          "confidence": 1.0,
+          "notes": [],
+          "predicates": [
+            {
+              "kind": "DIALOG_OPEN",
+              "value": "Add customer",
+              "satisfied": true,
+              "evidence": "Add customer"
+            }
+          ]
+        },
+        "notes": [
+          "planned over 1 learned transitions by graph search",
+          "chosen over workflow w_b5485c1c71e6: 1 steps vs 6"
+        ]
+      }
+    ]
+  },
+  "tasks": [
+    {
+      "task_id": "crm_create_customer",
+      "text": "Create a customer named Yash Malhotra with email yash@example.com",
+      "target": "demo_crm",
+      "tags": [
+        "crud",
+        "create",
+        "workflow"
+      ],
+      "difficulty": "medium",
+      "expect_blocked": false,
+      "predicates": [
+        {
+          "kind": "TEXT_PRESENT",
+          "value": "Customer created.",
+          "target": ""
+        },
+        {
+          "kind": "TABLE_ROW_CONTAINS",
+          "value": "yash@example.com",
+          "target": ""
+        }
+      ]
+    },
+    {
+      "task_id": "crm_invalid_email",
+      "text": "Add a customer named Test Person with email not-an-email",
+      "target": "demo_crm",
+      "tags": [
+        "validation"
+      ],
+      "difficulty": "easy",
+      "expect_blocked": false,
+      "predicates": [
+        {
+          "kind": "ALERT_CONTAINS",
+          "value": "Enter a valid email address.",
+          "target": ""
+        }
+      ]
+    },
+    {
+      "task_id": "crm_open_add_dialog",
+      "text": "Open the Add customer form",
+      "target": "demo_crm",
+      "tags": [
+        "dialog"
+      ],
+      "difficulty": "easy",
+      "expect_blocked": false,
+      "predicates": [
+        {
+          "kind": "DIALOG_OPEN",
+          "value": "Add customer",
+          "target": ""
+        }
+      ]
+    }
+  ]
+}

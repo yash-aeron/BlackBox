@@ -1,0 +1,25 @@
+{
+  "points": [
+    {
+      "actions_spent": 40,
+      "states_learned": 7,
+      "transitions_learned": 101,
+      "verified_transitions": 70,
+      "workflows": 0,
+      "task_success_rate": 0.25,
+      "mean_actions_per_task": 0.25,
+      "tasks_run": 4
+    },
+    {
+      "actions_spent": 40,
+      "states_learned": 7,
+      "transitions_learned": 101,
+      "verified_transitions": 70,
+      "workflows": 0,
+      "task_success_rate": 0.25,
+      "mean_actions_per_task": 0.25,
+      "tasks_run": 4
+    }
+  ],
+  "measured": true
+}
